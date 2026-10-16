@@ -1608,6 +1608,16 @@
   .wr-ans{ font-family:var(--font-display); font-weight:700; font-size:20px; }
   .wr-ipa{ margin:0 6px; }
   .wr-mark{ width:100%; padding:12px; }
+  /* ---------- YouTube free practice ---------- */
+  .ls-free-title{ font-family:var(--font-display); font-size:18px; font-weight:800; }
+  .ls-free-tip{ font-size:13px; line-height:1.55; color:var(--ink-soft); margin:6px 0 10px; }
+  .ls-free-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .ls-free-label{ font-size:13px; color:var(--ink-soft); font-weight:600; }
+  .ls-free-status{ margin:12px 0 8px; font:600 13px/1.4 var(--font-mono); color:var(--rust); text-align:center; }
+  .ls-free-nav{ display:grid; grid-template-columns:1fr 1.3fr 1fr; gap:8px; }
+  .ls-free-nav button{ padding:12px 6px; font-size:14px; }
+  .ls-free-extra{ justify-content:center; margin-top:10px; }
+  .ls-free-notes{ margin-top:12px; }
 </style>
 </head>
 <body>
@@ -7655,7 +7665,8 @@ function lsStartLesson(lesson, levelObj) {
   lsHeadEl.insertBefore(row, lsHeadEl.firstChild);
   lsHeadEl.insertBefore(back, lsHeadEl.firstChild);
   if (lesson.yt && !reuse) lsYtBox(lesson);
-  lsLoadItem();
+  if (lesson.free) { lsStartFreeLesson(lesson, levelObj); whole.remove(); }
+  else lsLoadItem();
   grScrollTop();
 }
 
@@ -7760,7 +7771,7 @@ function lsUpdateCount() {
   if (lsMakeSrc === 'yt') {
     const segs = lsParseTimed(raw);
     const n = segs ? lsGroupSegments(segs).length : lsSplitSentences(raw).length;
-    lsMakeCount.textContent = !n ? 'Chưa có câu nào' : segs ? `Sẽ tạo ${n} câu · có mốc thời gian ✓` : `Sẽ tạo ${n} câu · chưa có mốc thời gian`;
+    lsMakeCount.textContent = !n ? 'Không có phụ đề: app tự bật phụ đề YouTube' : segs ? `Sẽ tạo ${n} câu · có mốc thời gian ✓` : `Sẽ tạo ${n} câu · chưa có mốc thời gian`;
   } else {
     const n = lsSplitSentences(raw).length;
     lsMakeCount.textContent = n ? `Sẽ tạo ${n} câu` : 'Chưa có câu nào';
@@ -7785,10 +7796,10 @@ document.getElementById('ls-make-btn').addEventListener('click', () => {
     const id = lsYtId(lsYtUrl.value);
     if (!id) return err('Link YouTube chưa đúng. Hãy dán link dạng youtube.com/watch?v=… hoặc youtu.be/…');
     const segs = lsParseTimed(raw);
-    const sentences = segs ? lsGroupSegments(segs) : lsSplitSentences(raw).map(en => ({ en, vi: '' }));
-    if (!sentences.length || !/[a-z]/i.test(raw)) return err('Hãy dán phụ đề (bản chép lời) tiếng Anh của video vào ô phía trên.');
+    const sentences = !/[a-z]/i.test(raw) ? [] : segs ? lsGroupSegments(segs) : lsSplitSentences(raw).map(en => ({ en, vi: '' }));
     lesson = { id: 'y' + Date.now(), title: lsMakeTitle.value.trim() || 'Video YouTube', vi: '', kind: 'YouTube', yt: id, rate: 0.9,
                created: new Date().toLocaleDateString('vi-VN'), sentences };
+    if (!sentences.length) { lesson.free = true; lesson.kind = 'YouTube · Luyện theo đoạn'; lesson.vi = 'Phụ đề YouTube tự bật'; }
     if (!lsMakeTitle.value.trim()) lsYtFetchTitle(lesson);
   } else {
     const sentences = lsSplitSentences(raw);
@@ -7817,7 +7828,7 @@ const lsYtFields = document.getElementById('ls-yt-fields');
 const lsMakeHelp = document.getElementById('ls-make-help');
 const LS_HELP = {
   text: 'Dán bất kỳ đoạn tiếng Anh nào: bài đọc trong sách, tin tức, lời thoại… App tự chia thành từng câu để bạn nghe và chép.',
-  yt: 'Dán link video YouTube và phụ đề tiếng Anh của video. App sẽ phát đúng đoạn video của từng câu để bạn nghe giọng thật rồi chép lại.'
+  yt: 'Chỉ cần dán link video: app tự bật phụ đề tiếng Anh của YouTube và cho bạn luyện nghe theo từng đoạn. Muốn app chấm điểm chép chính tả thì dán thêm phụ đề có mốc thời gian (không bắt buộc).'
 };
 const LS_PH = { text: 'Dán đoạn tiếng Anh vào đây…', yt: 'Dán phụ đề có mốc thời gian, ví dụ:\n0:00\nHello everyone, welcome back.\n0:04\nToday we are talking about…' };
 
@@ -7986,6 +7997,7 @@ function lsYtFail(frame, code) {
 }
 function lsYtBox(lesson) {
   const timed = lesson.sentences.some(sn => sn.start != null);
+  lsYt.capsSet = false;
   const box = lsEl('div', 'ls-yt-box');
   const frame = lsEl('div', 'ls-yt-frame');
   const holder = lsEl('div', 'ls-yt-holder');
@@ -7993,14 +8005,14 @@ function lsYtBox(lesson) {
   frame.appendChild(lsEl('div', 'ls-yt-cover', 'Phụ đề đang được che'));
   box.appendChild(frame);
   const tools = lsEl('div', 'ls-yt-tools');
-  tools.appendChild(lsEl('span', 'ls-yt-note', timed
+  tools.appendChild(lsEl('span', 'ls-yt-note', lesson.free
+    ? 'Phụ đề tiếng Anh của YouTube được bật sẵn (nếu video có). Nếu video không chạy, hãy chạm vào video một lần.'
+    : timed
     ? 'Bấm ▶ để nghe đúng đoạn video của câu. Nếu video không chạy, hãy chạm vào video một lần rồi bấm lại.'
     : 'Phụ đề không có mốc thời gian nên app đọc câu bằng giọng máy. Video để bạn xem cả bài.'));
-  const tg = lsEl('button', 'ls-slow', '👁 Hiện phụ đề');
-  tg.addEventListener('click', () => {
-    const open = frame.classList.toggle('uncovered');
-    tg.textContent = open ? '🙈 Che phụ đề' : '👁 Hiện phụ đề';
-  });
+  const tg = lsEl('button', 'ls-slow ls-cover-btn', lesson.free ? '🙈 Che phụ đề' : '👁 Hiện phụ đề');
+  if (lesson.free) frame.classList.add('uncovered');
+  tg.addEventListener('click', () => lsYtSetCover(frame.classList.contains('uncovered')));
   tools.appendChild(tg);
   box.appendChild(tools);
   lsHeadEl.appendChild(box);
@@ -8009,17 +8021,21 @@ function lsYtBox(lesson) {
   lsYt.id = id; lsYt.ready = false; lsYt.failed = false;
   lsYtApi().then(() => {
     if (lsYt.id !== id || !document.body.contains(holder)) return;
-    const vars = { playsinline: 1, rel: 0, modestbranding: 1, cc_load_policy: 0, iv_load_policy: 3, fs: 0, disablekb: 1 };
+    const vars = lesson.free
+      ? { playsinline: 1, rel: 0, modestbranding: 1, cc_load_policy: 1, cc_lang_pref: 'en', hl: 'en', iv_load_policy: 3, fs: 0 }
+      : { playsinline: 1, rel: 0, modestbranding: 1, cc_load_policy: 0, iv_load_policy: 3, fs: 0, disablekb: 1 };
     if (/^https?:$/.test(location.protocol)) vars.origin = location.origin;
     lsYt.player = new YT.Player(holder, {
       videoId: id, width: '100%', height: '100%', playerVars: vars,
       events: {
         onReady: () => {
           lsYt.ready = true;
-          try { lsYt.player.unloadModule('captions'); } catch (e) {}
+          if (lesson.free) { lsYtCaptionsOn(); lsFreeStatus(); }
+          else { try { lsYt.player.unloadModule('captions'); } catch (e) {} }
           if (lsYt.pending) { const p = lsYt.pending; lsYt.pending = null; lsYtPlay(p[0], p[1], p[2]); }
         },
-        onError: e => lsYtFail(frame, e && e.data)
+        onError: e => lsYtFail(frame, e && e.data),
+        onApiChange: () => { if (lesson.free && !lsYt.capsSet) lsYt.capsSet = lsYtCaptionsOn(); }
       }
     });
   }).catch(() => { if (lsYt.id === id) lsYtFail(frame, 'api'); });
@@ -8048,6 +8064,100 @@ function lsYtPlay(start, end, rate) {
 }
 document.querySelectorAll('nav.tabbar button').forEach(b => b.addEventListener('click', () => { if (b.dataset.page !== 'page-listen') lsYtStop(); }));
 
+/* ---------- YouTube lesson WITHOUT transcript: YouTube subtitles on + practice section by section ---------- */
+const LS_SEG_KEY = 'hoc-tieng-anh-yt-seg';
+let lsSegLen = 8;
+try { lsSegLen = parseInt(localStorage.getItem(LS_SEG_KEY), 10) || 8; } catch (e) {}
+const lsFmt = t => { t = Math.max(0, Math.floor(t)); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); };
+function lsYtCaptionsOn() {
+  const pl = lsYt.player;
+  if (!pl) return false;
+  try { pl.loadModule('captions'); } catch (e) {}
+  let list = [];
+  try {
+    list = pl.getOption('captions', 'tracklist') || [];
+    const en = list.find(t => /^en/i.test(t.languageCode) && t.kind !== 'asr') || list.find(t => /^en/i.test(t.languageCode)) || list[0];
+    pl.setOption('captions', 'track', en ? { languageCode: en.languageCode, kind: en.kind } : { languageCode: 'en' });
+  } catch (e) {}
+  return list.length > 0;   // true once YouTube has delivered the real track list
+}
+function lsYtSetCover(covered) {
+  const frame = lsHeadEl.querySelector('.ls-yt-frame');
+  if (frame) frame.classList.toggle('uncovered', !covered);
+  document.querySelectorAll('.ls-cover-btn').forEach(b => { b.textContent = covered ? '👁 Hiện phụ đề' : '🙈 Che phụ đề'; });
+}
+function lsStartFreeLesson(lesson, levelObj) {
+  ls = { items: [], idx: 0, results: [], lesson, levelObj, rate: 1, yt: lesson.yt, free: true, seg: lesson.seg || 0, slow: false };
+  lsCard.innerHTML = '';
+  const c = lsCard;
+  c.appendChild(lsEl('div', 'ls-free-title', 'Luyện nghe theo từng đoạn'));
+  c.appendChild(lsEl('p', 'ls-free-tip', 'Cách luyện: che phụ đề → nghe một đoạn → gõ lại những gì nghe được → bấm "Hiện phụ đề" và nghe lại để tự kiểm tra.'));
+  const lenRow = lsEl('div', 'ls-free-row');
+  lenRow.appendChild(lsEl('span', 'ls-free-label', 'Mỗi đoạn dài'));
+  const chips = lsEl('div', 'ls-speed');
+  [5, 8, 12].forEach(n => {
+    const ch = lsEl('button', 'colloc-chip' + (n === lsSegLen ? ' active' : ''), n + ' giây');
+    ch.addEventListener('click', () => {
+      const t0 = ls.seg * lsSegLen;
+      lsSegLen = n;
+      try { localStorage.setItem(LS_SEG_KEY, String(n)); } catch (e) {}
+      ls.seg = Math.floor(t0 / n);
+      chips.querySelectorAll('.colloc-chip').forEach(x => x.classList.toggle('active', x === ch));
+      lsFreeStatus();
+    });
+    chips.appendChild(ch);
+  });
+  lenRow.appendChild(chips);
+  c.appendChild(lenRow);
+  c.appendChild(lsEl('div', 'ls-free-status', ''));
+  const nav = lsEl('div', 'ls-free-nav');
+  const prev = lsEl('button', 'btn-ghost', '⏮ Trước');
+  const again = lsEl('button', 'btn-primary', '🔁 Nghe đoạn');
+  const next = lsEl('button', 'btn-ghost', 'Tiếp ⏭');
+  prev.addEventListener('click', () => { ls.seg = Math.max(0, ls.seg - 1); lsFreePlay(); });
+  again.addEventListener('click', lsFreePlay);
+  next.addEventListener('click', () => { ls.seg = Math.min(lsFreeMaxSeg(), ls.seg + 1); lsFreePlay(); });
+  nav.appendChild(prev); nav.appendChild(again); nav.appendChild(next);
+  c.appendChild(nav);
+  const extra = lsEl('div', 'pron-actions ls-free-extra');
+  const slow = lsEl('button', null, '🐢 Chậm: tắt');
+  slow.addEventListener('click', () => { ls.slow = !ls.slow; slow.textContent = ls.slow ? '🐢 Chậm: bật' : '🐢 Chậm: tắt'; slow.classList.toggle('playing', ls.slow); });
+  const cover = lsEl('button', 'ls-cover-btn', '🙈 Che phụ đề');
+  cover.addEventListener('click', () => { const f = lsHeadEl.querySelector('.ls-yt-frame'); lsYtSetCover(!!(f && f.classList.contains('uncovered'))); });
+  const all = lsEl('button', null, '▶ Xem liên tục');
+  all.addEventListener('click', () => { try { clearInterval(lsYt.timer); lsYt.player.setPlaybackRate(ls.slow ? 0.75 : 1); lsYt.player.playVideo(); } catch (e) {} });
+  extra.appendChild(slow); extra.appendChild(cover); extra.appendChild(all);
+  c.appendChild(extra);
+  const notes = lsEl('textarea', 'ls-input ls-free-notes');
+  notes.rows = 4;
+  notes.placeholder = 'Gõ những gì bạn nghe được… (tự lưu lại)';
+  notes.setAttribute('spellcheck', 'false');
+  notes.value = lesson.notes || '';
+  notes.addEventListener('input', () => { lesson.notes = notes.value; lsSaveCustom(); });
+  c.appendChild(notes);
+  lsFreeStatus();
+}
+function lsFreeMaxSeg() {
+  let d = 0;
+  try { d = lsYt.player && lsYt.ready ? lsYt.player.getDuration() : 0; } catch (e) {}
+  return d > 0 ? Math.max(0, Math.ceil(d / lsSegLen) - 1) : 9999;
+}
+function lsFreeStatus() {
+  const el = lsCard.querySelector('.ls-free-status');
+  if (!el || !ls || !ls.free) return;
+  const s = ls.seg * lsSegLen;
+  let d = 0;
+  try { d = lsYt.player && lsYt.ready ? lsYt.player.getDuration() : 0; } catch (e) {}
+  el.textContent = `Đoạn ${ls.seg + 1}${d ? ' / ' + (lsFreeMaxSeg() + 1) : ''} · ${lsFmt(s)} – ${lsFmt(d ? Math.min(d, s + lsSegLen) : s + lsSegLen)}`;
+}
+function lsFreePlay() {
+  if (!ls || !ls.free) return;
+  ls.lesson.seg = ls.seg; lsSaveCustom();
+  lsFreeStatus();
+  const s = ls.seg * lsSegLen;
+  lsYtPlay(s, s + lsSegLen, ls.slow ? 0.75 : 1);
+}
+
 function lsRenderCustomList() {
   lsCustomList.innerHTML = '';
   if (!lsCustom.length) {
@@ -8066,7 +8176,7 @@ function lsRenderCustomList() {
     }
     const info = lsEl('span', 'ls-lesson-info');
     info.appendChild(lsEl('span', 'ls-lesson-title', lesson.title));
-    info.appendChild(lsEl('span', 'ls-lesson-meta', `${lesson.yt ? 'YouTube · ' : ''}${lesson.sentences.length} câu${lesson.created ? ' · ' + lesson.created : ''}`));
+    info.appendChild(lsEl('span', 'ls-lesson-meta', `${lesson.yt ? 'YouTube · ' : ''}${lesson.free ? 'luyện theo đoạn' : lesson.sentences.length + ' câu'}${lesson.created ? ' · ' + lesson.created : ''}`));
     b.appendChild(info);
     const r = best[lesson.id];
     b.appendChild(lsEl('span', 'ls-lesson-badge' + (r ? ' done' : ''), r ? `✓ ${r.got}/${r.total}` : '▶'));
