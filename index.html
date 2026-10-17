@@ -1326,13 +1326,15 @@
   .bc-plevel{ margin-top:14px; }
   .bc-ptitle{ overflow-wrap:anywhere; }
   .bc-pmeta{ font:500 12px/1.4 var(--font-mono); color:var(--ink-soft); margin-top:4px; }
-  .bc-frame{ position:relative; width:100%; aspect-ratio:16/9; margin-top:12px; border-radius:14px; overflow:hidden; background:#000; box-shadow:var(--shadow); }
-  .bc-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .bc-frame{ margin-top:12px; }
+  .bc-dict{ margin-top:12px; padding:14px; border-radius:16px; background:var(--card); border:1px solid var(--paper-line); box-shadow:var(--shadow); }
+  .bc-dtitle{ font-family:var(--font-display); font-size:18px; font-weight:800; }
+  .bc-dtip{ font-size:13px; line-height:1.55; color:var(--ink-soft); margin:6px 0 10px; }
+  .bc-notes{ margin-top:10px; }
+  .bc-yt{ display:flex; justify-content:center; padding:12px; margin-top:8px; font-size:13.5px; text-decoration:none; }
   .bc-actions{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
   .bc-actions > *{ padding:12px 6px; font-size:13.5px; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; }
   .bc-done.on{ background:var(--moss-light); color:var(--moss); border-color:var(--moss); }
-  .bc-tip{ margin-top:14px; padding:12px 14px; border-radius:14px; background:var(--rust-light); font-size:13.5px; line-height:1.55; color:var(--ink); }
-  .bc-tip ol{ margin:6px 0 0; padding-left:20px; }
   .bc-credit{ font-size:11.5px; color:var(--ink-soft); margin-top:10px; line-height:1.5; }
   .ls-make{ display:flex; flex-direction:column; gap:10px; }
   .ls-make h3{ margin-bottom:0; }
@@ -13949,7 +13951,7 @@ const BC_LEVELS=[{"id":"a1","name":"A1","label":"Mới bắt đầu","desc":"Tru
 /* ==========================================================================
    VIDEO BC — British Council LearnEnglish videos (YouTube embeds), by CEFR
    ========================================================================== */
-var BC_STATE = { lv: 'a2', q: '', cur: null, watched: null };
+var BC_STATE = { lv: 'a2', q: '', cur: null, watched: null, seg: 0, slow: false };
 const BC_KEY = 'hoc-tieng-anh-bc-watched';
 function bcWatched() {
   if (!BC_STATE.watched) {
@@ -13965,8 +13967,8 @@ BC_LEVELS.forEach(lv => lv.cols.forEach(c => c.v.forEach(v => BC_FLAT.push({ id:
 function bcEl() { return document.getElementById('ls-bc'); }
 function bcHide() {
   const el = document.getElementById('ls-bc');
-  if (!el) return;
-  const f = el.querySelector('iframe'); if (f) f.remove();
+  if (!el || el.hidden) return;
+  if (el.querySelector('.ls-yt-holder, iframe')) { lsYtClose(); const fr = el.querySelector('.bc-frame'); if (fr) fr.innerHTML = ''; }
   el.hidden = true;
 }
 function bcShow() {
@@ -14060,37 +14062,148 @@ function bcRenderBody() {
     body.appendChild(g);
   });
 }
+const BC_NOTES_KEY = 'hoc-tieng-anh-bc-notes';
+function bcNotesAll() { try { return JSON.parse(localStorage.getItem(BC_NOTES_KEY) || '{}') || {}; } catch (e) { return {}; } }
+function bcNote(id) { return bcNotesAll()[id] || { seg: 0, notes: '' }; }
+function bcSetNote(id, patch) {
+  const all = bcNotesAll();
+  all[id] = Object.assign({ seg: 0, notes: '' }, all[id] || {}, patch);
+  try { localStorage.setItem(BC_NOTES_KEY, JSON.stringify(all)); } catch (e) {}
+}
+function bcSecs(d) { return String(d).split(':').reduce((t, x) => t * 60 + (parseInt(x, 10) || 0), 0); }
+function bcDuration(item) {
+  let d = 0;
+  try { d = lsYt.player && lsYt.ready && lsYt.id === item.id ? lsYt.player.getDuration() : 0; } catch (e) {}
+  return d > 0 ? d : bcSecs(item.d);
+}
+function bcMaxSeg(item) { return Math.max(0, Math.ceil(bcDuration(item) / lsSegLen) - 1); }
+function bcSetCover(covered) {
+  const fr = document.querySelector('#ls-bc .ls-yt-frame');
+  if (fr) fr.classList.toggle('uncovered', !covered);
+  const b = document.querySelector('#ls-bc .bc-cover');
+  if (b) { b.textContent = covered ? '👁 Hiện phụ đề' : '🙈 Che phụ đề'; b.classList.toggle('playing', !covered); }
+}
+function bcStatus(item) {
+  const el = document.querySelector('#ls-bc .bc-dstatus');
+  if (!el) return;
+  const s = BC_STATE.seg * lsSegLen, d = bcDuration(item);
+  el.textContent = `Đoạn ${BC_STATE.seg + 1} / ${bcMaxSeg(item) + 1} · ${lsFmt(s)} – ${lsFmt(Math.min(d || s + lsSegLen, s + lsSegLen))}`;
+}
+function bcPlaySeg(item) {
+  BC_STATE.seg = Math.max(0, Math.min(bcMaxSeg(item), BC_STATE.seg));
+  bcSetNote(item.id, { seg: BC_STATE.seg });
+  bcStatus(item);
+  const s = BC_STATE.seg * lsSegLen;
+  lsYtPlay(s, s + lsSegLen, BC_STATE.slow ? 0.75 : 1);
+}
 function bcRenderPlayer() {
   const root = bcEl();
   const i = BC_FLAT.findIndex(x => x.id === BC_STATE.cur);
   if (i < 0) { BC_STATE.cur = null; bcRenderList(); return; }
   const item = BC_FLAT[i];
   BC_STATE.lv = item.lv.id;
+  lsYtClose();
   root.innerHTML = '';
   const back = lsEl('button', 'btn-ghost bc-back', '← Danh sách video');
-  back.addEventListener('click', () => { BC_STATE.cur = null; bcRenderList(); grScrollTop(); });
+  back.addEventListener('click', () => { lsYtClose(); BC_STATE.cur = null; bcRenderList(); grScrollTop(); });
   root.appendChild(back);
   root.appendChild(lsEl('div', 'ls-lh-level bc-plevel', `${item.lv.name} · ${item.col.icon} ${item.col.name}`));
   root.appendChild(lsEl('div', 'ls-lh-title bc-ptitle', item.t));
   root.appendChild(lsEl('div', 'bc-pmeta', `⏱ ${item.d}`));
-  const frame = lsEl('div', 'bc-frame');
-  const f = document.createElement('iframe');
-  f.src = `https://www.youtube.com/embed/${item.id}?playsinline=1&rel=0&cc_load_policy=1&cc_lang_pref=en&modestbranding=1`;
-  f.title = item.t;
-  f.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen');
-  f.setAttribute('allowfullscreen', '');
-  f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-  frame.appendChild(f);
+
+  // video (YouTube IFrame API, subtitles on but covered for dictation)
+  const frame = lsEl('div', 'ls-yt-frame bc-frame');
+  const holder = lsEl('div', 'ls-yt-holder');
+  frame.appendChild(holder);
+  frame.appendChild(lsEl('div', 'ls-yt-cover', 'Phụ đề đang được che'));
   root.appendChild(frame);
+  const id = item.id;
+  lsYt.id = id; lsYt.ready = false; lsYt.failed = false; lsYt.capsSet = false;
+  const fail = code => {
+    lsYt.failed = true; lsYt.pending = null;
+    const old = frame.querySelector('.ls-yt-err'); if (old) old.remove();
+    frame.appendChild(lsEl('div', 'ls-yt-err', (code === 152 || code === 153 || code === 'api')
+      ? 'Video chỉ phát khi mở app qua địa chỉ web (GitHub Pages). Bản xem trước không phát được.'
+      : 'Không phát được video này. Hãy bấm "Mở trên YouTube" hoặc thử video khác.'));
+  };
+  lsYtApi().then(() => {
+    if (lsYt.id !== id || !document.body.contains(holder)) return;
+    const vars = { playsinline: 1, rel: 0, modestbranding: 1, cc_load_policy: 1, cc_lang_pref: 'en', hl: 'en', iv_load_policy: 3 };
+    if (/^https?:$/.test(location.protocol)) vars.origin = location.origin;
+    lsYt.player = new YT.Player(holder, {
+      videoId: id, width: '100%', height: '100%', playerVars: vars,
+      events: {
+        onReady: () => {
+          lsYt.ready = true; lsYtCaptionsOn(); bcStatus(item);
+          if (lsYt.pending) { const p = lsYt.pending; lsYt.pending = null; lsYtPlay(p[0], p[1], p[2]); }
+        },
+        onError: e => fail(e && e.data),
+        onApiChange: () => { if (!lsYt.capsSet) lsYt.capsSet = lsYtCaptionsOn(); }
+      }
+    });
+  }).catch(() => { if (lsYt.id === id) fail('api'); });
+
+  // dictation panel, right under the video
+  const note = bcNote(id);
+  BC_STATE.seg = Math.min(note.seg || 0, bcMaxSeg(item));
+  const p = lsEl('div', 'bc-dict');
+  p.appendChild(lsEl('div', 'bc-dtitle', '✍️ Nghe & chép chính tả'));
+  p.appendChild(lsEl('p', 'bc-dtip', 'Nghe từng đoạn ngắn → gõ lại những gì nghe được → bấm "Hiện phụ đề" và nghe lại để tự sửa.'));
+  const lenRow = lsEl('div', 'ls-free-row');
+  lenRow.appendChild(lsEl('span', 'ls-free-label', 'Mỗi đoạn dài'));
+  const chips = lsEl('div', 'ls-speed');
+  [5, 8, 12].forEach(n => {
+    const ch = lsEl('button', 'colloc-chip' + (n === lsSegLen ? ' active' : ''), n + ' giây');
+    ch.addEventListener('click', () => {
+      const t0 = BC_STATE.seg * lsSegLen;
+      lsSegLen = n;
+      try { localStorage.setItem(LS_SEG_KEY, String(n)); } catch (e) {}
+      BC_STATE.seg = Math.floor(t0 / n);
+      bcSetNote(id, { seg: BC_STATE.seg });
+      chips.querySelectorAll('.colloc-chip').forEach(x => x.classList.toggle('active', x === ch));
+      bcStatus(item);
+    });
+    chips.appendChild(ch);
+  });
+  lenRow.appendChild(chips);
+  p.appendChild(lenRow);
+  p.appendChild(lsEl('div', 'ls-free-status bc-dstatus', ''));
+  const nav = lsEl('div', 'ls-free-nav');
+  const prev = lsEl('button', 'btn-ghost bc-prev', '⏮ Trước');
+  const again = lsEl('button', 'btn-primary bc-play', '🔁 Nghe đoạn');
+  const next = lsEl('button', 'btn-ghost bc-nextseg', 'Tiếp ⏭');
+  prev.addEventListener('click', () => { BC_STATE.seg--; bcPlaySeg(item); });
+  again.addEventListener('click', () => bcPlaySeg(item));
+  next.addEventListener('click', () => { BC_STATE.seg++; bcPlaySeg(item); });
+  nav.appendChild(prev); nav.appendChild(again); nav.appendChild(next);
+  p.appendChild(nav);
+  const extra = lsEl('div', 'pron-actions ls-free-extra');
+  const slow = lsEl('button', 'bc-slow' + (BC_STATE.slow ? ' playing' : ''), BC_STATE.slow ? '🐢 Chậm: bật' : '🐢 Chậm: tắt');
+  slow.addEventListener('click', () => { BC_STATE.slow = !BC_STATE.slow; slow.textContent = BC_STATE.slow ? '🐢 Chậm: bật' : '🐢 Chậm: tắt'; slow.classList.toggle('playing', BC_STATE.slow); });
+  const cover = lsEl('button', 'bc-cover', '👁 Hiện phụ đề');
+  cover.addEventListener('click', () => bcSetCover(frame.classList.contains('uncovered')));
+  const all = lsEl('button', 'bc-all', '▶ Xem liên tục');
+  all.addEventListener('click', () => { try { clearInterval(lsYt.timer); lsYt.player.setPlaybackRate(BC_STATE.slow ? 0.75 : 1); lsYt.player.playVideo(); } catch (e) {} });
+  extra.appendChild(slow); extra.appendChild(cover); extra.appendChild(all);
+  p.appendChild(extra);
+  const ta = lsEl('textarea', 'ls-input bc-notes');
+  ta.rows = 5;
+  ta.placeholder = 'Gõ những gì bạn nghe được… (tự lưu cho từng video)';
+  ta.setAttribute('spellcheck', 'false'); ta.setAttribute('autocapitalize', 'off'); ta.setAttribute('autocorrect', 'off');
+  ta.value = note.notes || '';
+  ta.addEventListener('input', () => bcSetNote(id, { notes: ta.value }));
+  p.appendChild(ta);
+  root.appendChild(p);
+  bcStatus(item);
 
   const row = lsEl('div', 'bc-actions');
-  const done = bcWatched().has(item.id);
+  const done = bcWatched().has(id);
   const w = lsEl('button', done ? 'btn-ghost bc-done on' : 'btn-ghost bc-done', done ? '✓ Đã xem' : '○ Đánh dấu đã xem');
   w.addEventListener('click', () => {
     const s = bcWatched();
-    if (s.has(item.id)) s.delete(item.id); else s.add(item.id);
+    if (s.has(id)) s.delete(id); else s.add(id);
     bcSaveWatched();
-    const on = s.has(item.id);
+    const on = s.has(id);
     w.classList.toggle('on', on); w.textContent = on ? '✓ Đã xem' : '○ Đánh dấu đã xem';
   });
   row.appendChild(w);
@@ -14098,48 +14211,17 @@ function bcRenderPlayer() {
   const n = lsEl('button', 'btn-primary bc-next', nx ? 'Video tiếp →' : 'Hết danh sách');
   n.disabled = !nx;
   n.addEventListener('click', () => {
-    bcWatched().add(item.id); bcSaveWatched();
+    bcWatched().add(id); bcSaveWatched();
     BC_STATE.cur = nx.id; bcRenderPlayer(); grScrollTop();
   });
   row.appendChild(n);
   root.appendChild(row);
-
-  const row2 = lsEl('div', 'bc-actions');
-  const dict = lsEl('button', 'btn-ghost bc-dict', '✍️ Chép chính tả');
-  dict.addEventListener('click', () => bcToDictation(item));
-  row2.appendChild(dict);
   const yt = lsEl('a', 'btn-ghost bc-yt', '↗ Mở trên YouTube');
-  yt.href = `https://www.youtube.com/watch?v=${item.id}`; yt.target = '_blank'; yt.rel = 'noopener';
-  row2.appendChild(yt);
-  root.appendChild(row2);
+  yt.href = `https://www.youtube.com/watch?v=${id}`; yt.target = '_blank'; yt.rel = 'noopener';
+  root.appendChild(yt);
+  root.appendChild(lsEl('p', 'bc-credit', 'Video © British Council, phát qua YouTube. Mẹo: nói nhanh quá thì bật 🐢 Chậm (0.75×). Video không phát trong bản xem trước, hãy mở app qua GitHub Pages.'));
+}
 
-  const tip = lsEl('div', 'bc-tip');
-  tip.innerHTML = '<b>Cách xem hiệu quả</b><ol>' +
-    '<li>Xem lần 1 <b>không phụ đề</b>, chỉ cần nắm ý chính.</li>' +
-    '<li>Xem lần 2 bật phụ đề tiếng Anh (nút <b>CC</b> trên video). Gặp câu khó thì tua lại.</li>' +
-    '<li>Nói khó nghe? Bấm ⚙ → <b>Tốc độ phát</b> → 0.75.</li>' +
-    '<li>Muốn luyện kỹ hơn: bấm <b>Chép chính tả</b> để biến video thành bài nghe chép từng câu.</li></ol>';
-  root.appendChild(tip);
-  root.appendChild(lsEl('p', 'bc-credit', 'Video © British Council, phát qua YouTube. Video không phát được trong bản xem trước, hãy mở app qua địa chỉ GitHub Pages.'));
-}
-function bcToDictation(item) {
-  bcHide();
-  BC_STATE.cur = item.id;
-  lsShowCustom();
-  lsSetSrc('yt');
-  lsYtUrl.value = `https://www.youtube.com/watch?v=${item.id}`;
-  lsYtUrl.dispatchEvent(new Event('input'));
-  const t = document.getElementById('ls-make-title');
-  if (t) t.value = item.t;
-  const how = document.querySelector('#ls-yt-fields .ls-yt-how');
-  if (how) how.open = true;
-  lsMakeMsg.textContent = 'Đã điền link video. Giờ dán bản chép lời (transcript) có mốc thời gian vào ô bên dưới rồi bấm Tạo bài.';
-  grScrollTop();
-}
-document.querySelectorAll('nav.tabbar button').forEach(b => b.addEventListener('click', () => {
-  if (b.dataset.page !== 'page-listen') { const f = document.querySelector('#ls-bc iframe'); if (f) f.remove(); }
-  else if (lsMode === 'bc' && BC_STATE.cur && !document.querySelector('#ls-bc iframe')) bcRenderPlayer();
-}));
 
 /* ============================================================
    VOICE PICKER — 7 English voices (accent + gender), saved on this device
