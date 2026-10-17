@@ -1300,6 +1300,40 @@
   .ls-sum-btns button{ padding:12px 8px; }
   .ls-modes{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
   .ls-mode{ font-size:13px; padding:10px 4px; }
+  /* ---- Video BC ---- */
+  .ls-modes{ grid-template-columns:repeat(4, minmax(0, 1fr)); }
+  .ls-mode{ font-size:12.5px; padding:10px 2px; white-space:nowrap; }
+  #ls-bc{ margin-top:14px; }
+  .bc-intro{ padding:14px 16px; border-radius:16px; background:var(--card); border:1px solid var(--paper-line); box-shadow:var(--shadow); }
+  .bc-intro-t{ font-family:var(--font-display); font-size:17px; font-weight:700; }
+  .bc-intro-s{ font-size:13px; line-height:1.55; color:var(--ink-soft); margin-top:4px; }
+  .bc-lvhead{ margin-top:12px; }
+  .bc-lvtop{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:6px; }
+  .bc-lvname{ font-family:var(--font-display); font-size:18px; font-weight:800; }
+  .bc-lvcount{ font:600 12px/1.3 var(--font-mono); color:var(--rust); }
+  .bc-grid{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+  .bc-card{ display:flex; gap:12px; align-items:center; text-align:left; padding:8px; border-radius:14px;
+    background:var(--card); border:1px solid var(--paper-line); color:var(--ink); font-weight:400; min-width:0; }
+  .bc-thumb{ position:relative; flex:0 0 116px; width:116px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:var(--paper); }
+  .bc-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .bc-dur{ position:absolute; right:4px; bottom:4px; padding:1px 5px; border-radius:5px; background:rgba(0,0,0,.75); color:#fff; font:600 10.5px/1.4 var(--font-mono); }
+  .bc-tick{ position:absolute; left:4px; top:4px; width:20px; height:20px; border-radius:50%; background:var(--moss); color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .bc-card.done .bc-title{ color:var(--ink-soft); }
+  .bc-info{ min-width:0; flex:1; }
+  .bc-title{ font-size:14.5px; font-weight:600; line-height:1.35; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; }
+  .bc-meta{ font:500 11px/1.4 var(--font-mono); color:var(--ink-soft); margin-top:3px; }
+  .bc-back{ padding:8px 14px; font-size:13.5px; }
+  .bc-plevel{ margin-top:14px; }
+  .bc-ptitle{ overflow-wrap:anywhere; }
+  .bc-pmeta{ font:500 12px/1.4 var(--font-mono); color:var(--ink-soft); margin-top:4px; }
+  .bc-frame{ position:relative; width:100%; aspect-ratio:16/9; margin-top:12px; border-radius:14px; overflow:hidden; background:#000; box-shadow:var(--shadow); }
+  .bc-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .bc-actions{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+  .bc-actions > *{ padding:12px 6px; font-size:13.5px; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; }
+  .bc-done.on{ background:var(--moss-light); color:var(--moss); border-color:var(--moss); }
+  .bc-tip{ margin-top:14px; padding:12px 14px; border-radius:14px; background:var(--rust-light); font-size:13.5px; line-height:1.55; color:var(--ink); }
+  .bc-tip ol{ margin:6px 0 0; padding-left:20px; }
+  .bc-credit{ font-size:11.5px; color:var(--ink-soft); margin-top:10px; line-height:1.5; }
   .ls-make{ display:flex; flex-direction:column; gap:10px; }
   .ls-make h3{ margin-bottom:0; }
   .ls-make .ls-input{ margin-top:0; }
@@ -1708,8 +1742,9 @@
     <div class="section-title">Luyện nghe</div>
     <div class="section-sub">Nghe câu tiếng Anh rồi gõ lại đúng từng từ. App chấm ngay, từ đúng hiện xanh, từ thiếu bị che lại để bạn nghe tiếp.</div>
     <div class="ls-modes" id="ls-modes">
-      <button class="ls-mode active" data-mode="cefr">Theo trình độ</button>
-      <button class="ls-mode" data-mode="custom">Tự tạo bài</button>
+      <button class="ls-mode active" data-mode="cefr">Trình độ</button>
+      <button class="ls-mode" data-mode="bc">📺 Video</button>
+      <button class="ls-mode" data-mode="custom">Tự tạo</button>
       <button class="ls-mode" data-mode="random">Ngẫu nhiên</button>
     </div>
     <div id="ls-cefr">
@@ -1717,6 +1752,7 @@
       <p class="ls-level-desc" id="ls-level-desc"></p>
       <div class="ls-lessons" id="ls-lessons"></div>
     </div>
+    <div id="ls-bc" hidden></div>
     <div id="ls-custom" hidden>
       <div class="tense-card ls-make">
         <h3>Tạo bài nghe của bạn</h3>
@@ -7698,6 +7734,7 @@ function lsSetModeButton(mode) {
 
 function lsShowLessonList() {
   lsYtClose();
+  bcHide();
   lsMode = 'cefr';
   lsSetModeButton('cefr');
   lsCefrEl.hidden = false; lsHeadEl.hidden = true; lsRandomEl.hidden = true; lsCustomEl.hidden = true; lsCard.hidden = true;
@@ -7706,6 +7743,7 @@ function lsShowLessonList() {
 
 function lsShowRandom() {
   lsYtClose();
+  bcHide();
   lsMode = 'random';
   lsSetModeButton('random');
   lsCefrEl.hidden = true; lsHeadEl.hidden = true; lsRandomEl.hidden = false; lsCustomEl.hidden = true; lsCard.hidden = false;
@@ -8202,6 +8240,7 @@ function lsRenderCustomList() {
 
 function lsShowCustom() {
   lsYtClose();
+  bcHide();
   lsMode = 'custom';
   lsSetModeButton('custom');
   lsCefrEl.hidden = true; lsHeadEl.hidden = true; lsRandomEl.hidden = true; lsCard.hidden = true; lsCustomEl.hidden = false;
@@ -8211,7 +8250,7 @@ function lsShowCustom() {
 document.querySelectorAll('#ls-modes .ls-mode').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#ls-modes .ls-mode').forEach(x => x.classList.toggle('active', x === btn));
-    if (btn.dataset.mode === 'cefr') lsShowLessonList(); else if (btn.dataset.mode === 'custom') lsShowCustom(); else lsShowRandom();
+    if (btn.dataset.mode === 'cefr') lsShowLessonList(); else if (btn.dataset.mode === 'bc') bcShow(); else if (btn.dataset.mode === 'custom') lsShowCustom(); else lsShowRandom();
   });
 });
 
@@ -13905,6 +13944,202 @@ function clWriteCtx() {
            pos: () => 'cụm từ', ipa: () => '', exHtml: clExHtml, isLearned: clIs, markLearned: it => clSet(it, true),
            row: it => clRow(it, false), afterMark: clUpdateProg, nextBtn: clNextBtn };
 }
+
+const BC_LEVELS=[{"id":"a1","name":"A1","label":"Mới bắt đầu","desc":"Truyện & bài hát ngắn, nói chậm, từ đơn giản","cols":[{"icon":"📖","name":"Truyện thiếu nhi","v":[["GbzMC6qAzVU","Little Red Riding Hood","2:00"],["rKB1_wBueFM","Jack and the beanstalk","3:25"],["Un4NWwcObRA","My secret team","1:57"],["oepRTA4s4XM","Princess and the dragon","2:21"],["a3P5bX8gGYI","No dogs!","3:00"]]},{"icon":"🎵","name":"Bài hát thiếu nhi","v":[["MBxeKG7_Hq4","Incy Wincy spider","1:26"],["334CSiKQsuM","If you're happy and you know it","1:52"],["eXQPD6OcugY","There was an old lady who swallowed a fly","2:19"],["Pw8aJ5CHqeQ","Wheels on the bus","1:28"],["Bsip6RWeZFw","Hickory dickory dock","0:58"]]}]},{"id":"a2","name":"A2","label":"Sơ cấp","desc":"Bài ngắn vài phút về chủ đề quen thuộc","cols":[{"icon":"⚡","name":"Bài học ngắn","v":[["Bu55AF-VFcs","Much or many? Stop making this common mistake","3:25"],["0XPMnKm5fTU","Adjective order in English","2:22"],["7MCD4HGQnEM","How to start a conversation in English","3:25"],["QCiDsT-aMEU","How to talk about numbers and dates","1:36"],["p7x5BPdL3qE","How to be polite in English","2:26"],["C8Bu5GngTGM","Phrasal verbs for travel","1:03"],["AjyGUF6Fcts","Modal verbs explained","1:19"],["84Imqztj1dk","Speak natural English: using contractions","1:56"],["aGuqM83VZhQ","Level up your English vocabulary: have, make and do","2:07"],["tDmeAlleSIY","Adjectives to talk about books in English","1:21"],["xnG57RzZoIo","Countable and uncountable nouns: food","1:05"],["GV9IFkjsQkE","Present continuous or present simple?","1:48"],["Wzt7nLGdWnc","How to use will","1:43"],["zZp1lhFr_ZM","Look out! for phrasal verbs","1:26"],["dhhzNJDYp0Y","Question words and WHEN to use them","2:11"],["mlApzsyMoIU","Things to do in London","1:07"],["nOncgVPrsoM","He, she ... or they? Pronouns in English","4:06"]]},{"icon":"💬","name":"Nói gì trong tình huống","v":[["f0mNQyzTzX8","Meeting face-to-face in English","4:15"],["jGtxHylDV6E","How to talk about where you're from in English","3:46"],["HooNbcbgi9U","Meeting new people - what to say in English","3:27"]]},{"icon":"🌱","name":"Cách học tốt hơn","v":[["tCf6LWJToUc","How to improve your vocabulary","2:00"],["KLKZdMo7cLE","How to improve your reading skills","1:56"],["XNKugimWmxw","How to practise speaking outside the classroom","2:19"],["x-gpFgtXCF4","How to improve your listening skills","2:18"],["ZfsRQ69Y-dw","How to improve your writing","2:14"]]}]},{"id":"b1","name":"B1","label":"Trung cấp","desc":"Giao tiếp hằng ngày, ngữ pháp cốt lõi","cols":[{"icon":"⚡","name":"Bài học ngắn","v":[["NemqkWSivMo","Stop making these apostrophe mistakes","3:40"],["I_IKZblTKEA","Stop confusing these English words","2:44"],["gz5_TWiz9To","How to make excuses in English","3:50"],["aOTcHDf8xIE","Stop mixing up these English verbs","3:43"],["CsABiPjnIag","How to get what you want in English","3:21"],["PIvrl8W_jh0","Shortened words in English","2:22"],["kYGcnyOpkcc","How to use 'just' in English","3:17"],["4Hd2lw8rvhc","Four ways to talk about pain in English","3:20"],["xU5D9hXy_Zg","8 rules for using articles","4:07"],["SYVe4UyWrOY","Three ways to sound more friendly in English","3:32"],["4MGpiPRgckA","Second conditional secrets unlocked!","3:58"],["dcnzs-NOFUE","Stop watching TikTok!","2:38"],["XwBSWVMaGSY","How to pronounce /p/ and /b/ right every time","2:18"],["Po5s_EOiIOU","Learn English with Taylor Swift!","4:28"],["hzoH058nl5c","Six relationship expressions you need to know","1:39"],["BlaXvVJ4Qfo","Five gaming expressions to power up your English","2:33"],["ex4VpuYw2SE","Make stories interesting with the past continuous","2:52"],["jrdE9XDkW1w","Multiply your vocabulary with prefixes","1:54"],["cI-ZGVumD00","How to disagree politely (and not so politely!)","2:22"],["meq8ZG-BxDw","New words in English","2:13"],["wrqAJIGj8M4","Telling a story: narrative tenses","2:05"],["ow4IDLt_1dY","Multiply your vocabulary in two minutes!","2:40"],["86LcmJGySw8","How to get what you want at the hairdresser","2:18"],["oAjuzbeHfJc","How to get what you want in English (2)","1:47"],["7RORN-VhsYI","Where to put the stress on words","3:23"],["9W-bmUJPFYM","Phrasal verbs with take","1:55"],["DwsQM5NinYI","How to sound more natural in English","2:02"],["qRtTiAG7hsI","When to use shall in modern English","1:28"],["_4l14OiMzvs","Learn 4 new ways to use 'get'","2:36"],["t9sAmPBmcDQ","What to say when you forget what to say","2:09"],["mweFfRqFLY4","You know how to use question tags... right?","1:57"],["t76LcMezNN4","Five ways to talk about the future in English","3:17"],["kVWFPqzmazM","How to remember phrasal verbs","3:06"],["sqNHDxk5P4w","How to use intensifiers: so & such","1:14"],["4zJ0IDirO6c","Stop eating or stop to eat. What's the difference?","1:23"],["k4mS6_XaA3A","How to get your English pronunciation right every time","1:18"],["5JNm9BeRTfk","Business English expressions with make and do","1:07"],["K44UVyaXGoM","10 relationship expressions in English","2:51"],["rfOVqO_GeUw","Zero and 1st conditionals: what's the difference?","1:36"],["aI2S1IQKg0o","When to use during in English","2:24"],["ycYedMnSLoE","How to use the past perfect and past simple","1:49"],["xiGU2pRVvos","How to pronounce past tense endings","3:04"],["kB2z9L5w7ho","How to use relative clauses","2:27"],["1CGcaolKLx4","Phrasal verbs: get through or go through?","1:45"],["OI1Qyt9wRto","Getting used to ... used to","2:41"]]},{"icon":"💬","name":"Nói gì trong tình huống","v":[["_3uWwTQJ1Co","How to show interest in English","3:34"],["YkhzAyEnI9U","How to talk about other people in English","3:20"],["hO98Bjn87KM","How to ask for a favour in English","4:12"],["dH7LF_bbHu0","How to make suggestions in English","4:02"],["c5TfNZYwLgc","How to deal with a problem in English","4:34"],["K5GJt-CRiFk","How to check if you understand someone in English","3:39"],["5U_6wdUxFQk","How to give advice in English","4:52"],["sFcWuQzA3DQ","How to respond to news in English","4:29"],["fQcga26aoL8","How to agree or disagree in English","4:23"],["T-IV_B3JGgk","How to apologise in English","3:08"],["CQDJKdmpxOI","How to talk about your job in English","5:57"],["BB7PJl3souA","How to keep a conversation going in English","4:29"],["l1herjZq-4M","How to talk about personal interests in English","4:15"],["LLvGYEjutWo","How to give instructions in English","4:47"]]},{"icon":"☕","name":"Tiếng Anh đời sống","v":[["B2y6KRLk86c","Make-up vocabulary in English - the no make-up make-up look","6:29"],["nKW6Zpe_sds","How to tell a joke in English","2:54"],["S0cCk0-wisU","Music vocabulary in English - going to a concert","2:41"],["Pwr77ZIdcaI","How to take great notes in English","2:09"],["8dK79-xKE7o","How to tell an anecdote in English","5:15"],["S-RqM06bgFo","Make-up vocabulary in English: a jewelled eye","4:56"],["N_4su81dHIo","How to say no politely in English","1:18"],["6JUZpuAXSKc","3 games to help your children learn English","2:35"],["8i1kQrybUmI","How to prepare a great presentation","1:45"],["2ZWvdI7UuOw","How to calm down before a presentation","2:23"],["dvUw15esNwA","How to look confident during a presentation","2:20"],["PS90YsHjAU4","How to deal with questions during a presentation","2:35"],["D40j0y_U4og","Tips for public speaking","3:59"],["TwqOpEr0hsc","How to disconnect from technology","3:39"],["qInS6evP5bQ","Board game recommendations","3:17"],["6A2vVxB2GH0","9 useful football expressions","3:04"],["LMwZ1CGHG8M","Learning English through film","1:37"],["zi2vvA9tK9U","How to avoid burnout","3:42"],["RYZqQHTJQZg","Learning English through film Part 2","1:36"],["Stfu9pWHgqY","Learning goals","3:17"],["dnOk9jE1bfE","Learning English through film Part 3","3:00"],["76jqZElA-O8","Improve your pronunciation","3:39"],["YeDz983icpw","How to talk about holidays and travel","2:08"],["cJSa6c8UGRY","How to talk about drama series","5:20"],["Qm-UafXeWOA","Make-up vocabulary - ombré lips","6:26"]]},{"icon":"📝","name":"Mẹo thi cử","v":[["5OvDv-RoBZw","What to do when you can't remember a word","2:37"],["Kas9bQELoFU","Get top marks in your reading exam!","3:55"],["I5l7e6oW-GM","Phrases for expressing an opinion","3:25"],["jNmwNB3xFr8","Five tips to help you during your speaking exam","2:35"]]},{"icon":"🎙️","name":"Bài giảng trực tiếp","v":[["VcA5diHiTHk","Live lesson: Talking about past habits and memories","57:54"],["vN4fxGYFbRA","Live lesson: Talking about senses in English","53:53"],["Rw2zdwZHdXg","Live lesson: Phrasal verbs for learning","1:04:29"],["W1jKAMfDV4w","Live lesson: Useful language for travel","56:37"],["jsaPEtgQJxU","Live lesson: ChatGPT and AI - future forms","1:08:33"],["saY6GkLJ6ZM","Live lesson: Home sweet home","1:00:59"],["elwdIJpEGxk","Live lesson: Useful phrasal verbs for food","1:00:44"],["c71JwT6sq5A","Grammar lesson: Talking about the future in a positive way","1:00:36"],["TWNhjul8b6k","Grammar lesson: Talking about the weather","1:08:15"],["rUTkTw_Ae_U","Grammar lesson: Talking about past habits and memories","55:47"],["RWS9i2foeqY","Grammar lesson: Phrasal verbs and expressions for Valentine's Day","1:06:53"],["Y-KL1eiNtk0","Grammar lesson: Phrasal verbs for learning","58:05"],["lvvZHPe9O5Y","Grammar lesson: Using articles","57:20"],["8yaD8MIBc4A","Grammar lesson: Adjectives with -ed and -ing","57:23"],["1oz4ur_dUHw","Grammar lesson: Modifying comparatives and superlatives","1:00:13"],["pkApF3If0LA","Vocabulary lesson: Useful language for travel","52:47"],["L8kKLal5oP8","Grammar lesson: Present perfect simple and continuous","48:17"],["CH0RHv_OX64","Grammar lesson: Articles","52:23"],["t_X-sq4Guzs","Grammar lesson: Talking positively about the future","52:10"],["33W8NxEDxuM","Grammar lesson: Future forms","1:01:29"],["3r3-jnIyg1k","Grammar lesson: Phrasal verbs and idioms to talk about money","39:39"],["_gxgYtDsFZs","Grammar lesson: Past time review","38:39"],["3O9cDyVTHrc","Grammar lesson: Phrasal verbs","47:00"],["Jed9-CD0i-E","Grammar lesson: Question forms","43:23"],["JBeIOnmP19U","Grammar lesson: Different uses of 'used to'","52:47"],["lnXTKs6NPlQ","Grammar lesson: Narrative tenses","44:27"],["tL4jQixlf-4","Grammar lesson: Talking about the weather (2)","39:39"],["UIrJlypXcSg","Grammar lesson: Talking about the future","41:34"],["XB4OG8NVfMo","Grammar lesson: Articles (2)","38:35"],["En4sR7A-NNQ","Grammar lesson: Past simple and past continuous","32:23"],["0Kw2zGXvenU","Grammar lesson: Adjectives ending in -ed and -ing","37:39"],["Qndfbk6_KSQ","Grammar lesson: Comparatives and superlatives","42:30"],["Us4rR5TeRo0","Grammar lesson: Past simple and present perfect","43:51"],["39TTkDl8tJQ","Jo's Grammar Lesson: Comparative adjectives","36:25"],["s8sO1Z4ql0Y","Jo's Grammar Lesson: Free time and question forms","35:33"],["grcWo048us8","Jo's Grammar Lesson: Film music and passives","31:20"],["p3wHpwshVbE","Jo's Grammar Lesson: Then and now","27:17"],["DLD7XyMqmcE","Live lesson: Shopping","38:51"],["IRk1THnVNHI","Live lesson: Lifestyles","37:27"]]}]},{"id":"b2","name":"B2","label":"Trung cao cấp","desc":"Công việc, email, diễn đạt tinh tế","cols":[{"icon":"⚡","name":"Bài học ngắn","v":[["Q-SQePXWfAU","How to talk about mental health in English","3:53"],["rT01xBA_XhI","How to turn one English word into five","3:54"],["q1BSh6Q1664","How to know when a letter is silent in English","5:04"],["CeSNCDbX7KQ","State verbs made simple","4:19"],["8JnoQESdVqM","How to give compliments without sounding creepy","4:40"],["jUOZRPKdwCM","Why English words don't always sound the way they look","3:37"],["upl0l0TMVM0","What are binomials?","3:04"],["j_OCOcj7rjc","How to use the past perfect continuous","2:39"],["8SGnsT44P1k","How to use reflexive and emphatic pronouns","3:32"],["3idEBX6tF-I","How to read between the lines in English","3:42"],["cRyPrHCKX9A","How to use get and have in the causative","2:57"],["FCIIIDYkqTo","How to use modals of deduction","4:19"],["3LrmrwpncpU","How to talk about your achievements","2:39"],["z_8BBCg9cNw","How to write a restaurant review","4:47"],["iro36NeCEJk","When NOT to use articles","3:18"],["sYzV2h-PHRE","What is code-switching and why does it matter?","3:06"],["ZMfABKsvpNQ","How to use correlative conjunctions","4:11"],["qkDw98THwJI","How to use double comparatives","3:20"],["2BFH004PEnM","Bang! How to use onomatopoeia","3:37"],["2Ov4fwzU0mk","How to use the third conditional","3:05"],["hv-ZvhJc7F4","Three grammar rules you can ignore","3:27"],["WD1CWuIRjTE","How to give an out of this world presentation","2:54"],["LCsvoOD2IDI","How to get out of awkward situations","2:51"],["esQ2tLeZHW8","Differences between formal and informal English","3:59"],["ApiG1F-i23I","Alternatives to if in conditionals","1:37"],["B-29U0QhNuY","Legal terms in English","2:49"],["lb0GmrW35K8","You think quite is easy? You're quite wrong!","1:52"],["EPZ9i1Pe4fw","How to use stress to communicate","2:32"],["2ezuMNqFLUk","Intensifiers will absolutely totally improve your English","2:42"],["Tfky55MB8rg","What is person-first language?","2:52"],["Bc33GoGdXUs","Write a song using cohesive devices","1:36"],["yeUuo9Njyk0","Latin words in everyday English","2:36"]]},{"icon":"💬","name":"Nói gì trong tình huống","v":[["ZveJWidWxgY","How to discuss advantages and disadvantages in English","4:31"],["kXxY15IVpJ8","How to persuade someone in English","4:05"],["fhSGDAdlAb4","How to challenge someone's ideas in English","5:06"]]},{"icon":"💼","name":"Tiếng Anh công việc","v":[["GszPDWy3o0s","How to interview for a job in English: Responding to questions - Part 1","2:28"],["5Jy0D9C-Lvs","How to interview for a job in English: Responding to competency questions - Part 2","2:37"],["WFUWj7fHCKE","How to interview for a job in English: Responding to hypothetical questions - Part 3","3:07"],["hMNKoUi8hBc","How to delegate in English - Episode 1","3:19"],["iHLxuH8dO5k","Trust your team: How to delegate in English - Episode 2","2:49"],["UcEmYk5nu3E","Learn to love your accent in English! Episode 1","3:31"],["-Md5rvHnCdA","Learn to love your accent in English! Episode 2","3:36"],["v_tRYO72AvM","Resilience in the workplace","3:17"],["QygLpn86iXw","Resilience and the power of writing","3:35"],["xy6LrryH7JY","Be kind to yourself. Build resilience","3:56"],["0WFmZMTXqMs","Conflict management in English - Episode 1","3:57"],["mJ5RbaLTnLo","Conflict management in English - Episode 2","3:46"],["Ndhyr0XjGLE","Conflict management in English - Episode 3","4:02"],["r--1F7_Z018","What is agile working?","3:27"],["rQ9UjJuAOFM","Agile management explained","2:47"],["0OVBmQX-WuE","How to have an agile workspace","3:13"],["tsg91jkeW1c","How to negotiate in English","3:38"],["a6K355f2urg","Making a business proposal in English","3:30"],["N8vDH0NL0zE","Sealing the deal when negotiating in English","3:26"]]},{"icon":"✉️","name":"Viết email","v":[["OyiYMpLyAEE","English for Emails: Email addresses","2:42"],["UV2VRpD3MVQ","English for Emails: Subjects and attachments","2:28"],["ZnSfEklfo34","English for Emails: Cc and Bcc explained","2:51"],["nPc9LI2Yq9A","English for Emails: Organising your writing","2:11"],["3-QoPcJHQws","English for Emails: Formal and informal language","2:55"]]},{"icon":"📹","name":"Video blog","v":[["fUCBUdVLQ-8","English for dating: Part 1","2:28"],["nVDOZu92k-M","English for dating: Part 2","2:28"],["SN88iJzu-Pw","Dating acronyms (and other expressions you need to know)","4:19"]]},{"icon":"🎙️","name":"Bài giảng trực tiếp","v":[["uJ0NQN8WY2E","Live lesson: Valentine's Day - the language of love!","1:15:45"],["g3OdfDIutok","Grammar lesson: AI and language learning","1:08:21"],["5Bh4mqe0cQM","Grammar lesson: New Year's Resolutions","1:16:04"],["R4d948ioTv0","Summer Quiz!","59:18"],["YMNyyvK4-tE","Grammar lesson: Playing by the rules","1:01:58"],["NSWZLHALnc4","Grammar lesson: Tea time - instructions, idioms and more","59:37"],["O7aeUHVWlCo","From Shakespeare to social media: the evolution of English idioms and expressions","1:00:03"],["fvngAeYkNRA","Shakespeare Clinic: How Shakespeare can help you learn English","1:03:33"],["0XIH0NpHdks","Grammar lesson: Patterns with reporting verbs","58:59"],["TQqhJuQoTyM","Grammar lesson: Language to talk about achievements","57:15"],["pkPLd8gy-Lc","Grammar lesson: Adjectives for describing films","1:00:26"],["cyn22u9zcX0","Grammar lesson: Adverb and adjective collocations","1:01:00"],["E7bxlLPa6UI","Vocabulary lesson: Money, money, money","1:05:28"],["y8YkE0di1jc","Grammar lesson: Jokes and humour","1:02:53"],["p0No6zOq0vk","Happy Holidays - a Christmas and New Year quiz!","1:36:10"],["i5TS2KH6Na4","Grammar & vocabulary lesson: American and British English","1:02:40"],["C8NDq5iI8hQ","Grammar lesson: As and like","45:15"],["_rLC7-NlDVY","Grammar lesson: Defining and non-defining relative clauses","51:41"],["5coZRgRyviQ","Live lesson: The devil's in the details - a Halloween story","1:00:54"],["SkPsCnAXvNQ","Grammar lesson: Second and third conditionals","59:22"],["cqohx0i9pEA","Grammar lesson: So, such and other intensifiers","1:00:04"],["9u6m5qgNa7M","World Teachers' Day","1:14:55"],["fz6jU0hZSL8","Grammar lesson: Talking about dreams and ambitions","42:58"],["Zb7t_c-gO9M","Grammar lesson: Language for fitness and health","59:03"],["LmBt5MsCvik","Grammar lesson: Mindfulness Day","50:03"],["Mo3dC2EhPEM","Grammar lesson: Hedging","1:01:54"],["G0L4CBNgwvg","Live lesson: Summer quiz - idioms, grammar and more","1:05:43"],["t2yByvDKLWE","Grammar lesson: A question of sport","57:52"],["NjJh23mrFxo","Grammar lesson: Adjectives","57:15"],["4CLIBDxwhXQ","Grammar lesson: Language for giving opinions","59:09"],["nR7DbC_fSJU","Vocabulary workshop: False friends and commonly confused words","59:49"],["xRPOumn0wB8","Grammar lesson: Correlative conjunctions","52:09"],["trTOFq_t2ZA","Shakespeare Day - LIVE","1:07:46"],["5apA0FJqDiw","Grammar lesson: Contrasting ideas","1:06:04"],["sxa4PU_xvP0","Grammar lesson: Language to talk about films and TV","51:11"],["-PgId_HUCis","Grammar lesson: Delexical verbs","49:37"],["ARkr7SOXIVI","Christmas Quiz","1:35:14"],["QHBAPUlJAj4","Grammar lesson: Question tags","58:00"],["1kIqLhX4fDo","Grammar lesson: Reflexive pronouns","49:58"],["6PQ81ZagLgU","Halloween: Scary stories and modal verbs","56:47"],["QAjYUosZjWM","Grammar lesson: Gen Z expressions - how languages evolve","42:21"],["S-vLUgL_Yhk","Grammar lesson: Language to talk about superstitions","42:13"],["yngejgA8I5g","Grammar lesson: Adjectives and dependent prepositions","51:45"],["bti96OetWCw","Grammar lesson: This, that, these and those to avoid repetition","39:15"],["3KXyQEFOVWA","Grammar lesson: Gradable and non-gradable adjectives","45:07"],["nAV4dTHn9hw","Grammar lesson: As and like (2)","34:39"],["FT9V8e0hotY","Grammar lesson: Virtual reality - second conditional","36:29"],["mXMuyOIHoio","Live lesson: Literature and reading","49:34"],["dynjvyNO7dA","Live lesson: Meetings","43:03"],["NWB7QAw_2t8","Live lesson: CVs and cover letters","46:33"]]}]},{"id":"c1","name":"C1","label":"Nâng cao · IELTS","desc":"Podcast dài, IELTS, Shakespeare","cols":[{"icon":"🎓","name":"IELTS Workshop","v":[["RDyljcd6z7I","Writing workshop: How to write a great essay conclusion","54:57"],["77uqVlua3As","Writing workshop: Writing complex sentences","1:02:20"],["ig9jN5R-VZQ","Writing workshop: What makes a good paragraph?","1:01:31"],["XEh6kL-5eq0","Writing workshop: Planning your essay - organisation and structure","1:05:38"],["RZGX9xeELkw","Writing workshop: Planning your essay and having enough to say","1:03:05"],["9W22bdlXPXk","Winter workshop: End of 2024 language quiz","1:00:47"],["bm-f_hXZGf0","Writing workshop: A covering email","1:00:25"],["RIDroWSpyvg","Speaking workshop: Discourse markers","1:04:06"],["j2eSHNiDs4M","Writing workshop: Writing informal emails","1:05:24"],["6wndNASw2YE","Writing workshop: Describing trends","1:08:35"],["YNPAbdip45c","Listening workshop: Listening for detail","1:06:26"],["uCJa8js6X5k","Writing workshop: Emails and letters","1:05:13"],["E8Hcqp1PwbM","Writing clinic: IELTS Writing Task 1 - Identifying key information","1:05:57"],["coDPQWLL1A0","Writing workshop: Using a checklist to proofread your essay","54:28"],["-n2IEqIG9rg","Reading workshop: Task types and time management","1:07:32"],["JmJxxkSJfIk","Writing workshop: Advantage and disadvantage essays","1:04:50"],["UXEaGMyAUVY","Speaking workshop: Discourse markers (2)","1:05:45"],["820wqkCrigw","Writing workshop: What makes a good paragraph? (2)","59:39"],["-vJxxKAvbNg","IELTS Writing workshop: Graphs, tables and diagrams - the overview","1:04:18"],["jOB0U-Ly1VU","Writing workshop: Checking your writing","1:00:07"],["l4VBz_r2GiE","Writing workshop: Writing a strong conclusion","1:02:12"],["nP3uodZDx9M","Writing workshop: Planning your essay","1:03:20"],["OiH--EoXR80","Writing clinic: Common mistakes and how to fix them","59:21"],["xPnkb2Gvnmg","Reading workshop: How to answer IELTS True/False/Not Given questions","1:04:16"],["-qWuGR0Xg4o","Writing workshop: Formal and informal emails","56:08"],["hUYSWV7O05w","Writing workshop: IELTS Academic Task 1 - The overview","59:19"]]},{"icon":"🔴","name":"Understanding IELTS (Live)","v":[["xnObPjWR9-M","Understanding IELTS LIVE (1)","53:33"],["McRZs6a1gss","Understanding IELTS LIVE (2)","43:16"],["eOsM_LBQWoc","Understanding IELTS LIVE (3)","47:16"],["LKqguYH-Eqk","Understanding IELTS LIVE (4)","43:29"],["xlx5QeMPbiE","Understanding IELTS LIVE (5)","47:11"],["SDviP1APKk0","Understanding IELTS: Reading and Writing","47:12"],["wHRlW2B555k","Understanding IELTS LIVE (6)","43:37"],["urYi1tC4dOE","Understanding IELTS: Writing","46:16"],["BZiF2rFjl4k","Understanding IELTS LIVE (7)","39:12"],["IxhWNNiJbSY","Understanding IELTS LIVE (8)","50:02"],["XfPlgw9WPws","Understanding IELTS LIVE (9)","44:43"],["ECjSlObbD9c","Understanding IELTS LIVE (10)","43:38"],["VIWdPtmJStM","Understanding IELTS: Writing and Listening","1:09:41"],["n8_VT4ZNOJQ","Understanding IELTS LIVE (11)","1:11:31"],["PfsawtCMenc","Understanding IELTS: Speaking","43:41"],["nJjerGREEzg","Understanding IELTS: Reading","43:11"],["KjefvYV-6Gk","Understanding IELTS ExpertTrack LIVE","42:46"],["KLfS4xj9kuE","Understanding IELTS: Writing (2)","45:38"],["dJsuAYk2oDA","Understanding IELTS: Listening","43:22"],["PEiDSHgb3nA","Understanding IELTS LIVE (12)","46:02"]]},{"icon":"🎧","name":"Podcast","v":[["6wtpTmGScZ8","Read your way to better English","29:33"],["RHrUs8jMzCM","How to get people to do things","29:08"],["KvI3_qd_Mdo","This is English: Where every accent belongs","1:04:26"],["jYiq-tRVq34","How to get along with colleagues at work","22:29"],["blMZPxKbPxE","AI and Creativity","21:49"],["A0Xn0xo2onc","World English: Whose English is it anyway?","23:21"],["x6IAe4OdysU","Terms of endearment","21:20"],["xamGagOYVHM","Emoji etiquette","19:45"],["qEczQlhBWUg","What to do when you don't understand someone in English","19:27"],["--NqGw9rfNA","Social media and language learning","24:31"]]},{"icon":"🎭","name":"Shakespeare","v":[["gqqkn7gRNkE","Star Cross'd: Romeo and Juliet retold","4:34"],["EMVYtDKORcI","The Prince of Denmark - a story vaguely inspired by Hamlet","4:02"],["d55GytFubzE","'Dear Mister Shakespeare' - Othello","5:22"],["jk8aVLKW9us","'Miranda's Letter' - The Tempest","5:15"],["uyaBs4gBHFU","Shakespeare's Julius Caesar","3:18"],["SIXseJwmWWI","King Lear Act 2 Scene 4","4:03"],["GDZsXCPvXHY","Macbeth Act I Scene V","2:06"]]}]}];
+/* ==========================================================================
+   VIDEO BC — British Council LearnEnglish videos (YouTube embeds), by CEFR
+   ========================================================================== */
+var BC_STATE = { lv: 'a2', q: '', cur: null, watched: null };
+const BC_KEY = 'hoc-tieng-anh-bc-watched';
+function bcWatched() {
+  if (!BC_STATE.watched) {
+    let arr = [];
+    try { arr = JSON.parse(localStorage.getItem(BC_KEY) || '[]'); } catch (e) {}
+    BC_STATE.watched = new Set(Array.isArray(arr) ? arr : []);
+  }
+  return BC_STATE.watched;
+}
+function bcSaveWatched() { try { localStorage.setItem(BC_KEY, JSON.stringify([...bcWatched()])); } catch (e) {} }
+const BC_FLAT = [];
+BC_LEVELS.forEach(lv => lv.cols.forEach(c => c.v.forEach(v => BC_FLAT.push({ id: v[0], t: v[1], d: v[2], lv, col: c }))));
+function bcEl() { return document.getElementById('ls-bc'); }
+function bcHide() {
+  const el = document.getElementById('ls-bc');
+  if (!el) return;
+  const f = el.querySelector('iframe'); if (f) f.remove();
+  el.hidden = true;
+}
+function bcShow() {
+  lsYtClose();
+  lsMode = 'bc';
+  lsSetModeButton('bc');
+  lsCefrEl.hidden = true; lsHeadEl.hidden = true; lsRandomEl.hidden = true; lsCustomEl.hidden = true; lsCard.hidden = true;
+  bcEl().hidden = false;
+  if (BC_STATE.cur) bcRenderPlayer(); else bcRenderList();
+}
+function bcLevelCount(lv) { return lv.cols.reduce((k, c) => k + c.v.length, 0); }
+function bcCard(item) {
+  const b = lsEl('button', 'bc-card' + (bcWatched().has(item.id) ? ' done' : ''));
+  const th = lsEl('div', 'bc-thumb');
+  const img = lsEl('img');
+  img.loading = 'lazy'; img.alt = ''; img.src = `https://i.ytimg.com/vi/${item.id}/mqdefault.jpg`;
+  img.addEventListener('error', () => img.remove());
+  th.appendChild(img);
+  th.appendChild(lsEl('span', 'bc-dur', item.d));
+  if (bcWatched().has(item.id)) th.appendChild(lsEl('span', 'bc-tick', '✓'));
+  b.appendChild(th);
+  const info = lsEl('div', 'bc-info');
+  info.appendChild(lsEl('div', 'bc-title', item.t));
+  info.appendChild(lsEl('div', 'bc-meta', `${item.lv.name} · ${item.col.name}`));
+  b.appendChild(info);
+  b.addEventListener('click', () => { BC_STATE.cur = item.id; bcRenderPlayer(); grScrollTop(); });
+  return b;
+}
+function bcRenderList() {
+  const root = bcEl();
+  root.innerHTML = '';
+  const intro = lsEl('div', 'bc-intro');
+  intro.appendChild(lsEl('div', 'bc-intro-t', '📺 Video của British Council'));
+  intro.appendChild(lsEl('div', 'bc-intro-s', `${BC_FLAT.length} video miễn phí từ kênh YouTube LearnEnglish, xếp theo trình độ. Video phát bằng trình phát chính thức của YouTube, bản quyền thuộc British Council.`));
+  root.appendChild(intro);
+
+  const chips = lsEl('div', 'colloc-chips bc-levels');
+  BC_LEVELS.forEach(lv => {
+    const c = lsEl('button', 'colloc-chip' + (lv.id === BC_STATE.lv && !BC_STATE.q ? ' active' : ''), `${lv.name} · ${bcLevelCount(lv)}`);
+    c.dataset.lv = lv.id;
+    c.addEventListener('click', () => { BC_STATE.lv = lv.id; BC_STATE.q = ''; bcRenderList(); });
+    chips.appendChild(c);
+  });
+  root.appendChild(chips);
+
+  const sr = lsEl('div', 'verb-search-row');
+  const inp = lsEl('input');
+  inp.type = 'text'; inp.id = 'bc-search'; inp.value = BC_STATE.q;
+  inp.placeholder = 'Tìm video... (ví dụ: email, IELTS, present perfect)';
+  inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off');
+  inp.addEventListener('input', () => {
+    BC_STATE.q = inp.value; bcRenderBody();
+    chips.querySelectorAll('.colloc-chip').forEach(c => c.classList.toggle('active', !BC_STATE.q.trim() && c.dataset.lv === BC_STATE.lv));
+  });
+  sr.appendChild(inp);
+  root.appendChild(sr);
+  const body = lsEl('div'); body.id = 'bc-body';
+  root.appendChild(body);
+  bcRenderBody();
+}
+function bcRenderBody() {
+  const body = document.getElementById('bc-body');
+  if (!body) return;
+  body.innerHTML = '';
+  const bcN = x => x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/\s+/g, ' ').trim();
+  const q = bcN(BC_STATE.q || '');
+  if (q) {
+    const hits = BC_FLAT.filter(x => bcN(x.t + ' ' + x.col.name + ' ' + x.lv.name).includes(q));
+    body.appendChild(lsEl('div', 'tense-group-title', `${hits.length} video khớp “${BC_STATE.q.trim()}”`));
+    const g = lsEl('div', 'bc-grid');
+    hits.slice(0, 80).forEach(x => g.appendChild(bcCard(x)));
+    body.appendChild(g);
+    if (!hits.length) body.appendChild(lsEl('p', 'ls-level-desc', 'Không tìm thấy. Thử từ khoá tiếng Anh ngắn hơn nhé.'));
+    return;
+  }
+  const lv = BC_LEVELS.find(l => l.id === BC_STATE.lv) || BC_LEVELS[0];
+  const total = bcLevelCount(lv);
+  const seen = BC_FLAT.filter(x => x.lv === lv && bcWatched().has(x.id)).length;
+  const head = lsEl('div', 'bc-lvhead');
+  const top = lsEl('div', 'bc-lvtop');
+  top.appendChild(lsEl('div', 'bc-lvname', `${lv.name} · ${lv.label}`));
+  top.appendChild(lsEl('div', 'bc-lvcount', `Đã xem ${seen}/${total}`));
+  head.appendChild(top);
+  head.appendChild(vcBar(total ? seen / total : 0));
+  head.appendChild(lsEl('p', 'ls-level-desc', lv.desc));
+  body.appendChild(head);
+  lv.cols.forEach(c => {
+    body.appendChild(lsEl('div', 'tense-group-title', `${c.icon} ${c.name} · ${c.v.length}`));
+    const g = lsEl('div', 'bc-grid');
+    BC_FLAT.filter(x => x.col === c).forEach(x => g.appendChild(bcCard(x)));
+    body.appendChild(g);
+  });
+}
+function bcRenderPlayer() {
+  const root = bcEl();
+  const i = BC_FLAT.findIndex(x => x.id === BC_STATE.cur);
+  if (i < 0) { BC_STATE.cur = null; bcRenderList(); return; }
+  const item = BC_FLAT[i];
+  BC_STATE.lv = item.lv.id;
+  root.innerHTML = '';
+  const back = lsEl('button', 'btn-ghost bc-back', '← Danh sách video');
+  back.addEventListener('click', () => { BC_STATE.cur = null; bcRenderList(); grScrollTop(); });
+  root.appendChild(back);
+  root.appendChild(lsEl('div', 'ls-lh-level bc-plevel', `${item.lv.name} · ${item.col.icon} ${item.col.name}`));
+  root.appendChild(lsEl('div', 'ls-lh-title bc-ptitle', item.t));
+  root.appendChild(lsEl('div', 'bc-pmeta', `⏱ ${item.d}`));
+  const frame = lsEl('div', 'bc-frame');
+  const f = document.createElement('iframe');
+  f.src = `https://www.youtube.com/embed/${item.id}?playsinline=1&rel=0&cc_load_policy=1&cc_lang_pref=en&modestbranding=1`;
+  f.title = item.t;
+  f.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+  f.setAttribute('allowfullscreen', '');
+  f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+  frame.appendChild(f);
+  root.appendChild(frame);
+
+  const row = lsEl('div', 'bc-actions');
+  const done = bcWatched().has(item.id);
+  const w = lsEl('button', done ? 'btn-ghost bc-done on' : 'btn-ghost bc-done', done ? '✓ Đã xem' : '○ Đánh dấu đã xem');
+  w.addEventListener('click', () => {
+    const s = bcWatched();
+    if (s.has(item.id)) s.delete(item.id); else s.add(item.id);
+    bcSaveWatched();
+    const on = s.has(item.id);
+    w.classList.toggle('on', on); w.textContent = on ? '✓ Đã xem' : '○ Đánh dấu đã xem';
+  });
+  row.appendChild(w);
+  const nx = BC_FLAT[i + 1];
+  const n = lsEl('button', 'btn-primary bc-next', nx ? 'Video tiếp →' : 'Hết danh sách');
+  n.disabled = !nx;
+  n.addEventListener('click', () => {
+    bcWatched().add(item.id); bcSaveWatched();
+    BC_STATE.cur = nx.id; bcRenderPlayer(); grScrollTop();
+  });
+  row.appendChild(n);
+  root.appendChild(row);
+
+  const row2 = lsEl('div', 'bc-actions');
+  const dict = lsEl('button', 'btn-ghost bc-dict', '✍️ Chép chính tả');
+  dict.addEventListener('click', () => bcToDictation(item));
+  row2.appendChild(dict);
+  const yt = lsEl('a', 'btn-ghost bc-yt', '↗ Mở trên YouTube');
+  yt.href = `https://www.youtube.com/watch?v=${item.id}`; yt.target = '_blank'; yt.rel = 'noopener';
+  row2.appendChild(yt);
+  root.appendChild(row2);
+
+  const tip = lsEl('div', 'bc-tip');
+  tip.innerHTML = '<b>Cách xem hiệu quả</b><ol>' +
+    '<li>Xem lần 1 <b>không phụ đề</b>, chỉ cần nắm ý chính.</li>' +
+    '<li>Xem lần 2 bật phụ đề tiếng Anh (nút <b>CC</b> trên video). Gặp câu khó thì tua lại.</li>' +
+    '<li>Nói khó nghe? Bấm ⚙ → <b>Tốc độ phát</b> → 0.75.</li>' +
+    '<li>Muốn luyện kỹ hơn: bấm <b>Chép chính tả</b> để biến video thành bài nghe chép từng câu.</li></ol>';
+  root.appendChild(tip);
+  root.appendChild(lsEl('p', 'bc-credit', 'Video © British Council, phát qua YouTube. Video không phát được trong bản xem trước, hãy mở app qua địa chỉ GitHub Pages.'));
+}
+function bcToDictation(item) {
+  bcHide();
+  BC_STATE.cur = item.id;
+  lsShowCustom();
+  lsSetSrc('yt');
+  lsYtUrl.value = `https://www.youtube.com/watch?v=${item.id}`;
+  lsYtUrl.dispatchEvent(new Event('input'));
+  const t = document.getElementById('ls-make-title');
+  if (t) t.value = item.t;
+  const how = document.querySelector('#ls-yt-fields .ls-yt-how');
+  if (how) how.open = true;
+  lsMakeMsg.textContent = 'Đã điền link video. Giờ dán bản chép lời (transcript) có mốc thời gian vào ô bên dưới rồi bấm Tạo bài.';
+  grScrollTop();
+}
+document.querySelectorAll('nav.tabbar button').forEach(b => b.addEventListener('click', () => {
+  if (b.dataset.page !== 'page-listen') { const f = document.querySelector('#ls-bc iframe'); if (f) f.remove(); }
+  else if (lsMode === 'bc' && BC_STATE.cur && !document.querySelector('#ls-bc iframe')) bcRenderPlayer();
+}));
 
 /* ============================================================
    VOICE PICKER — 7 English voices (accent + gender), saved on this device
