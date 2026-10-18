@@ -1,5 +1,5 @@
 // Offline support: keep the app shell cached; translation/IPA requests always go to the network.
-const CACHE = 'hoc-tieng-anh-v20';
+const CACHE = 'hoc-tieng-anh-v25';
 const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -22,7 +22,7 @@ self.addEventListener('fetch', e => {
 
   // Network first so updates show up, cache as fallback when offline.
   e.respondWith(
-    fetch(req).then(res => {
+    (sameOrigin ? fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' }) : fetch(req)).then(res => {
       if (res && (res.ok || res.type === 'opaque')) {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(req, copy));
