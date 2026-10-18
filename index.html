@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Học Tiếng Anh</title>
 <meta name="theme-color" content="#14213D">
-<meta name="description" content="Dịch song ngữ Anh ⇄ Việt, phát âm, các thì, động từ bất quy tắc, tính/trạng từ và cụm từ đi kèm.">
+<meta name="description" content="Dịch song ngữ Anh ⇄ Việt, phát âm, các thì, động từ bất quy tắc, gia đình từ và cụm từ đi kèm.">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1720,6 +1720,123 @@
   .fx-alt{ padding:3px 9px; border-radius:999px; font:500 12.5px/1.4 var(--font-body); background:var(--card); color:var(--ink); border:1px solid var(--paper-line); cursor:pointer; }
   .fx-actions{ margin-top:12px; display:flex; gap:8px; align-items:center; }
   .fx-apply{ flex:1; padding:10px; font-weight:600; color:var(--moss); border-color:var(--moss); }
+
+  /* ================= 3D play buttons (raised, with a real press) ================= */
+  .play-mini{ width:34px; height:34px; }
+  :root body .play-mini.play-mini, :root body .vplay.vplay, :root body .ls-play.ls-play,
+  :root body #tr-src-speak, :root body #tr-tgt-speak, :root body #fx-speak{
+    --d:3px; --edge:rgba(10,20,60,0.45);
+    position:relative; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;
+    border:none; border-radius:50%; padding:0; cursor:pointer;
+    color:var(--on-accent); font-size:13px; line-height:1;
+    -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none;
+    background:var(--rust);
+    background:
+      radial-gradient(120% 90% at 30% 18%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 42%),
+      linear-gradient(180deg, color-mix(in srgb, var(--rust) 72%, #fff) 0%, var(--rust) 55%, color-mix(in srgb, var(--rust) 84%, #000) 100%);
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.5), inset 0 -2px 0 rgba(0,0,0,0.12),
+      0 var(--d) 0 var(--edge), 0 calc(var(--d) + 4px) 9px -3px rgba(17,26,51,0.38);
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.5), inset 0 -2px 0 rgba(0,0,0,0.12),
+      0 var(--d) 0 color-mix(in srgb, var(--rust) 55%, #000), 0 calc(var(--d) + 4px) 9px -3px rgba(17,26,51,0.38);
+    transform:translateY(0);
+    transition:transform 0.07s ease-out, box-shadow 0.07s ease-out, filter 0.15s;
+    margin-bottom:var(--d);
+  }
+  :root body .ls-play.ls-play{ --d:5px; width:66px; height:66px; }
+  :root body #tr-src-speak, :root body #tr-tgt-speak, :root body #fx-speak{ width:38px; height:38px; font-size:16px; }
+  /* crisp CSS triangle instead of the text glyph */
+  :root body .play-mini.play-mini:not(.play-alt), :root body .vplay.vplay{ font-size:0; }
+  :root body .play-mini.play-mini:not(.play-alt)::before, :root body .vplay.vplay::before{
+    content:''; width:38%; height:42%; margin-left:9%;
+    background:currentColor; clip-path:polygon(0 0, 100% 50%, 0 100%); border-radius:1px;
+    filter:drop-shadow(0 1px 0 rgba(0,0,0,0.25));
+  }
+  :root body .play-mini.play-alt{ font-size:15px; }
+  /* pressed: the button sinks onto its edge */
+  :root body .play-mini.play-mini:active, :root body .play-mini.play-mini.is-pressed,
+  :root body .vplay.vplay:active, :root body .vplay.vplay.is-pressed,
+  :root body .ls-play.ls-play:active, :root body .ls-play.ls-play.is-pressed,
+  :root body #tr-src-speak:active, :root body #tr-src-speak.is-pressed,
+  :root body #tr-tgt-speak:active, :root body #tr-tgt-speak.is-pressed,
+  :root body #fx-speak:active, :root body #fx-speak.is-pressed{
+    transform:translateY(calc(var(--d) - 1px));
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3), 0 1px 0 var(--edge), 0 2px 3px -1px rgba(17,26,51,0.3);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3), 0 1px 0 color-mix(in srgb, var(--rust) 55%, #000), 0 2px 3px -1px rgba(17,26,51,0.3);
+    filter:brightness(0.95);
+  }
+  /* currently speaking: a soft pulsing ring */
+  .is-playing{ animation:p3dRing 1.1s ease-out infinite; }
+  @keyframes p3dRing{ 0%{ outline:0 solid var(--rust); outline-offset:0; } 70%{ outline:6px solid transparent; outline-offset:2px; } 100%{ outline:0 solid transparent; outline-offset:0; } }
+
+  /* light 3D pills: Nghe từ / Nghe chậm / Rất chậm / Lặp 3 lần / Giọng Mỹ… */
+  :root body .ls-slow.ls-slow, :root body .pron-actions button{
+    --d:3px; --edge:rgba(47,91,234,0.35);
+    position:relative; border:none; border-radius:999px; cursor:pointer;
+    color:var(--rust); background:var(--rust-light);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--rust-light) 45%, #fff) 0%, var(--rust-light) 100%);
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.85), 0 var(--d) 0 var(--edge), 0 calc(var(--d) + 3px) 8px -3px rgba(17,26,51,0.22);
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.85), 0 var(--d) 0 color-mix(in srgb, var(--rust) 40%, var(--rust-light)), 0 calc(var(--d) + 3px) 8px -3px rgba(17,26,51,0.22);
+    transform:translateY(0); transition:transform 0.07s ease-out, box-shadow 0.07s ease-out;
+    margin-bottom:var(--d); -webkit-tap-highlight-color:transparent;
+  }
+  :root body .ls-slow.ls-slow:active, :root body .ls-slow.ls-slow.is-pressed,
+  :root body .pron-actions button:active, :root body .pron-actions button.is-pressed{
+    transform:translateY(calc(var(--d) - 1px));
+    box-shadow: inset 0 2px 4px rgba(17,26,51,0.18), 0 1px 0 var(--edge);
+    box-shadow: inset 0 2px 4px rgba(17,26,51,0.18), 0 1px 0 color-mix(in srgb, var(--rust) 40%, var(--rust-light));
+  }
+  :root body .pron-actions button.playing, :root body .ls-slow.ls-slow.is-playing, :root body .pron-actions button.is-playing{
+    color:var(--on-accent); background:var(--rust);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--rust) 75%, #fff), var(--rust));
+  }
+
+  /* solid 3D pills: video segment buttons */
+  :root body .bc-play.bc-play, :root body .bc-all.bc-all{
+    --d:4px; --edge:rgba(10,20,60,0.45);
+    position:relative; border:none; border-radius:14px; cursor:pointer; color:var(--on-accent); background:var(--rust);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--rust) 78%, #fff) 0%, var(--rust) 60%, color-mix(in srgb, var(--rust) 88%, #000) 100%);
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.4), 0 var(--d) 0 var(--edge), 0 calc(var(--d) + 4px) 10px -4px rgba(17,26,51,0.35);
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.4), 0 var(--d) 0 color-mix(in srgb, var(--rust) 55%, #000), 0 calc(var(--d) + 4px) 10px -4px rgba(17,26,51,0.35);
+    transform:translateY(0); transition:transform 0.07s ease-out, box-shadow 0.07s ease-out;
+    margin-bottom:var(--d); -webkit-tap-highlight-color:transparent;
+  }
+  :root body .bc-play.bc-play:active, :root body .bc-play.bc-play.is-pressed, :root body .bc-all.bc-all:active, :root body .bc-all.bc-all.is-pressed{
+    transform:translateY(calc(var(--d) - 1px));
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.28), 0 1px 0 var(--edge);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.28), 0 1px 0 color-mix(in srgb, var(--rust) 55%, #000);
+  }
+
+  /* neutral keycaps next to the speaker buttons (copy / clear) */
+  :root body #tr-clear, :root body #tr-copy{
+    --d:3px; border:1px solid var(--paper-line); border-radius:50%; width:38px; height:38px; padding:0; color:var(--ink);
+    background:linear-gradient(180deg, var(--card) 0%, var(--paper) 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 var(--d) 0 #C9D0E0, 0 calc(var(--d) + 3px) 7px -3px rgba(17,26,51,0.22);
+    transform:translateY(0); transition:transform 0.07s ease-out, box-shadow 0.07s ease-out; margin-bottom:var(--d);
+    -webkit-tap-highlight-color:transparent;
+  }
+  :root body #tr-clear:active, :root body #tr-clear.is-pressed, :root body #tr-copy:active, :root body #tr-copy.is-pressed{
+    transform:translateY(calc(var(--d) - 1px)); box-shadow: inset 0 2px 4px rgba(17,26,51,0.15), 0 1px 0 #C9D0E0;
+  }
+
+  /* dark theme: softer highlights, deeper edges */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) body .ls-slow.ls-slow, :root:not([data-theme="light"]) body .pron-actions button{
+      background:linear-gradient(180deg, color-mix(in srgb, var(--rust-light) 80%, var(--rust)) 0%, var(--rust-light) 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 var(--d) 0 rgba(0,0,0,0.55), 0 calc(var(--d) + 3px) 8px -3px rgba(0,0,0,0.6);
+    }
+    :root:not([data-theme="light"]) body #tr-clear, :root:not([data-theme="light"]) body #tr-copy{
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 var(--d) 0 #070A14, 0 calc(var(--d) + 3px) 7px -3px rgba(0,0,0,0.6);
+    }
+    :root:not([data-theme="light"]) body .play-mini.play-mini:not(.play-alt)::before, :root:not([data-theme="light"]) body .vplay.vplay::before{ filter:none; }
+  }
+  :root[data-theme="dark"] body .ls-slow.ls-slow, :root[data-theme="dark"] body .pron-actions button{
+    background:linear-gradient(180deg, color-mix(in srgb, var(--rust-light) 80%, var(--rust)) 0%, var(--rust-light) 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 var(--d) 0 rgba(0,0,0,0.55), 0 calc(var(--d) + 3px) 8px -3px rgba(0,0,0,0.6);
+  }
+  :root[data-theme="dark"] body #tr-clear, :root[data-theme="dark"] body #tr-copy{
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 var(--d) 0 #070A14, 0 calc(var(--d) + 3px) 7px -3px rgba(0,0,0,0.6);
+  }
+  @media (prefers-reduced-motion: reduce){ .is-playing{ animation:none; outline:2px solid var(--rust); outline-offset:2px; } }
 </style>
 </head>
 <body>
@@ -1727,7 +1844,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v25</span>
+      <span class="hero-badge">EN ⇄ VI · v27</span>
       <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
     </div>
     <h1>Học <span class="hero-hl">Tiếng Anh</span></h1>
@@ -1906,8 +2023,8 @@
 
   <!-- PAGE: ADJECTIVES & ADVERBS -->
   <section class="page" id="page-adjadv">
-    <div class="section-title">Tính từ & Trạng từ</div>
-    <div class="section-sub">Tính từ (adjective) mô tả danh từ · Trạng từ (adverb) mô tả động từ/tính từ</div>
+    <div class="section-title">Gia Đình Từ</div>
+    <div class="section-sub">Mỗi gia đình gồm tính từ (adjective) và trạng từ (adverb) cùng gốc · Tính từ mô tả danh từ, trạng từ mô tả động từ/tính từ</div>
     <div id="adjadv-list"></div>
   </section>
 
@@ -1969,7 +2086,7 @@
   </button>
   <button data-page="page-adjadv">
     <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></span>
-    Tính/Trạng từ
+    Gia Đình Từ
   </button>
   <button data-page="page-colloc">
     <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg></span>
@@ -2048,7 +2165,7 @@ const COLLOCATIONS = [
   {"id": "catch", "group": "Catch + danh từ", "note": "Catch: bắt, bắt kịp, mắc phải.", "items": [{"p": "catch a cold", "m": "bị cảm lạnh", "ex": "I caught a cold last week."}, {"p": "catch a bus", "m": "bắt xe buýt", "ex": "I need to catch the bus at 7."}, {"p": "catch fire", "m": "bắt lửa, bốc cháy", "ex": "The old house caught fire."}, {"p": "catch someone's attention", "m": "thu hút sự chú ý của ai", "ex": "The bright poster caught my attention."}, {"p": "catch up with", "m": "theo kịp", "ex": "Walk slower so I can catch up with you."}]},
   {"id": "comego", "group": "Come / Go + từ", "note": "Những cụm cố định với come và go.", "items": [{"p": "come true", "m": "trở thành sự thật", "ex": "I hope your dreams come true."}, {"p": "come first", "m": "được ưu tiên hàng đầu", "ex": "Your health should come first."}, {"p": "come to an end", "m": "kết thúc", "ex": "The holiday came to an end."}, {"p": "go wrong", "m": "trục trặc, hỏng", "ex": "Everything went wrong today."}, {"p": "go shopping", "m": "đi mua sắm", "ex": "Let's go shopping this weekend."}, {"p": "go on holiday", "m": "đi nghỉ", "ex": "We go on holiday every summer."}, {"p": "go missing", "m": "bị thất lạc, mất tích", "ex": "My keys have gone missing."}, {"p": "go to bed", "m": "đi ngủ", "ex": "I usually go to bed at 11."}]},
   {"id": "timemoney", "group": "Thời gian & tiền bạc", "note": "Các động từ hay đi với time và money.", "items": [{"p": "save time", "m": "tiết kiệm thời gian", "ex": "Taking a taxi will save time."}, {"p": "waste time", "m": "lãng phí thời gian", "ex": "Don't waste time on social media."}, {"p": "spend time", "m": "dành thời gian", "ex": "I spend time with my family on Sundays."}, {"p": "kill time", "m": "giết thời gian", "ex": "We played cards to kill time."}, {"p": "save money", "m": "tiết kiệm tiền", "ex": "She is saving money for a new laptop."}, {"p": "spend money on", "m": "tiêu tiền vào", "ex": "He spends a lot of money on clothes."}, {"p": "borrow money", "m": "vay tiền", "ex": "Can I borrow some money?"}]},
-  { id: "adjnoun", group: "Tính từ + danh từ", note: "Những cặp tính từ và danh từ người bản xứ hay dùng.",
+  { id: "adjnoun", group: "Cụm danh từ", note: "Những cặp tính từ và danh từ người bản xứ hay dùng.",
     items: [
       { p: "heavy rain", m: "mưa to", ex: "Heavy rain fell all night." },
       { p: "strong coffee", m: "cà phê đậm", ex: "I need a cup of strong coffee." },
@@ -2074,7 +2191,7 @@ const COLLOCATIONS = [
       { p: "responsible for", m: "chịu trách nhiệm về", ex: "Who is responsible for this?" },
       { p: "similar to", m: "giống với", ex: "My bag is similar to yours." }
     ] },
-  { id: "verbprep", group: "Động từ + giới từ", note: "Động từ đi kèm giới từ cố định trước tân ngữ.",
+  { id: "verbprep", group: "Cụm động từ", note: "Động từ đi kèm giới từ cố định trước tân ngữ.",
     items: [
       { p: "listen to", m: "nghe", ex: "I like to listen to music." },
       { p: "depend on", m: "phụ thuộc vào", ex: "It depends on the weather." },
@@ -5492,6 +5609,50 @@ const fxMore = document.getElementById('fx-more');
 try { fxMore.open = localStorage.getItem(FX_KEY + '-open') === '1'; } catch (e) {}
 fxMore.addEventListener('toggle', () => { try { localStorage.setItem(FX_KEY + '-open', fxMore.open ? '1' : '0'); } catch (e) {} });
 fxRender();
+
+/* ============================================================
+   3D play buttons: visible press on every tap (even quick taps on iPhone)
+   and a pulsing ring while that button's audio is playing
+============================================================ */
+(() => {
+  const PRESS = '.play-mini, .vplay, .ls-play, .ls-slow, .pron-actions button, .bc-play, .bc-all, #tr-src-speak, #tr-tgt-speak, #fx-speak, #tr-clear, #tr-copy';
+  const PLAY = '.play-mini, .vplay, .ls-play, .ls-slow, .pron-actions button, #tr-src-speak, #tr-tgt-speak, #fx-speak';
+  document.addEventListener('touchstart', () => {}, { passive: true }); // enables :active on iOS Safari
+  let pressed = null, t0 = 0;
+  const release = () => {
+    if (!pressed) return;
+    const el = pressed; pressed = null;
+    setTimeout(() => el.classList.remove('is-pressed'), Math.max(0, 120 - (Date.now() - t0)));
+  };
+  document.addEventListener('pointerdown', e => {
+    const el = e.target.closest && e.target.closest(PRESS);
+    if (!el) return;
+    pressed = el; t0 = Date.now();
+    el.classList.add('is-pressed');
+    if (navigator.vibrate) { try { navigator.vibrate(8); } catch (err) {} }
+  }, { passive: true });
+  ['pointerup', 'pointercancel', 'dragstart'].forEach(ev => document.addEventListener(ev, release, { passive: true }));
+  document.addEventListener('pointerleave', release, { passive: true });
+  let playing = null, poll = null;
+  document.addEventListener('click', e => {
+    const el = e.target.closest && e.target.closest(PLAY);
+    if (!el || !('speechSynthesis' in window)) return;
+    const check = last => {
+      const ss = window.speechSynthesis;
+      if (!ss.speaking && !ss.pending) { if (!last) setTimeout(() => check(true), 300); return; }
+      if (playing && playing !== el) playing.classList.remove('is-playing');
+      playing = el; el.classList.add('is-playing');
+      clearInterval(poll);
+      const start = Date.now();
+      poll = setInterval(() => {
+        if ((!ss.speaking && !ss.pending) || !el.isConnected || Date.now() - start > 60000) {
+          el.classList.remove('is-playing'); if (playing === el) playing = null; clearInterval(poll);
+        }
+      }, 250);
+    };
+    setTimeout(() => check(false), 200);
+  }, true);
+})();
 
 /* ============================================================
    UI WIRING - Pronunciation page
@@ -19277,7 +19438,7 @@ function vcExHtml(it) {
   return out || ex;
 }
 function vcPlayBtn(label, aria, text, rate) {
-  const b = lsEl('span', 'play-mini', label);
+  const b = lsEl('span', 'play-mini' + (label === '▶' ? '' : ' play-alt'), label);
   b.setAttribute('role', 'button');
   b.setAttribute('aria-label', aria);
   b.addEventListener('click', e => { e.stopPropagation(); speak(text, rate || 0.8); });
