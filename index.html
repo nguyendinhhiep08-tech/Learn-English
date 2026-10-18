@@ -1871,6 +1871,61 @@
     background:var(--hero); color:var(--hero-ink); box-shadow:0 10px 30px rgba(0,0,0,0.3); font-size:13.5px; }
   .sync-bar[hidden]{ display:none; }
   .sync-bar button{ padding:7px 14px; border-radius:999px; background:var(--rust); color:var(--on-accent); font-size:13px; }
+
+  /* ---- feedback ---- */
+  .fb-foot{ margin:28px 0 8px; padding:16px; border-radius:18px; background:var(--card); border:1px solid var(--paper-line); box-shadow:var(--shadow);
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .fb-foot[hidden]{ display:none; }
+  .fb-foot-text{ flex:1 1 200px; display:flex; flex-direction:column; gap:3px; }
+  .fb-foot-text b{ font:700 15.5px/1.3 var(--font-display); color:var(--ink); }
+  .fb-foot-text span{ font-size:13px; line-height:1.45; color:var(--ink-soft); }
+  .fb-open{ flex:0 0 auto; position:relative; padding:11px 18px; border-radius:14px; }
+  .fb-dot{ position:absolute; top:-5px; right:-5px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:var(--mark); color:#fff;
+    font:700 11px/18px var(--font-body); box-sizing:border-box; }
+  .fb-dot[hidden]{ display:none; }
+  .fb-tabs{ display:flex; gap:6px; margin:10px 0 4px; padding:4px; border-radius:14px; background:var(--card); border:1px solid var(--paper-line); }
+  .fb-tabs[hidden]{ display:none; }
+  .fb-tab{ flex:1; padding:9px; border-radius:10px; background:transparent; color:var(--ink-soft); font-size:13.5px; }
+  .fb-tab.active{ background:var(--rust); color:var(--on-accent); }
+  .fb-form{ display:flex; flex-direction:column; gap:10px; }
+  .fb-form[hidden], .fb-inbox[hidden]{ display:none; }
+  .fb-types{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:6px; }
+  .fb-type{ padding:9px 2px; border-radius:12px; background:var(--card); color:var(--ink); border:1.5px solid var(--paper-line); font-size:12.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .fb-type.active{ border-color:var(--rust); background:var(--rust-light); color:var(--rust); }
+  .fb-stars{ display:flex; align-items:center; gap:2px; }
+  .fb-stars-l{ font-size:13px; color:var(--ink-soft); margin-right:6px; }
+  .fb-stars button{ background:none; border:none; padding:2px 3px; font-size:26px; line-height:1; color:var(--paper-line); }
+  .fb-stars button.on{ color:#F5B301; }
+  .fb-form textarea{ width:100%; min-height:120px; padding:12px 14px; border-radius:12px; border:1.5px solid var(--paper-line); background:var(--card); color:var(--ink);
+    font:15px/1.5 var(--font-body); box-sizing:border-box; resize:vertical; }
+  .fb-form input{ width:100%; padding:12px 14px; border-radius:12px; border:1.5px solid var(--paper-line); background:var(--card); color:var(--ink); font:16px var(--font-body); box-sizing:border-box; }
+  .fb-meta{ margin-top:-6px; text-align:right; font:500 11px var(--font-mono); color:var(--hint); }
+  .fb-note{ margin:0; font-size:12px; line-height:1.5; color:var(--ink-soft); }
+  .fb-send{ padding:13px; }
+  .fb-inbox-bar{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0; font-size:13px; color:var(--ink-soft); }
+  .fb-inbox-bar .btn-ghost{ padding:7px 12px; font-size:12.5px; }
+  .fb-list{ display:flex; flex-direction:column; gap:8px; }
+  .fb-item{ padding:12px; border-radius:14px; background:var(--card); border:1px solid var(--paper-line); }
+  .fb-item.unread{ border-left:4px solid var(--rust); }
+  .fb-item-top{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:12.5px; color:var(--ink-soft); }
+  .fb-item-type{ font-weight:700; color:var(--ink); }
+  .fb-item-stars{ color:#F5B301; letter-spacing:1px; }
+  .fb-item-text{ margin-top:6px; font-size:14.5px; line-height:1.55; color:var(--ink); white-space:pre-wrap; overflow-wrap:anywhere; }
+  .fb-item-info{ margin-top:6px; font-size:12px; line-height:1.5; color:var(--ink-soft); overflow-wrap:anywhere; }
+  .fb-item-acts{ display:flex; gap:6px; margin-top:8px; }
+  .fb-item-acts button{ padding:6px 12px; font-size:12.5px; border-radius:999px; background:var(--paper); color:var(--ink-soft); border:1px solid var(--paper-line); }
+  .fb-empty{ padding:20px; text-align:center; color:var(--ink-soft); font-size:14px; }
+
+  /* ---- legal pages ---- */
+  .legal-links{ display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; margin:6px 0 4px; color:var(--hint); font-size:12.5px; }
+  .legal-link{ background:none; border:none; padding:6px 2px; color:var(--ink-soft); font-size:12.5px; font-weight:500; text-decoration:underline; text-underline-offset:3px; }
+  .legal-body{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .legal-body h4{ margin:16px 0 4px; font:700 15px/1.3 var(--font-display); }
+  .legal-body p{ margin:0 0 8px; }
+  .legal-body ul{ margin:0 0 8px; padding-left:20px; }
+  .legal-body li{ margin:3px 0; }
+  .legal-date{ color:var(--ink-soft); font-size:12.5px; margin-top:4px !important; }
+  .acct-del{ margin-top:10px; color:var(--mark) !important; }
 </style>
 </head>
 <body>
@@ -1878,7 +1933,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v28</span>
+      <span class="hero-badge">EN ⇄ VI · v30</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -2072,7 +2127,53 @@
     <div id="cl-root"></div>
   </section>
 
+  <div class="fb-foot" id="fb-foot" hidden>
+    <div class="fb-foot-text"><b>Bạn thấy app thế nào?</b><span>Mọi ý tưởng, lỗi gặp phải hay lời khen đều giúp app tốt hơn.</span></div>
+    <button class="btn-primary fb-open" id="fb-open">💬 Gửi góp ý<span class="fb-dot" id="fb-dot" hidden></span></button>
+  </div>
+  <div class="legal-links">
+    <button class="legal-link" data-legal="privacy">Điều khoản & Quyền riêng tư</button>
+    <span aria-hidden="true">·</span>
+    <button class="legal-link" data-legal="credits">Nguồn & ghi công</button>
+  </div>
 </main>
+
+<div class="vsheet" id="fsheet" hidden>
+  <div class="vsheet-backdrop" data-close></div>
+  <div class="vsheet-panel" role="dialog" aria-modal="true" aria-label="Góp ý cho app">
+    <div class="vsheet-head">
+      <div class="vsheet-title">Góp ý cho app</div>
+      <button class="vsheet-close" data-close aria-label="Đóng">✕</button>
+    </div>
+    <div class="fb-tabs" id="fb-tabs" hidden>
+      <button class="fb-tab active" data-tab="send">✍️ Gửi góp ý</button>
+      <button class="fb-tab" data-tab="inbox">📥 Hộp thư <span id="fb-count"></span></button>
+    </div>
+    <form class="fb-form" id="fb-form" novalidate>
+      <p class="vsheet-sub">Góp ý được gửi thẳng tới người làm app. Cảm ơn bạn đã giúp app tốt hơn!</p>
+      <div class="fb-types" id="fb-types">
+        <button type="button" class="fb-type active" data-type="idea">💡 Ý tưởng</button>
+        <button type="button" class="fb-type" data-type="bug">🐞 Báo lỗi</button>
+        <button type="button" class="fb-type" data-type="praise">❤️ Lời khen</button>
+        <button type="button" class="fb-type" data-type="other">💬 Khác</button>
+      </div>
+      <div class="fb-stars" id="fb-stars" aria-label="Chấm điểm app">
+        <span class="fb-stars-l">Chấm điểm app:</span>
+        <button type="button" data-v="1">★</button><button type="button" data-v="2">★</button><button type="button" data-v="3">★</button><button type="button" data-v="4">★</button><button type="button" data-v="5">★</button>
+      </div>
+      <textarea id="fb-text" maxlength="2000" placeholder="Bạn muốn app có thêm gì, hay gặp lỗi ở đâu? Viết càng cụ thể càng dễ sửa…"></textarea>
+      <div class="fb-meta"><span id="fb-len">0 / 2000</span></div>
+      <input id="fb-contact" maxlength="200" placeholder="Email hoặc Zalo (không bắt buộc, để được phản hồi)" autocomplete="email">
+      <p class="fb-note">App gửi kèm tên tab bạn đang mở và loại máy (ví dụ: iPhone · Safari) để dễ tìm lỗi. Không gửi tiến độ học hay thông tin nào khác.</p>
+      <button type="submit" class="btn-primary fb-send" id="fb-send">Gửi góp ý</button>
+      <p class="acct-msg" id="fb-msg"></p>
+    </form>
+    <div class="fb-inbox" id="fb-inbox" hidden>
+      <div class="fb-inbox-bar"><span id="fb-inbox-sum"></span><button class="btn-ghost" id="fb-reload">↻ Tải lại</button></div>
+      <div class="fb-list" id="fb-list"></div>
+    </div>
+  </div>
+</div>
 
 <div class="vsheet" id="asheet" hidden>
   <div class="vsheet-backdrop" data-close></div>
@@ -2107,8 +2208,63 @@
         <button class="btn-ghost" id="acct-out-btn">Đăng xuất</button>
       </div>
       <p class="acct-note">Tiến độ được lưu trong tài khoản của bạn trên Firebase (Google). Chỉ bạn xem được. Đăng xuất thì tiến độ vẫn còn trên máy này.</p>
+      <button class="acct-link acct-del" id="acct-del">Xoá tài khoản và dữ liệu đã lưu…</button>
     </div>
+    <p class="acct-note"><button class="acct-link" data-legal="privacy">Xem Điều khoản & Quyền riêng tư</button></p>
     <p class="acct-msg" id="acct-msg"></p>
+  </div>
+</div>
+<div class="vsheet" id="lsheet" hidden>
+  <div class="vsheet-backdrop" data-close></div>
+  <div class="vsheet-panel legal" role="dialog" aria-modal="true" aria-label="Điều khoản và quyền riêng tư">
+    <div class="vsheet-head">
+      <div class="vsheet-title" id="legal-title">Điều khoản & Quyền riêng tư</div>
+      <button class="vsheet-close" data-close aria-label="Đóng">✕</button>
+    </div>
+    <div class="legal-body" id="legal-privacy">
+      <p class="legal-date">Cập nhật: 18/10/2026</p>
+      <h4>1. Về app</h4>
+      <p>“Học Tiếng Anh” là app học tiếng Anh cá nhân, miễn phí, không quảng cáo và không bán dữ liệu. Nội dung học (từ vựng, câu ví dụ, ngữ pháp, cụm từ, mẹo phát âm) do người làm app tự biên soạn, chỉ dùng cho mục đích học tập. App được cung cấp “nguyên trạng”: chúng tôi cố gắng để nội dung chính xác nhưng không bảo đảm tuyệt đối, và không chịu trách nhiệm cho thiệt hại phát sinh từ việc sử dụng app.</p>
+      <h4>2. Dữ liệu lưu trên máy bạn</h4>
+      <p>Tiến độ học (từ và cụm từ đã thuộc, video đã xem, ghi chú, bài nghe tự tạo, điểm luyện nghe) và các cài đặt (giọng đọc, tốc độ…) được lưu trong bộ nhớ trình duyệt trên chính thiết bị của bạn. Xoá dữ liệu trang web trong trình duyệt sẽ xoá các dữ liệu này.</p>
+      <h4>3. Khi bạn đăng nhập (không bắt buộc)</h4>
+      <p>Nếu bạn đăng nhập bằng Google hoặc email, app lưu email, tên hiển thị và ảnh đại diện (do Google cung cấp) cùng tiến độ học của bạn trên Firebase của Google để đồng bộ giữa các thiết bị. Mỗi người chỉ đọc và ghi được dữ liệu của chính mình. Giọng đọc đã chọn không được đồng bộ. Bạn có thể xoá tài khoản và toàn bộ dữ liệu bất cứ lúc nào trong mục “👤 Tài khoản” → “Xoá tài khoản và dữ liệu”.</p>
+      <h4>4. Khi bạn gửi góp ý</h4>
+      <p>App lưu nội dung góp ý, loại góp ý, số sao, thông tin liên hệ bạn tự nhập (nếu có), tên tab đang mở, phiên bản app và loại máy/trình duyệt. Nếu bạn đang đăng nhập, góp ý kèm email tài khoản. Chỉ người làm app đọc được góp ý, dùng để sửa lỗi và cải thiện app. Muốn xoá góp ý đã gửi, hãy gửi một góp ý mới nêu yêu cầu.</p>
+      <h4>5. Dịch vụ bên ngoài app sử dụng</h4>
+      <p>Để các tính năng hoạt động, nội dung bạn nhập được gửi tới các dịch vụ sau, theo điều khoản riêng của từng dịch vụ:</p>
+      <ul>
+        <li><b>Dịch:</b> Google Dịch, MyMemory: chữ bạn gõ ở tab Dịch.</li>
+        <li><b>Tự sửa lỗi:</b> LanguageTool: câu tiếng Anh bạn gõ. Gợi ý chính tả của Google cho câu tiếng Việt.</li>
+        <li><b>Phiên âm:</b> Free Dictionary API: từ bạn tra khi không có trong từ điển sẵn của app.</li>
+        <li><b>Máy chủ trung gian:</b> allorigins.win, codetabs.com: chỉ dùng khi trình duyệt chặn kết nối thẳng tới các dịch vụ trên.</li>
+        <li><b>Video:</b> YouTube (Google) phát video, nên YouTube có thể ghi nhận việc xem theo chính sách của họ.</li>
+        <li><b>Chấm phát âm:</b> nhận dạng giọng nói có sẵn của trình duyệt (Google trên Chrome, Apple trên Safari). Bản ghi âm “Ghi âm & nghe lại” chỉ phát trên máy, không lưu và không gửi đi.</li>
+        <li><b>Đăng nhập, đồng bộ, góp ý:</b> Firebase (Google).</li>
+        <li><b>Phông chữ:</b> Google Fonts.</li>
+      </ul>
+      <p><b>Đừng nhập mật khẩu, số tài khoản hay thông tin nhạy cảm</b> vào ô dịch hoặc ô góp ý.</p>
+      <h4>6. Sử dụng hợp lệ</h4>
+      <p>Bạn dùng app cho mục đích học tập cá nhân, không lạm dụng (ví dụ gửi góp ý rác hay cố truy cập dữ liệu của người khác). Video và thương hiệu của bên thứ ba thuộc về chủ sở hữu tương ứng.</p>
+      <h4>7. Liên hệ & thay đổi</h4>
+      <p>Mọi câu hỏi hoặc yêu cầu về dữ liệu, bạn gửi qua mục “💬 Gửi góp ý” ở cuối app. Điều khoản có thể được cập nhật khi app thêm tính năng. Ngày cập nhật ghi ở đầu trang.</p>
+    </div>
+    <div class="legal-body" id="legal-credits" hidden>
+      <h4>Nội dung</h4>
+      <p>Toàn bộ từ vựng, nghĩa tiếng Việt, câu ví dụ, bài ngữ pháp, cụm từ đi kèm, bài luyện nghe mẫu và mẹo phát âm là nội dung tự biên soạn cho app. Phiên âm IPA và khung trình độ A1–C1 (CEFR) là kiến thức ngôn ngữ chung. Phân loại cấp độ của từng từ là ước lượng của app, không phải danh sách chính thức của tổ chức nào.</p>
+      <h4>Video</h4>
+      <p>Video luyện nghe © British Council (kênh YouTube LearnEnglish), phát qua trình phát nhúng chính thức của YouTube. App không tải, không lưu và không sao chép lời thoại của video. App không liên kết và không được British Council bảo trợ. Tên “British Council” chỉ dùng để ghi nguồn.</p>
+      <h4>Dịch vụ</h4>
+      <p>Google Dịch, MyMemory (Translated), LanguageTool, Free Dictionary API (dictionaryapi.dev), YouTube, Firebase. Tên và thương hiệu thuộc về chủ sở hữu tương ứng.</p>
+      <h4>Mã nguồn & phông chữ</h4>
+      <ul>
+        <li>Firebase JavaScript SDK: giấy phép Apache 2.0.</li>
+        <li>Phông Be Vietnam Pro, Bricolage Grotesque, JetBrains Mono qua Google Fonts: giấy phép SIL Open Font License 1.1.</li>
+        <li>Giao diện, biểu tượng và mã của app được viết riêng cho app.</li>
+      </ul>
+      <h4>Báo vi phạm</h4>
+      <p>Nếu bạn là chủ sở hữu nội dung và cho rằng app dùng nội dung của bạn chưa phù hợp, hãy gửi qua mục “💬 Gửi góp ý”. Chúng tôi sẽ xem xét và gỡ bỏ nhanh chóng nếu cần.</p>
+    </div>
   </div>
 </div>
 <div class="sync-bar" id="sync-bar" hidden><span id="sync-bar-text"></span><button id="sync-bar-btn">Làm mới</button></div>
@@ -6568,7 +6724,7 @@ renderGrammarHome();
 function escapeRe(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
 /* ============================================================
-   UI WIRING - Listening / dictation page (like Daily Dictation)
+   UI WIRING - Listening / dictation page
    Sentences come from the app's own examples; the device voice reads
    them, the learner types what they hear, and each word is checked.
 ============================================================ */
@@ -20744,7 +20900,7 @@ function bcRenderList() {
   root.innerHTML = '';
   const intro = lsEl('div', 'bc-intro');
   intro.appendChild(lsEl('div', 'bc-intro-t', '📺 Video của British Council'));
-  intro.appendChild(lsEl('div', 'bc-intro-s', `${BC_FLAT.length} video miễn phí từ kênh YouTube LearnEnglish, xếp theo trình độ. Video phát bằng trình phát chính thức của YouTube, bản quyền thuộc British Council.`));
+  intro.appendChild(lsEl('div', 'bc-intro-s', `${BC_FLAT.length} video miễn phí từ kênh YouTube LearnEnglish, xếp theo trình độ. Video phát bằng trình phát chính thức của YouTube, bản quyền thuộc British Council. App này không liên kết và không được British Council bảo trợ.`));
   root.appendChild(intro);
 
   const chips = lsEl('div', 'colloc-chips bc-levels');
@@ -20961,7 +21117,7 @@ function bcRenderPlayer() {
   const yt = lsEl('a', 'btn-ghost bc-yt', '↗ Mở trên YouTube');
   yt.href = `https://www.youtube.com/watch?v=${id}`; yt.target = '_blank'; yt.rel = 'noopener';
   root.appendChild(yt);
-  root.appendChild(lsEl('p', 'bc-credit', 'Video © British Council, phát qua YouTube. Mẹo: nói nhanh quá thì bật 🐢 Chậm (0.75×). Video không phát trong bản xem trước, hãy mở app qua GitHub Pages.'));
+  root.appendChild(lsEl('p', 'bc-credit', 'Video © British Council, phát qua YouTube (app không liên kết với British Council). Mẹo: nói nhanh quá thì bật 🐢 Chậm (0.75×). Video không phát trong bản xem trước, hãy mở app qua GitHub Pages.'));
 }
 
 
@@ -21337,12 +21493,16 @@ const FIREBASE_CONFIG = {
         auth = firebase.auth(app); db = firebase.firestore(app);
         auth.onAuthStateChanged(u => {
           const was = user; user = u || null; render();
+          userCbs.forEach(cb => { try { cb(user); } catch (e) {} });
           if (user && (!was || was.uid !== user.uid)) { syncNow(pendingSignin ? 'signin' : 'startup'); pendingSignin = false; }
         });
       });
     ready.catch(() => { ready = null; });
     return ready;
   }
+  // shared with the feedback module
+  const userCbs = [];
+  window.HTA_FB = { load: loadFirebase, get db() { return db; }, get user() { return user; }, onUser: cb => { userCbs.push(cb); } };
   // signed-in before on this device? connect straight away; otherwise wait until the sheet is opened
   if (localStorage.getItem(UIDK)) loadFirebase().catch(() => {});
 
@@ -21363,6 +21523,27 @@ const FIREBASE_CONFIG = {
     try { await loadFirebase(); await auth.sendPasswordResetEmail(email); say('Đã gửi email đặt lại mật khẩu. Kiểm tra hộp thư (cả mục Spam).', true); } catch (e) { fail(e); }
   });
   $('acct-sync').addEventListener('click', () => syncNow('manual'));
+  // let people remove everything they stored with us
+  $('acct-del').addEventListener('click', async () => {
+    const b = $('acct-del');
+    if (b.dataset.sure !== '1') {
+      b.dataset.sure = '1'; b.textContent = '⚠️ Bấm lần nữa để xoá vĩnh viễn tài khoản và tiến độ trên tài khoản';
+      setTimeout(() => { b.dataset.sure = ''; b.textContent = 'Xoá tài khoản và dữ liệu đã lưu…'; }, 5000);
+      return;
+    }
+    b.dataset.sure = ''; b.textContent = 'Xoá tài khoản và dữ liệu đã lưu…';
+    try {
+      const u = auth.currentUser;
+      if (!u) return;
+      await db.collection('users').doc(u.uid).delete();
+      await u.delete();
+      applying = true; try { localStorage.removeItem(UIDK); localStorage.removeItem(BASEK); localStorage.removeItem(META); } catch (e) {} applying = false;
+      say('Đã xoá tài khoản và dữ liệu trên tài khoản. Tiến độ trên máy này vẫn còn.', true);
+    } catch (e) {
+      if (e && e.code === 'auth/requires-recent-login') say('Để bảo mật, hãy đăng xuất rồi đăng nhập lại, sau đó bấm xoá lần nữa.');
+      else fail(e);
+    }
+  });
   $('acct-out-btn').addEventListener('click', async () => {
     try { await syncNow('manual'); await auth.signOut(); say('Đã đăng xuất. Tiến độ vẫn còn trên máy này.', true); } catch (e) { fail(e); }
   });
@@ -21371,6 +21552,154 @@ const FIREBASE_CONFIG = {
     if (document.visibilityState === 'visible' && user && Date.now() - lastSync > 30000) syncNow('focus');
     if (document.visibilityState === 'hidden' && user && pushTimer) { clearTimeout(pushTimer); pushTimer = null; syncNow('change'); }
   });
+})();
+</script>
+
+<script>
+/* ============================================================
+   FEEDBACK — users send ideas / bug reports / praise to Firestore
+   (collection "feedback"). Only the app owner can read them: the
+   Firestore rules allow reading for the owner's account, and the
+   inbox tab appears automatically when that account is signed in.
+============================================================ */
+(() => {
+  const FB = window.HTA_FB, $ = id => document.getElementById(id);
+  if (!FB || !$('fb-foot')) return;
+  $('fb-foot').hidden = false;
+  const sheet = $('fsheet'), msg = $('fb-msg');
+  let type = 'idea', rating = 0, lastSent = 0, isOwner = false, items = [];
+  const TYPES = { idea: '💡 Ý tưởng', bug: '🐞 Báo lỗi', praise: '❤️ Lời khen', other: '💬 Khác' };
+  const say = (t, ok) => { msg.textContent = t || ''; msg.className = 'acct-msg' + (ok ? ' ok' : ''); };
+  const device = () => {
+    const ua = navigator.userAgent || '';
+    const os = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'iPad'
+      : /Android/.test(ua) ? 'Android' : /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'Mac' : 'Khác';
+    const br = /Edg\//.test(ua) ? 'Edge' : /CriOS|Chrome\//.test(ua) ? 'Chrome' : /FxiOS|Firefox\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : 'Trình duyệt khác';
+    const app = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone ? ' · app màn hình chính' : '';
+    return `${os} · ${br}${app}`;
+  };
+  const page = () => { const b = document.querySelector('nav.tabbar button.active'); return b ? b.textContent.trim() : ''; };
+  const ver = () => { const b = document.querySelector('.hero-badge'); return b ? (b.textContent.match(/v\d+/) || [''])[0] : ''; };
+
+  const setTab = t => {
+    document.querySelectorAll('.fb-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+    $('fb-form').hidden = t !== 'send'; $('fb-inbox').hidden = t !== 'inbox';
+    if (t === 'inbox') loadInbox();
+  };
+  document.querySelectorAll('.fb-tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+  const open = () => { sheet.hidden = false; document.body.classList.add('vsheet-open'); say(''); FB.load().catch(() => {}); };
+  const close = () => { sheet.hidden = true; document.body.classList.remove('vsheet-open'); };
+  $('fb-open').addEventListener('click', open);
+  sheet.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+
+  $('fb-types').addEventListener('click', e => {
+    const b = e.target.closest('.fb-type'); if (!b) return;
+    type = b.dataset.type;
+    document.querySelectorAll('.fb-type').forEach(x => x.classList.toggle('active', x === b));
+    $('fb-text').placeholder = type === 'bug' ? 'Lỗi xảy ra ở tab nào, bạn bấm gì thì bị? Ví dụ: "Tab Cụm từ, bấm ▶ không có tiếng"…'
+      : type === 'praise' ? 'Bạn thích điều gì ở app?' : 'Bạn muốn app có thêm gì, hay gặp lỗi ở đâu? Viết càng cụ thể càng dễ sửa…';
+  });
+  const paintStars = () => document.querySelectorAll('#fb-stars button').forEach(b => b.classList.toggle('on', +b.dataset.v <= rating));
+  $('fb-stars').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; rating = rating === +b.dataset.v ? 0 : +b.dataset.v; paintStars(); });
+  $('fb-text').addEventListener('input', () => { $('fb-len').textContent = $('fb-text').value.length + ' / 2000'; });
+
+  $('fb-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = $('fb-text').value.trim(), contact = $('fb-contact').value.trim();
+    if (text.length < 3) { say('Bạn viết vài chữ góp ý trước đã nhé.'); return; }
+    if (Date.now() - lastSent < 30000) { say('Bạn vừa gửi xong. Đợi một chút rồi gửi tiếp nhé.'); return; }
+    const btn = $('fb-send'); btn.disabled = true; say('Đang gửi…', true);
+    try {
+      await FB.load();
+      const u = FB.user;
+      const doc = { type, rating, text: text.slice(0, 2000), page: page().slice(0, 60), ver: ver(), ua: device().slice(0, 80),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(), read: false };
+      if (contact) doc.contact = contact.slice(0, 200);
+      if (u) { doc.uid = u.uid; if (u.email) doc.email = u.email.slice(0, 200); }
+      await FB.db.collection('feedback').add(doc);
+      lastSent = Date.now();
+      $('fb-text').value = ''; $('fb-len').textContent = '0 / 2000'; rating = 0; paintStars();
+      say('✓ Đã gửi! Cảm ơn bạn đã góp ý.', true);
+      if (isOwner) refreshCount();
+    } catch (err) {
+      say(err && err.code === 'permission-denied' ? 'Chưa gửi được: Firestore chưa cho phép nhận góp ý (cần cập nhật Rules).'
+        : 'Chưa gửi được — kiểm tra mạng rồi bấm Gửi lại. Nội dung bạn viết vẫn còn đây.');
+    } finally { btn.disabled = false; }
+  });
+
+  // ---- owner inbox ----
+  const fmt = ts => { try { const d = ts && ts.toDate ? ts.toDate() : null; return d ? d.toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) : 'vừa xong'; } catch (e) { return ''; } };
+  async function fetchItems() {
+    const snap = await FB.db.collection('feedback').orderBy('createdAt', 'desc').limit(200).get();
+    items = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+    return items;
+  }
+  function paintCount() {
+    const unread = items.filter(x => !x.read).length;
+    $('fb-count').textContent = unread ? `(${unread})` : '';
+    $('fb-dot').hidden = !unread; $('fb-dot').textContent = unread > 99 ? '99+' : String(unread);
+  }
+  async function refreshCount() { try { await fetchItems(); paintCount(); } catch (e) {} }
+  async function loadInbox() {
+    const list = $('fb-list');
+    list.innerHTML = '<div class="fb-empty">Đang tải…</div>';
+    try { await fetchItems(); } catch (e) { list.innerHTML = '<div class="fb-empty">Không tải được hộp thư. Kiểm tra mạng rồi bấm Tải lại.</div>'; return; }
+    paintCount(); renderInbox();
+  }
+  function renderInbox() {
+    const list = $('fb-list');
+    const unread = items.filter(x => !x.read).length;
+    const rated = items.filter(x => x.rating > 0), avg = rated.length ? (rated.reduce((k, x) => k + x.rating, 0) / rated.length).toFixed(1) : null;
+    $('fb-inbox-sum').textContent = `${items.length} góp ý · ${unread} chưa đọc` + (avg ? ` · điểm TB ${avg}★` : '');
+    list.innerHTML = '';
+    if (!items.length) { list.innerHTML = '<div class="fb-empty">Chưa có góp ý nào.</div>'; return; }
+    items.forEach(it => {
+      const card = document.createElement('div'); card.className = 'fb-item' + (it.read ? '' : ' unread');
+      const top = document.createElement('div'); top.className = 'fb-item-top';
+      const t = document.createElement('span'); t.className = 'fb-item-type'; t.textContent = TYPES[it.type] || '💬'; top.appendChild(t);
+      if (it.rating) { const st = document.createElement('span'); st.className = 'fb-item-stars'; st.textContent = '★'.repeat(it.rating); top.appendChild(st); }
+      const tm = document.createElement('span'); tm.textContent = fmt(it.createdAt); top.appendChild(tm);
+      card.appendChild(top);
+      const tx = document.createElement('div'); tx.className = 'fb-item-text'; tx.textContent = it.text || ''; card.appendChild(tx);
+      const info = [it.contact && '📮 ' + it.contact, it.email && !it.contact && '👤 ' + it.email, it.page && 'Tab: ' + it.page, it.ua, it.ver].filter(Boolean).join(' · ');
+      if (info) { const inf = document.createElement('div'); inf.className = 'fb-item-info'; inf.textContent = info; card.appendChild(inf); }
+      const acts = document.createElement('div'); acts.className = 'fb-item-acts';
+      const rd = document.createElement('button'); rd.textContent = it.read ? '↺ Đánh dấu chưa đọc' : '✓ Đã đọc';
+      rd.addEventListener('click', async () => { try { await FB.db.collection('feedback').doc(it.id).update({ read: !it.read }); it.read = !it.read; paintCount(); renderInbox(); } catch (e) {} });
+      const del = document.createElement('button'); del.textContent = '🗑 Xoá';
+      del.addEventListener('click', async () => {
+        if (del.dataset.sure !== '1') { del.dataset.sure = '1'; del.textContent = 'Bấm lần nữa để xoá'; setTimeout(() => { del.dataset.sure = ''; del.textContent = '🗑 Xoá'; }, 3000); return; }
+        try { await FB.db.collection('feedback').doc(it.id).delete(); items = items.filter(x => x !== it); paintCount(); renderInbox(); } catch (e) {}
+      });
+      acts.appendChild(rd); acts.appendChild(del); card.appendChild(acts);
+      list.appendChild(card);
+    });
+  }
+  $('fb-reload').addEventListener('click', loadInbox);
+  // The inbox shows up only for the owner's account (the rules reject everyone else's read)
+  FB.onUser(async u => {
+    isOwner = false; $('fb-tabs').hidden = true; $('fb-dot').hidden = true; setTab('send');
+    if (!u) return;
+    try { await fetchItems(); isOwner = true; $('fb-tabs').hidden = false; paintCount(); } catch (e) { isOwner = false; }
+  });
+})();
+</script>
+
+<script>
+/* ---- Terms, privacy & credits sheet ---- */
+(() => {
+  const sh = document.getElementById('lsheet');
+  if (!sh) return;
+  const show = which => {
+    document.getElementById('legal-privacy').hidden = which !== 'privacy';
+    document.getElementById('legal-credits').hidden = which !== 'credits';
+    document.getElementById('legal-title').textContent = which === 'credits' ? 'Nguồn & ghi công' : 'Điều khoản & Quyền riêng tư';
+    document.querySelectorAll('.vsheet:not([hidden])').forEach(x => { if (x !== sh) x.hidden = true; });
+    sh.hidden = false; document.body.classList.add('vsheet-open');
+    const p = sh.querySelector('.vsheet-panel'); if (p) p.scrollTop = 0;
+  };
+  document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-legal]'); if (b) show(b.dataset.legal); });
+  sh.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => { sh.hidden = true; document.body.classList.remove('vsheet-open'); }));
 })();
 </script>
 
