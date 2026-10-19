@@ -2062,7 +2062,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v37</span>
+      <span class="hero-badge">EN ⇄ VI · v38</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -6290,6 +6290,9 @@ const FX_RULES_EN = [
       const person = /^(i|you|we|they|he|she)$/.test(fxPrevWord(t, m.index)) || /^get|^got/i.test(m[1]);
       return person ? { rep: `${m[1]} used to ${fxIng(v)}` } : null;
     } },
+  { re: /\b(learn|learns|learned|learnt|learning)(?=\s+(?:at|in)\s+(?:the\s+|a\s+)?(?:university|college|school|high school|[A-Z][A-Za-z]*\s+(?:University|College|School)|[A-Z]{2,}\b))/gi, cat: 'COLLOCATIONS',
+    vi: '“Học ở trường (đại học)” dùng “study at”, không dùng “learn at”: I study at HUI University. (“learn” là học một kỹ năng, một điều gì đó: learn English.)',
+    fn: m => ({ rep: fxCap(m[1], { learn: 'study', learns: 'studies', learned: 'studied', learnt: 'studied', learning: 'studying' }[m[1].toLowerCase()]) }) },
   { re: /\b(discuss|discussed|discusses|discussing|mention|mentioned|mentions|mentioning)\s+about\b/gi, cat: 'REDUNDANCY',
     vi: '“discuss” và “mention” không cần “about”: discuss the problem.', fn: m => ({ rep: m[1] }) },
   { re: /\b(return|returned|returns|returning)\s+back\b/gi, cat: 'REDUNDANCY',
@@ -6374,7 +6377,7 @@ const FX_RULE_FORM = { re: /\b(to|can|could|will|would|shall|should|must|may|mig
     if (fxVerbs().base.has(w)) return null;
     if (aux !== 'to' && /^(the|a|an|his|her|my|your|their|our|its|this|that|free|good|tin|trash)$/.test(fxPrevWord(t, m.index))) return null;   // "his will was", "the can is"
     if (/^may$/.test(aux) && /^(is|was|has)$/.test(w)) return null;   // the month of May
-    if (aux === 'to' && /^(saw|left|found|rose|felt|fell|lit)$/.test(w)) return null;
+    if (aux === 'to' && /^(saw|left|found|rose|felt|fell|lit|is|was|are|were|has|does)$/.test(w)) return null;   // "the school she goes to is…"
     let b = fxFromPast(w, true), why = 'past';
     if (!b && !isDo) { b = fxFrom3rd(w); why = '3rd'; }
     if (!b || (isDo && FX_DO_NOUNS.test(w))) return null;
@@ -6414,27 +6417,67 @@ const FX_RULE_3RD = { re: /\b(he|she|it|my (?:mother|father|mom|mum|dad|brother|
 const FX_RULE_I = { re: /(^|[^A-Za-z'’.])i(?=$|[\s,!?;:'’]|\.(?!e\.))/g, cat: 'CASING', vi: 'Đại từ “I” (tôi) luôn viết hoa.',
   fn: m => ({ from: m[1].length, rep: 'I' }) };
 
+const FX_NUMW = '(?:\\d+|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|a hundred|a few|few|several|many|both|these|those)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?';
+const FX_PLURAL = { year: 'years', month: 'months', week: 'weeks', day: 'days', hour: 'hours', minute: 'minutes', second: 'seconds', time: 'times',
+  person: 'people', child: 'children', man: 'men', woman: 'women', book: 'books', student: 'students', friend: 'friends', brother: 'brothers',
+  sister: 'sisters', dollar: 'dollars', kilometre: 'kilometres', kilometer: 'kilometers', metre: 'metres', meter: 'meters', room: 'rooms',
+  cat: 'cats', dog: 'dogs', language: 'languages', country: 'countries', city: 'cities', class: 'classes', lesson: 'lessons', child_: '' };
+// "fifteen year ago" → "fifteen years ago" (but "a two-year plan", "a fifteen year old boy" stay)
+const FX_RULE_NUM = { re: new RegExp('\\b(' + FX_NUMW + ')\\s+(year|month|week|day|hour|minute|second|time|person|child|man|woman|book|student|friend|brother|sister|dollar|kilometre|kilometer|metre|meter|room|cat|dog|language|country|city|class|lesson)\\b(?=\\s*(?:[.,!?;:]|$)|\\s+(?:ago|old|later|before|after|of|in|on|at|and|or|for|to|with|from|since|now|left|more|each|every|a|per|long|earlier|already|together|ago)\\b)', 'gi'),
+  cat: 'GRAMMAR', vi: 'Sau số đếm từ 2 trở lên, danh từ đếm được phải ở số nhiều: fifteen years ago, two days, three people.',
+  fn: (m, t) => {
+    if (/^1$/.test(m[1])) return null;
+    const after = t.slice(m.index + m[0].length);
+    if (/^\s+old\b/i.test(after) && /\b(a|an|the)\s*$/i.test(t.slice(0, m.index))) return null;   // "a fifteen year old boy"
+    const n = m[2].toLowerCase();
+    return { from: m[0].length - m[2].length, rep: fxCap(m[2], FX_PLURAL[n]) };
+  } };
+// "Fifteen years ago. I was…" → "Fifteen years ago, I was…"
+const FX_RULE_FRAG = { re: new RegExp('(^|[.!?]\\s+|\\n)((?:' + FX_NUMW + '|a|an|one)\\s+[a-z]+\\s+ago|yesterday|last\\s+(?:night|week|weekend|month|year|summer|winter|time|sunday|monday|tuesday|wednesday|thursday|friday|saturday)|in\\s+(?:19|20)\\d\\d|when\\s+I\\s+was\\s+(?:a\\s+)?[a-z]+)(\\.)(\\s+)(We|They|He|She|It|My|Our|The|You|His|Her|Their|I)\\b', 'gi'),
+  cat: 'PUNCTUATION', vi: 'Cụm chỉ thời gian (Fifteen years ago, Yesterday, Last week…) không đứng riêng thành một câu. Nối vào câu sau bằng dấu phẩy: Fifteen years ago, I was a student.',
+  fn: m => {
+    const from = m[1].length + m[2].length, word = m[5];
+    return { from, to: m[0].length, rep: ',' + m[4] + (word === 'I' ? 'I' : word.toLowerCase()) };
+  } };
+// "university HUI" → "HUI University", "district Go Vap" → "Go Vap District"
+const FX_RULE_NAME = { re: /\b(university|college|school|hospital|district|ward|street|road|province|lake|park|market|bridge|airport|station|pagoda|temple|city|mountain|island|beach|river)\s+((?:[A-Z][A-Za-z]*)(?:\s+[A-Z][A-Za-z]*)*)(?=\s*(?:[.,!?;:)]|$)|\s+(?:in|on|at|near|and|or|with|for|from|to|is|was|are|were|has|had)\b)/g,
+  cat: 'GRAMMAR', vi: 'Trong tiếng Anh, tên riêng đứng TRƯỚC danh từ chung (ngược với tiếng Việt): HUI University, Go Vap District, Le Loi Street, Hoan Kiem Lake.',
+  fn: (m, t) => {
+    const noun = m[1], name = m[2];
+    if (/^(I|A|The|An)$/.test(name.split(/\s+/)[0])) return null;
+    if (/\b(the\s+)?(same|this|that|my|your|our|their|his|her)\s*$/i.test(t.slice(0, m.index)) && noun === 'school') return null;
+    const Noun = noun[0].toUpperCase() + noun.slice(1);
+    return { rep: name + ' ' + Noun, on: noun !== 'city' };
+  } };
+
 // time words for the past + a present-tense verb: "Yesterday I go" → "Yesterday I went"
-const FX_PAST_MARK = /\b(yesterday|last\s+(?:night|week|weekend|month|year|summer|winter|spring|autumn|fall|time|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|(?:\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten|a few|few|several|many)\s+(?:minutes?|hours?|days?|weeks?|months?|years?)\s+ago|in\s+(?:19\d\d|20[01]\d)|when\s+(?:I|we|he|she|they)\s+(?:was|were)\s+(?:a\s+)?(?:child|kid|young|little|small|student|students|children|kids|at school))\b/i;
+const FX_PAST_MARK = new RegExp('\\b(yesterday|last\\s+(?:night|week|weekend|month|year|summer|winter|spring|autumn|fall|time|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|(?:' + FX_NUMW + '|a|an|one)\\s+(?:minutes?|hours?|days?|weeks?|months?|years?)\\s+ago|in\\s+(?:19\\d\\d|20[01]\\d)|when\\s+(?:I|we|he|she|they)\\s+(?:was|were)\\s+(?:a\\s+)?(?:child|kid|young|little|small|student|students|children|kids|at school|teenager|boy|girl))\\b', 'i');
 const FX_MENTAL = /^(think|know|believe|hope|guess|remember|forget|mean|feel|understand|wonder|love|like|want|need|wish|bet|say|tell|ask)$/;
 function fxPastRules(text) {
   const out = [], V = fxVerbs();
-  const re = /[^.!?\n]+[.!?]*/g; let s;
-  while ((s = re.exec(text))) {
-    const sent = s[0], base = s.index;
-    if (!FX_PAST_MARK.test(sent)) continue;
-    const words = sent.replace(FX_PAST_MARK, ' ').toLowerCase().match(/[a-z']+/g) || [];
-    const hasPast = words.some(w => V.v2.has(w) || (/ed$/.test(w) && fxFromPast(w)) || w === 'was' || w === 'were' || w === "didn't" || w === 'did');
+  const sents = []; const re = /[^.!?\n]+[.!?]*/g; let s;
+  while ((s = re.exec(text))) sents.push({ t: s[0], at: s.index });
+  // a sentence that is only a time phrase ("Fifteen years ago.") sets the time of the next one
+  const onlyMark = t => { const x = t.replace(/[.!?\s]+$/, '').trim(); const m = x.match(FX_PAST_MARK); return !!m && m[0].length >= x.length - 1; };
+  let carry = false;
+  sents.forEach(({ t: sent, at: base }) => {
+    const marked = FX_PAST_MARK.test(sent) || carry;
+    carry = onlyMark(sent);
+    if (!marked || carry) return;
+    // positions of verbs already in the past ("was", "went", "watched"…)
+    const stripped = sent.replace(FX_PAST_MARK, m => ' '.repeat(m.length));
+    const pastAt = [];
+    stripped.replace(/[A-Za-z']+/g, (w, i) => { const l = w.toLowerCase(); if (V.v2.has(l) || (/ed$/.test(l) && fxFromPast(l)) || /^(was|were|did|didn't|had)$/.test(l)) pastAt.push(i); return w; });
     const complex = /\b(that|what|which|who|while|if|because|why|how|where|whether|until|before|after)\b/i.test(sent) || /\?\s*$/.test(sent);
     const vre = /\b([Ii]|[Yy]ou|[Ww]e|[Tt]hey|[Hh]e|[Ss]he|[Ii]t|(?:[Mm]y|[Hh]is|[Hh]er|[Oo]ur|[Tt]heir|[Yy]our|[Tt]he)\s+[a-z]+|[A-Z][a-z]+)\s+(?:(always|usually|often|sometimes|never|also|just|really|still|first|then)\s+)?(don'?t|doesn'?t|have|has|am|are|is|[a-z]+)\b(\s+[a-z]+)?/g; let m;
-    let lastOn = null, lastEnd = -1;
+    let lastOn = null, lastEnd = -1, mentalAt = -1;
     while ((m = vre.exec(sent))) {
       vre.lastIndex = m.index + m[1].length;   // rescan right after the subject
       const prev = fxPrevWord(sent, m.index);
       if (FX_SKIP_BEFORE.test(prev)) continue;
       if (/^[A-Z][a-z]+$/.test(m[1]) && !/^(i|you|we|they|he|she|it)$/i.test(m[1]) && /^(yesterday|last|when|in|then|after|before|today|on|at|and|but|so|a|an|the|this|that|there|one|two|three|four|five|six|seven|eight|nine|ten|my|his|her|our|their|your|what|where|why|how|who|which|if|because|although|while|during|since|from|for|every|some|many|all|we|you|they|he|she|it)$/i.test(m[1])) continue;   // a capitalised word is a name unless it's a common sentence starter
       const subj = m[1], w = m[3].toLowerCase(), nxt = (m[4] || '').trim().toLowerCase();
-      const at = base + m.index + m[0].length - (m[4] || '').length - m[3].length;
+      const rel = m.index + m[0].length - (m[4] || '').length - m[3].length, at = base + rel;
       let rep = null, len = m[3].length, extra = '';
       if (/^(don'?t|doesn'?t)$/.test(w)) rep = "didn't";
       else if (w === 'am' || w === 'is') rep = 'was';
@@ -6447,29 +6490,37 @@ function fxPastRules(text) {
       else {
         const b = V.base.has(w) && !/^(can|will|must|should|may|might|would|could|shall)$/.test(w) ? w : fxFrom3rd(w);
         if (!b || b === 'be') continue;
+        if (FX_MENTAL.test(b)) { if (mentalAt < 0) mentalAt = rel; if (complex || pastAt.length) continue; }
         rep = fxPast(b);
-        if (FX_MENTAL.test(b)) { if (complex || hasPast) continue; }
+        // "learn at university" → "studied at university"
+        if (b === 'learn' && /^\s+(at|in)\s+(the\s+|a\s+)?(university|college|school|[A-Z])/i.test(sent.slice(rel + m[3].length))) { rep = 'studied'; extra = 'study'; }
       }
       if (!rep || rep === w) continue;
-      lastOn = !complex && !hasPast; lastEnd = at + len;
+      // sure when nothing else in the sentence is past, or when this verb continues an earlier past verb ("I was…, I learn")
+      const before = pastAt.some(p => p < rel), after = pastAt.some(p => p > rel);
+      lastOn = !complex && (!pastAt.length || (before && !after) || before) && !(mentalAt >= 0 && mentalAt < rel);
+      lastEnd = at + len;
       out.push({ offset: at, length: len, rep, on: lastOn,
         vi: extra === 'pp' ? 'Có mốc thời gian quá khứ (yesterday, last week, … ago) thì dùng quá khứ đơn, không dùng hiện tại hoàn thành: I saw him yesterday.'
+          : extra === 'study' ? 'Câu nói về quá khứ nên dùng quá khứ đơn. Ngoài ra “học ở trường” dùng “study at”, không dùng “learn at”: I studied at HUI University.'
           : 'Câu có mốc thời gian quá khứ (yesterday, last week, … ago) nên động từ chia ở quá khứ đơn: Yesterday I went…' });
     }
     // "…I went to the market and buy some…" → the second verb follows the first one
     if (lastEnd >= 0) {
-      const are = /\b(and|then)\s+([a-z]+)\b(?=\s+(?:a|an|the|some|my|his|her|our|their|your|me|him|them|us|it|to|with|at|in|on|home|out|up|back|lots|many|football|games|tennis|music|tv|lunch|dinner|breakfast|together)\b)/g; let a;
+      const are = /\b(and|then)\s+([a-z]+)\b(?=\s+(?:a|an|the|some|my|his|her|our|their|your|me|him|them|us|it|to|with|at|in|on|home|out|up|back|lots|many|football|games|tennis|music|tv|lunch|dinner|breakfast|together)\b|\s*(?:[.,!?]|$))/g; let a;
       while ((a = are.exec(sent))) {
         const at = base + a.index + a[0].length - a[2].length;
         if (at < lastEnd) continue;
         const w = a[2].toLowerCase();
         const b = V.base.has(w) ? w : fxFrom3rd(w);
         if (!b || b === 'be' || FX_MENTAL.test(b)) continue;
+        // at the end of a clause only clear verbs ("and swim."), not nouns ("bread and water.")
+        if (/^\s*(?:[.,!?]|$)/.test(sent.slice(a.index + a[0].length)) && !/^(swim|dance|sing|relax|sleep|leave|eat|go|come|study|stay|laugh|cry|talk|chat|smile|win|lose|arrive|return|sit|wait|pray|travel)$/.test(b)) continue;
         out.push({ offset: at, length: a[2].length, rep: fxPast(b), on: lastOn,
           vi: 'Hai hành động nối bằng “and” trong cùng câu quá khứ đều chia ở quá khứ: I went to the market and bought some fruit.' });
       }
     }
-  }
+  });
   return out;
 }
 
@@ -6515,7 +6566,7 @@ function fxRules(text, lang) {
   const mk = (offset, length, rep, cat, vi, on, alts) => ({ offset, length, orig: text.substr(offset, length), rep, alts: alts || [], cat, spell: false, msg: '', vi, on: on !== false, rule: true });
   if (lang === 'vi') { fxViRules(text).forEach(r => push(mk(r.offset, r.length, r.rep, 'NONSTANDARD_PHRASES', r.vi))); return items; }
   fxPastRules(text).forEach(r => push(mk(r.offset, r.length, r.rep, 'GRAMMAR', r.vi, r.on)));
-  [...FX_RULES_EN, FX_RULE_BE, FX_RULE_QFORM, FX_RULE_FORM, FX_RULE_3RD, FX_RULE_I].forEach(rule => {
+  [FX_RULE_FRAG, FX_RULE_NUM, FX_RULE_NAME, ...FX_RULES_EN, FX_RULE_BE, FX_RULE_QFORM, FX_RULE_FORM, FX_RULE_3RD, FX_RULE_I].forEach(rule => {
     rule.re.lastIndex = 0; let m;
     while ((m = rule.re.exec(text))) {
       const r = rule.fn(m, text);
