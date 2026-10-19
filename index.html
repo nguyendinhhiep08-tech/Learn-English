@@ -1926,6 +1926,135 @@
   .legal-body li{ margin:3px 0; }
   .legal-date{ color:var(--ink-soft); font-size:12.5px; margin-top:4px !important; }
   .acct-del{ margin-top:10px; color:var(--mark) !important; }
+  /* ---- pronunciation practice sets (vocab-style) ---- */
+  #pron-home[hidden], #pron-sets[hidden], #pron-setview[hidden], #page-pron .pr-more[hidden]{ display:none; }
+  .pr-set-tip2{ margin-top:12px; }
+  .pr-acts{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:12px 0 2px; }
+  .pr-acts-hint{ font-size:12.5px; color:var(--ink-soft); flex:1 1 160px; }
+  .pr-tap{ cursor:pointer; -webkit-tap-highlight-color:transparent; border-radius:10px; }
+  .pr-tap:active{ background:var(--rust-light); }
+  .pr-ipa{ color:var(--rust); }
+  .pr-sent-w{ font-size:16px; font-weight:600; line-height:1.4; }
+  .pr-row.learned .vc-word{ color:var(--moss); }
+  .pr-row.pr-now{ background:var(--rust-light); border-radius:12px; margin:0 -8px; padding-left:8px; padding-right:8px; }
+  .pr-paircols{ flex:1; min-width:0; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .pr-paircol{ display:flex; align-items:flex-start; justify-content:space-between; gap:6px; min-width:0; padding:8px 10px; border-radius:12px; background:var(--paper); }
+  .pr-paircol .vc-word{ font-size:17px; }
+  :root body .play-mini.pr-cmp-btn{ font-size:17px; font-weight:700; }
+  #pron-setview #pron-result:not(:empty){ margin-top:10px; }
+  /* ---- IPA chart ---- */
+  .ipa-entry{ width:100%; margin-bottom:4px; }
+  .ipa-entry-top{ display:flex; align-items:center; gap:12px; width:100%; }
+  .ipa-entry-sym{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; width:54px; height:54px; border-radius:14px;
+    background:var(--rust-light); color:var(--rust); font:700 20px/1 var(--font-mono); }
+  .ipa-entry-tx{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .ipa-head-icon{ font:700 20px/1 var(--font-mono) !important; color:var(--rust); }
+  .ipa-guide{ margin-top:12px; padding:12px 14px; }
+  .ipa-guide summary{ cursor:pointer; font:600 14px/1.5 var(--font-body); color:var(--rust); }
+  .ipa-guide-row{ display:flex; align-items:flex-start; gap:10px; margin-top:8px; font-size:13.5px; line-height:1.5; color:var(--ink); }
+  .ipa-guide-k{ flex:0 0 34px; text-align:center; font:700 16px/1.4 var(--font-mono); color:var(--rust); }
+  .ipa-filters{ padding-top:12px; }
+  .ipa-group-h{ display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 10px; margin:18px 0 8px; }
+  .ipa-group-h .tense-group-title{ margin:0; }
+  .ipa-group-sub{ font-size:12px; color:var(--ink-soft); }
+  .ipa-grid{ display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:8px; }
+  .ipa-tile{ position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:0;
+    padding:12px 4px 10px; border-radius:14px; background:var(--card); border:1px solid var(--paper-line); box-shadow:var(--shadow);
+    color:var(--ink); font-weight:400; cursor:pointer; transition:transform .12s ease; -webkit-tap-highlight-color:transparent; }
+  .ipa-tile:active{ transform:scale(0.96); }
+  .ipa-sym{ font:700 23px/1.1 var(--font-mono); color:var(--rust); }
+  .ipa-ex{ max-width:100%; font-size:12.5px; line-height:1.25; color:var(--ink-soft); overflow-wrap:anywhere; text-align:center; }
+  .ipa-hl{ color:var(--rust); font-weight:800; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px; }
+  .vc-word .ipa-hl{ color:var(--rust); }
+  .vc-ipa .ipa-hl{ text-decoration:none; background:var(--rust-light); border-radius:4px; padding:0 2px; }
+  .ipa-voice, .ipa-len{ position:absolute; top:4px; right:5px; font-size:9.5px; line-height:1; opacity:.8; }
+  .ipa-len{ font:600 9px/1 var(--font-mono); color:var(--ink-soft); }
+  .ipa-tile.learned{ border-color:var(--moss); background:color-mix(in srgb, var(--moss) 10%, var(--card)); }
+  .ipa-tile.learned .ipa-sym{ color:var(--moss); }
+  .ipa-tile.learned::after{ content:'✓'; position:absolute; top:4px; left:6px; font-size:11px; font-weight:800; color:var(--moss); }
+  .ipa-tile.pr-now{ outline:3px solid var(--rust); outline-offset:1px; background:var(--rust-light); }
+  .ipa-sheet .vsheet-title{ font-size:17px; }
+  .ipa-d-top{ display:flex; align-items:center; gap:14px; margin-top:10px; }
+  .ipa-d-sym{ flex:0 0 auto; min-width:76px; padding:12px 10px; border-radius:18px; text-align:center; background:var(--rust-light); color:var(--rust); font:700 30px/1 var(--font-mono); }
+  .ipa-d-meta{ min-width:0; }
+  .ipa-d-name{ font:700 16px/1.35 var(--font-display); color:var(--ink); }
+  .ipa-d-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+  .ipa-d-tags .vc-pos{ font-size:11.5px; padding:3px 10px; }
+  :root body .ipa-pair{ border:1px solid var(--rust); cursor:pointer; font-weight:700; background:var(--card); color:var(--rust); box-shadow:none; }
+  .ipa-d-sec{ margin-top:14px; }
+  .ipa-d-h{ font:700 14px/1.4 var(--font-body); color:var(--ink); }
+  .ipa-d-sec p{ margin:4px 0 10px; font-size:14.5px; line-height:1.55; color:var(--ink); }
+  .ipa-d-ex{ margin-top:12px; }
+  .ipa-d-acts{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .ipa-d-acts > *{ flex:1 1 140px; }
+  .ipa-d-check.on{ background:var(--moss) !important; border-color:var(--moss) !important; color:#fff !important; }
+  .ipa-d-nav{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--paper-line); }
+  .ipa-d-nav .btn-ghost{ padding:8px 14px; font-family:var(--font-mono); font-size:14px; }
+  .ipa-d-nav .btn-ghost:disabled{ opacity:.35; }
+  .ipa-d-pos{ font:500 12px var(--font-mono); color:var(--ink-soft); }
+  @media (min-width: 720px){
+    .ipa-grid{ grid-template-columns:repeat(6, minmax(0, 1fr)); }
+    .ipa-grid-diph{ grid-template-columns:repeat(8, minmax(0, 1fr)); }
+    .ipa-grid-cons{ grid-template-columns:repeat(8, minmax(0, 1fr)); }
+  }
+  /* ---- tenses by level ---- */
+  .tn-levels{ margin-top:4px; }
+  .tn-intro{ margin-top:12px; }
+  .tn-intro-h{ display:flex; align-items:center; gap:10px; font-size:16px; }
+  .tn-intro-h b{ font-family:var(--font-display); }
+  .tn-badge{ display:inline-flex; align-items:center; justify-content:center; min-width:34px; padding:2px 8px; border-radius:8px; background:var(--rust); color:var(--on-accent); font:800 13px/1.5 var(--font-display); }
+  .tn-goal{ margin:8px 0 10px; font-size:14px; line-height:1.55; color:var(--ink); }
+  .tn-tip{ margin:10px 0 0; font-size:13px; line-height:1.5; color:var(--ink-soft); }
+  .tn-which{ margin-top:10px; border-top:1px dashed var(--paper-line); padding-top:8px; }
+  .tn-which summary{ cursor:pointer; font:600 13px/1.6 var(--font-body); color:var(--rust); }
+  .tn-which-row{ display:flex; align-items:flex-start; gap:10px; margin-top:8px; font-size:13px; line-height:1.5; color:var(--ink-soft); }
+  .tn-which-row .tn-badge{ flex:0 0 auto; min-width:30px; font-size:11.5px; background:var(--rust-light); color:var(--rust); }
+  .tn-card.done{ border-left:4px solid var(--moss); }
+  .tn-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+  .tn-title{ min-width:0; }
+  .tn-title h3{ margin-bottom:0 !important; }
+  .tn-en{ font-size:13px; font-weight:600; color:var(--rust); margin-top:2px; }
+  .tn-done{ flex:0 0 auto; padding:6px 11px; border-radius:999px; font-size:12px; font-weight:600; background:var(--card); color:var(--ink-soft); border:1.5px solid var(--paper-line); }
+  .tn-done.on{ background:var(--moss); border-color:var(--moss); color:var(--on-accent); }
+  .tn-formula{ margin-top:12px; display:flex; flex-direction:column; gap:6px; padding:10px 12px; border-radius:12px; background:var(--rust-light); }
+  .tn-frow{ display:flex; align-items:flex-start; gap:10px; }
+  .tn-sym{ flex:0 0 auto; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--rust); color:var(--on-accent); font:800 14px/1 var(--font-mono); margin-top:1px; }
+  .tn-ftxt{ font:600 13.5px/1.55 var(--font-mono); color:var(--ink); overflow-wrap:anywhere; }
+  .tn-sub{ margin:14px 0 6px; font:700 11px/1.3 var(--font-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--rust); }
+  .tn-usage{ margin:0; padding-left:20px; font-size:14px; line-height:1.6; color:var(--ink); }
+  .tn-signals{ display:flex; flex-wrap:wrap; gap:6px; }
+  .tn-sig{ padding:3px 9px; border-radius:999px; background:var(--paper); border:1px solid var(--paper-line); font:500 12.5px/1.5 var(--font-body); color:var(--ink); }
+  .tn-ex{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--paper-line); }
+  .tn-ex:last-of-type{ border-bottom:none; }
+  .tn-ex-txt{ flex:1; min-width:0; }
+  .tn-ex-en{ font-family:var(--font-display); font-size:15px; font-weight:600; line-height:1.45; color:var(--ink); }
+  .tn-ex-vi{ font-size:13px; line-height:1.45; color:var(--moss); margin-top:2px; }
+  .tn-mistake{ margin-top:12px; padding:10px 12px; border-radius:12px; background:var(--paper); border:1px dashed var(--paper-line); }
+  .tn-mis-t{ font:700 12.5px/1.4 var(--font-body); color:var(--ink); margin-bottom:6px; }
+  .tn-mis-row{ display:flex; align-items:center; gap:8px; font-size:14px; line-height:1.5; margin:3px 0; }
+  .tn-mis-row s{ color:var(--mark); }
+  .tn-mis-row b{ color:var(--moss); flex:1; }
+  .tn-x{ color:var(--mark); font-weight:800; }
+  .tn-v{ color:var(--moss); font-weight:800; }
+  .tn-mis-note{ margin-top:6px; font-size:13px; line-height:1.5; color:var(--ink-soft); }
+  .gr-topic.done{ border-color:var(--moss); }
+  .gr-topic.done .gr-num{ background:var(--moss); color:var(--on-accent); }
+  .gr-done{ display:block; width:100%; margin-top:14px; padding:12px; font-size:14px; }
+  .tn-sym-w{ width:auto; min-width:22px; padding:0 6px; border-radius:11px; font-size:11.5px; }
+  .tn-flabel{ display:inline-block; margin-right:6px; padding:0 7px; border-radius:6px; background:var(--card); color:var(--rust); font:700 11.5px/1.7 var(--font-body); }
+  #grammar-root .tn-formula{ margin-top:10px; margin-bottom:8px; }
+  .gr-usage{ margin-top:6px; }
+  /* ---- irregular verbs by level ---- */
+  .irr-pats{ display:flex; flex-wrap:wrap; gap:6px; }
+  .irr-pats .colloc-chip{ padding:6px 12px; font-size:12.5px; }
+  .irr-meaning{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .irr-mean-t{ flex:1; min-width:0; font-size:13px; }
+  .irr-tags{ display:flex; align-items:center; gap:6px; flex:0 0 auto; }
+  .irr-pat{ font:600 10px/1.5 var(--font-mono); color:var(--ink-soft); background:var(--paper); border:1px solid var(--paper-line); padding:0 6px; border-radius:6px; }
+  .verb-row.learned .v{ color:var(--moss); }
+  .verb-row.pr-now{ background:var(--rust-light); border-radius:12px; margin:0 -8px; padding-left:8px; padding-right:8px; }
+  .irr-search-note{ font:500 12px/1.4 var(--font-mono); color:var(--ink-soft); padding:8px 0; }
+  #verb-levels{ margin-bottom:12px; }
 </style>
 </head>
 <body>
@@ -1933,7 +2062,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v30</span>
+      <span class="hero-badge">EN ⇄ VI · v37</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -2004,17 +2133,20 @@
   <!-- PAGE 2: PRONUNCIATION -->
   <section class="page" id="page-pron">
     <div class="section-title">Luyện phát âm</div>
-    <div class="section-sub">Nghe giọng chuẩn, xem phiên âm, trọng âm và mẹo phát âm, rồi nói theo để app chấm điểm.</div>
+    <div class="section-sub">Học bảng phiên âm IPA 44 âm, nghe giọng chuẩn, xem trọng âm và mẹo phát âm, rồi nói theo để app chấm điểm.</div>
 
+    <div id="pron-home">
     <div class="pron-input-row">
       <input type="text" id="pron-input" placeholder="Gõ từ hoặc câu, ví dụ: comfortable" autocomplete="off" autocapitalize="off">
       <button class="btn-primary" id="pron-go-btn">Tra</button>
     </div>
 
     <div class="pron-quick-list" id="pron-quick"></div>
+    </div>
 
     <div id="pron-result"></div>
     <div id="pron-sets"></div>
+    <div id="pron-setview" hidden></div>
 
     <details class="pr-more">
       <summary>⚙️ Thông tin & kiểm tra kết nối</summary>
@@ -2093,8 +2225,8 @@
 
   <!-- PAGE: TENSES -->
   <section class="page" id="page-tenses">
-    <div class="section-title">12 thì cơ bản trong tiếng Anh</div>
-    <div class="section-sub">Công thức, cách dùng và ví dụ minh hoạ cho từng thì</div>
+    <div class="section-title">Các thì theo trình độ</div>
+    <div class="section-sub">Chọn đúng trình độ của bạn (A1 → C1) và tập trung học các thì ở cấp đó. Nắm chắc rồi hãy chuyển lên cấp tiếp theo.</div>
     <div id="tenses-list"></div>
   </section>
 
@@ -2105,10 +2237,11 @@
 
   <!-- PAGE: IRREGULAR VERBS -->
   <section class="page" id="page-irregular">
-    <div class="section-title">Động từ bất quy tắc</div>
-    <div class="section-sub">V1 · V2 · V3 · Phiên âm IPA — chạm 🔊 để nghe</div>
+    <div class="section-title">Động từ bất quy tắc theo trình độ</div>
+    <div class="section-sub">240 động từ chia theo cấp A1 → C1. Mỗi từ có V1 · V2 · V3 kèm phiên âm. Chạm ▶ để nghe, ✓ để đánh dấu đã thuộc.</div>
+    <div id="verb-levels"></div>
     <div class="verb-search-row">
-      <input type="text" id="verb-search" placeholder="Tìm động từ... (ví dụ: go, eat, write)" autocomplete="off" autocapitalize="off">
+      <input type="text" id="verb-search" placeholder="Tìm động từ… (go, ăn, written)" autocomplete="off" autocapitalize="off">
     </div>
     <div class="verb-table" id="verb-table"></div>
   </section>
@@ -2212,6 +2345,16 @@
     </div>
     <p class="acct-note"><button class="acct-link" data-legal="privacy">Xem Điều khoản & Quyền riêng tư</button></p>
     <p class="acct-msg" id="acct-msg"></p>
+  </div>
+</div>
+<div class="vsheet ipa-sheet" id="ipasheet" hidden>
+  <div class="vsheet-backdrop" data-close></div>
+  <div class="vsheet-panel" role="dialog" aria-modal="true" aria-labelledby="ipa-title">
+    <div class="vsheet-head">
+      <div class="vsheet-title" id="ipa-title">Âm IPA</div>
+      <button class="vsheet-close" data-close aria-label="Đóng">✕</button>
+    </div>
+    <div id="ipa-body"></div>
   </div>
 </div>
 <div class="vsheet" id="lsheet" hidden>
@@ -4584,203 +4727,499 @@ const GRAMMAR_TOPICS = [
    "Với be, dùng were cho mọi chủ ngữ: \"I wish I were…\"."
   ]
  }
+  ,
+  { "id": "inversion", "group": "advanced", "title": "Đảo ngữ", "en": "Inversion",
+    "intro": "Đưa trợ động từ lên trước chủ ngữ để nhấn mạnh. Hay gặp trong văn viết trang trọng và bài thi B2–C1.",
+    "sections": [
+      { "name": "Đảo ngữ với trạng từ phủ định", "formula": "Never / Rarely / Seldom / Little + trợ động từ + S + V",
+        "usage": "Nhấn mạnh tính hiếm có hoặc bất ngờ của sự việc.",
+        "examples": [
+          { "en": "Never have I seen such a beautiful place.", "vi": "Tôi chưa từng thấy nơi nào đẹp như vậy." },
+          { "en": "Rarely does she complain about her work.", "vi": "Cô ấy hiếm khi phàn nàn về công việc." },
+          { "en": "Little did he know what was waiting for him.", "vi": "Anh ấy đâu biết điều gì đang chờ mình." } ] },
+      { "name": "Not until / Only when / Only after", "formula": "Not until / Only when + mệnh đề + trợ động từ + S + V",
+        "usage": "Nhấn mạnh thời điểm mà việc chính mới xảy ra.",
+        "examples": [
+          { "en": "Not until midnight did they arrive home.", "vi": "Mãi đến nửa đêm họ mới về tới nhà." },
+          { "en": "Only when I moved abroad did I miss my mother's cooking.", "vi": "Chỉ khi ra nước ngoài tôi mới thấy nhớ cơm mẹ nấu." } ] },
+      { "name": "Đảo ngữ trong câu điều kiện", "formula": "Should + S + V · Were + S + to V · Had + S + V3 (bỏ if)",
+        "usage": "Cách nói trang trọng của câu điều kiện loại 1, 2, 3.",
+        "examples": [
+          { "en": "Should you need any help, please call me.", "vi": "Nếu bạn cần giúp gì, hãy gọi cho tôi." },
+          { "en": "Had I known, I would have come earlier.", "vi": "Nếu tôi biết trước thì tôi đã đến sớm hơn." } ] }
+    ],
+    "tips": [ "Chỉ đảo ngữ khi trạng từ phủ định hoặc cụm hạn định đứng đầu câu.", "Hiện tại đơn và quá khứ đơn phải mượn do / does / did: Rarely does he…, Little did I know…", "Đảo ngữ điều kiện bỏ if: Had I known = If I had known." ] },
+  { "id": "mixedcond", "group": "advanced", "title": "Câu điều kiện hỗn hợp", "en": "Mixed conditionals",
+    "intro": "Kết hợp hai mốc thời gian khác nhau: điều kiện ở quá khứ và kết quả ở hiện tại, hoặc ngược lại.",
+    "sections": [
+      { "name": "Quá khứ → kết quả ở hiện tại", "formula": "If + S + had + V3, S + would + V",
+        "usage": "Điều kiện trái với quá khứ, dẫn tới kết quả trái với hiện tại.",
+        "examples": [
+          { "en": "If I had studied medicine, I would be a doctor now.", "vi": "Nếu hồi đó tôi học y thì giờ tôi đã là bác sĩ." },
+          { "en": "If she hadn't missed the bus, she would be here with us.", "vi": "Nếu cô ấy không lỡ xe buýt thì giờ đã ở đây với chúng ta." } ] },
+      { "name": "Hiện tại → kết quả trong quá khứ", "formula": "If + S + V2 / were, S + would have + V3",
+        "usage": "Một đặc điểm luôn đúng ở hiện tại dẫn tới kết quả khác trong quá khứ.",
+        "examples": [
+          { "en": "If I were braver, I would have spoken up at the meeting.", "vi": "Nếu tôi can đảm hơn thì tôi đã lên tiếng trong cuộc họp." },
+          { "en": "If he spoke English, he would have got the job.", "vi": "Nếu anh ấy nói được tiếng Anh thì đã được nhận việc rồi." } ] }
+    ],
+    "tips": [ "Xác định mốc thời gian của từng vế: vế nào nói về quá khứ, vế nào nói về hiện tại.", "Dấu hiệu now / today ở vế kết quả thường cho biết đây là loại quá khứ → hiện tại." ] },
+  { "id": "cleft", "group": "advanced", "title": "Câu chẻ (câu nhấn mạnh)", "en": "Cleft sentences",
+    "intro": "Tách câu làm hai phần để nhấn mạnh một thông tin quan trọng.",
+    "sections": [
+      { "name": "It is / was … that / who …", "formula": "It + is/was + phần nhấn mạnh + that/who + phần còn lại",
+        "usage": "Nhấn mạnh người, vật, thời gian hay nơi chốn, hoặc sửa thông tin sai.",
+        "examples": [
+          { "en": "It was Lan who called you yesterday.", "vi": "Chính Lan là người đã gọi cho bạn hôm qua." },
+          { "en": "It is in Hoi An that we first met.", "vi": "Chính ở Hội An chúng tôi gặp nhau lần đầu." } ] },
+      { "name": "What … is / was …", "formula": "What + S + V + is/was + phần nhấn mạnh",
+        "usage": "Đưa điều quan trọng nhất xuống cuối câu cho nổi bật.",
+        "examples": [
+          { "en": "What I need is a long holiday.", "vi": "Điều tôi cần là một kỳ nghỉ dài." },
+          { "en": "What surprised me was how calm he stayed.", "vi": "Điều làm tôi ngạc nhiên là anh ấy vẫn rất bình tĩnh." } ] },
+      { "name": "All … is / The reason why … is that …", "formula": "All (that) + S + V + is … · The reason why + mệnh đề + is that …",
+        "usage": "Nhấn mạnh sự đơn giản (All) hoặc lý do (The reason why).",
+        "examples": [
+          { "en": "All I want is some peace and quiet.", "vi": "Tất cả những gì tôi muốn là chút yên tĩnh." },
+          { "en": "The reason why I'm late is that the bus broke down.", "vi": "Lý do tôi đến muộn là xe buýt bị hỏng." } ] }
+    ],
+    "tips": [ "Dùng who cho người, that cho cả người và vật.", "Câu chẻ rất hữu ích khi muốn sửa lại thông tin: It was Tuesday, not Monday, that we met." ] }
 ];
 
 /* ============================================================
    12 TENSES (English tenses with formula, usage, examples)
 ============================================================ */
 const TENSES = [
-  {
-    group: "Hiện tại — Present",
-    name: "Hiện tại đơn (Simple Present)",
-    formula: "S + V(s/es) | S + am/is/are",
-    usage: "Diễn tả sự thật, thói quen, lịch trình cố định.",
+  { id: 'present-simple', lv: 1, name: 'Hiện tại đơn', en: 'Present Simple',
+    formula: { pos: 'S + V(s/es) · S + am/is/are', neg: "S + don't/doesn't + V · S + am/is/are + not", q: 'Do/Does + S + V? · Am/Is/Are + S…?' },
+    usage: ['Thói quen, việc lặp lại hằng ngày', 'Sự thật, chân lý', 'Lịch trình cố định (tàu, xe, lớp học)'],
+    signals: ['always', 'usually', 'often', 'sometimes', 'never', 'every day', 'on Mondays'],
     examples: [
-      { en: "She works at a bank every day.", vi: "Cô ấy làm việc ở ngân hàng mỗi ngày." },
-      { en: "Water boils at 100 degrees Celsius.", vi: "Nước sôi ở 100 độ C." }
-    ]
-  },
-  {
-    group: "Hiện tại — Present",
-    name: "Hiện tại tiếp diễn (Present Continuous)",
-    formula: "S + am/is/are + V-ing",
-    usage: "Diễn tả hành động đang xảy ra ngay lúc nói, hoặc kế hoạch trong tương lai gần.",
+      { en: 'She works at a bank every day.', vi: 'Cô ấy làm việc ở ngân hàng mỗi ngày.' },
+      { en: 'Water boils at 100 degrees Celsius.', vi: 'Nước sôi ở 100 độ C.' },
+      { en: 'The bus leaves at 7 a.m.', vi: 'Xe buýt khởi hành lúc 7 giờ sáng.' }
+    ],
+    mistake: { wrong: 'He go to school by bike.', right: 'He goes to school by bike.', note: 'Chủ ngữ he/she/it thì động từ thêm -s/-es.' } },
+  { id: 'present-continuous', lv: 1, name: 'Hiện tại tiếp diễn', en: 'Present Continuous',
+    formula: { pos: 'S + am/is/are + V-ing', neg: 'S + am/is/are + not + V-ing', q: 'Am/Is/Are + S + V-ing?' },
+    usage: ['Việc đang xảy ra ngay lúc nói', 'Việc tạm thời trong khoảng thời gian này', 'Kế hoạch đã sắp xếp trong tương lai gần'],
+    signals: ['now', 'right now', 'at the moment', 'Look!', 'Listen!', 'this week'],
     examples: [
-      { en: "I am reading a book right now.", vi: "Tôi đang đọc sách lúc này." },
-      { en: "We are meeting them tomorrow.", vi: "Chúng tôi sẽ gặp họ vào ngày mai." }
-    ]
-  },
-  {
-    group: "Hiện tại — Present",
-    name: "Hiện tại hoàn thành (Present Perfect)",
-    formula: "S + have/has + V3 (past participle)",
-    usage: "Diễn tả hành động đã xảy ra trong quá khứ nhưng còn liên quan/ảnh hưởng đến hiện tại, hoặc kinh nghiệm.",
+      { en: 'I am reading a book right now.', vi: 'Tôi đang đọc sách lúc này.' },
+      { en: 'Look! The children are playing in the rain.', vi: 'Nhìn kìa! Bọn trẻ đang chơi dưới mưa.' },
+      { en: 'We are meeting them tomorrow.', vi: 'Ngày mai chúng tôi sẽ gặp họ (đã hẹn).' }
+    ],
+    mistake: { wrong: 'I reading now.', right: 'I am reading now.', note: 'Đừng quên am/is/are trước V-ing.' } },
+  { id: 'past-be', lv: 1, name: 'Quá khứ của "to be"', en: 'Was / Were',
+    formula: { pos: 'I/He/She/It + was · You/We/They + were', neg: "S + wasn't/weren't", q: 'Was/Were + S…?' },
+    usage: ['Nói về trạng thái, vị trí, cảm xúc trong quá khứ', 'Mô tả người, vật, thời tiết hôm qua, năm ngoái…'],
+    signals: ['yesterday', 'last night', 'last week', 'ago', 'in 2020', 'when I was a child'],
     examples: [
-      { en: "I have finished my homework.", vi: "Tôi đã làm xong bài tập." },
-      { en: "She has lived here for ten years.", vi: "Cô ấy đã sống ở đây 10 năm." }
-    ]
-  },
-  {
-    group: "Hiện tại — Present",
-    name: "Hiện tại hoàn thành tiếp diễn (Present Perfect Continuous)",
-    formula: "S + have/has + been + V-ing",
-    usage: "Nhấn mạnh quá trình của một hành động bắt đầu trong quá khứ và còn tiếp diễn đến hiện tại.",
+      { en: 'I was tired yesterday.', vi: 'Hôm qua tôi mệt.' },
+      { en: 'They were at home last night.', vi: 'Tối qua họ ở nhà.' },
+      { en: 'Was the weather nice in Da Lat?', vi: 'Thời tiết ở Đà Lạt có đẹp không?' }
+    ],
+    mistake: { wrong: 'We was very happy.', right: 'We were very happy.', note: 'We/You/They đi với were, không dùng was.' } },
+
+  { id: 'past-simple', lv: 2, name: 'Quá khứ đơn', en: 'Past Simple',
+    formula: { pos: 'S + V2/V-ed', neg: "S + didn't + V", q: 'Did + S + V?' },
+    usage: ['Việc đã xảy ra và kết thúc trong quá khứ, có thời điểm rõ ràng', 'Chuỗi hành động nối tiếp nhau khi kể chuyện'],
+    signals: ['yesterday', 'last month', 'two days ago', 'in 2019', 'when…'],
     examples: [
-      { en: "I have been studying English for two years.", vi: "Tôi đã học tiếng Anh được hai năm rồi (và vẫn đang học)." },
-      { en: "It has been raining since morning.", vi: "Trời đã mưa từ sáng đến giờ." }
-    ]
-  },
-  {
-    group: "Quá khứ — Past",
-    name: "Quá khứ đơn (Simple Past)",
-    formula: "S + V2 (past simple)",
-    usage: "Diễn tả hành động đã xảy ra và kết thúc trong quá khứ, có thời gian xác định.",
+      { en: 'I visited my grandparents last weekend.', vi: 'Cuối tuần trước tôi đã thăm ông bà.' },
+      { en: 'She bought a new phone two days ago.', vi: 'Hai ngày trước cô ấy đã mua điện thoại mới.' },
+      { en: 'Did you watch the match last night?', vi: 'Tối qua bạn có xem trận đấu không?' }
+    ],
+    mistake: { wrong: "I didn't went to school.", right: "I didn't go to school.", note: "Sau didn't, động từ trở về nguyên thể." } },
+  { id: 'past-continuous', lv: 2, name: 'Quá khứ tiếp diễn', en: 'Past Continuous',
+    formula: { pos: 'S + was/were + V-ing', neg: "S + wasn't/weren't + V-ing", q: 'Was/Were + S + V-ing?' },
+    usage: ['Việc đang diễn ra tại một thời điểm trong quá khứ', 'Việc đang diễn ra thì một việc khác xen vào (dùng với when)', 'Hai việc cùng diễn ra song song (dùng với while)'],
+    signals: ['at 8 p.m. yesterday', 'at that time', 'when', 'while'],
     examples: [
-      { en: "I visited my grandparents last weekend.", vi: "Tôi đã đến thăm ông bà vào cuối tuần trước." },
-      { en: "She didn't go to the party.", vi: "Cô ấy không đi dự tiệc." }
-    ]
-  },
-  {
-    group: "Quá khứ — Past",
-    name: "Quá khứ tiếp diễn (Past Continuous)",
-    formula: "S + was/were + V-ing",
-    usage: "Diễn tả hành động đang xảy ra tại một thời điểm trong quá khứ, thường bị gián đoạn bởi hành động khác.",
+      { en: 'I was cooking when you called.', vi: 'Tôi đang nấu ăn thì bạn gọi.' },
+      { en: 'At 9 p.m. last night, we were watching TV.', vi: 'Lúc 9 giờ tối qua, chúng tôi đang xem tivi.' },
+      { en: 'She was reading while he was sleeping.', vi: 'Cô ấy đọc sách trong khi anh ấy ngủ.' }
+    ],
+    mistake: { wrong: 'When I was arriving, they ate dinner.', right: 'When I arrived, they were eating dinner.', note: 'Việc xen vào dùng quá khứ đơn, việc đang diễn ra dùng quá khứ tiếp diễn.' } },
+  { id: 'going-to', lv: 2, name: 'Tương lai gần "be going to"', en: 'Be going to',
+    formula: { pos: 'S + am/is/are + going to + V', neg: 'S + am/is/are + not + going to + V', q: 'Am/Is/Are + S + going to + V?' },
+    usage: ['Dự định, kế hoạch đã quyết định từ trước', 'Dự đoán dựa trên dấu hiệu nhìn thấy được'],
+    signals: ['tonight', 'tomorrow', 'next week', 'this summer', 'Look at…'],
     examples: [
-      { en: "I was watching TV when she called.", vi: "Tôi đang xem TV khi cô ấy gọi điện." },
-      { en: "They were playing football at 5pm yesterday.", vi: "Họ đang chơi bóng đá vào 5 giờ chiều hôm qua." }
-    ]
-  },
-  {
-    group: "Quá khứ — Past",
-    name: "Quá khứ hoàn thành (Past Perfect)",
-    formula: "S + had + V3",
-    usage: "Diễn tả hành động xảy ra trước một hành động khác trong quá khứ.",
+      { en: "I'm going to study abroad next year.", vi: 'Năm sau tôi định đi du học.' },
+      { en: 'Look at those clouds! It is going to rain.', vi: 'Nhìn mây kìa! Trời sắp mưa rồi.' },
+      { en: 'Are you going to visit Hue this summer?', vi: 'Hè này bạn có định đi Huế không?' }
+    ],
+    mistake: { wrong: 'I going to buy a car.', right: "I'm going to buy a car.", note: 'Luôn có am/is/are trước going to.' } },
+  { id: 'future-simple', lv: 2, name: 'Tương lai đơn', en: 'Future Simple (will)',
+    formula: { pos: 'S + will + V', neg: "S + won't + V", q: 'Will + S + V?' },
+    usage: ['Quyết định ngay lúc nói', 'Lời hứa, đề nghị, yêu cầu', 'Dự đoán dựa trên ý kiến cá nhân (I think…)'],
+    signals: ['I think', 'probably', 'maybe', 'tomorrow', 'soon', 'in the future'],
     examples: [
-      { en: "She had left before I arrived.", vi: "Cô ấy đã rời đi trước khi tôi đến." },
-      { en: "I had never seen snow before that trip.", vi: "Tôi chưa từng thấy tuyết trước chuyến đi đó." }
-    ]
-  },
-  {
-    group: "Quá khứ — Past",
-    name: "Quá khứ hoàn thành tiếp diễn (Past Perfect Continuous)",
-    formula: "S + had + been + V-ing",
-    usage: "Nhấn mạnh quá trình của một hành động xảy ra trước một hành động khác trong quá khứ.",
+      { en: "It's cold. I'll close the window.", vi: 'Trời lạnh. Để tôi đóng cửa sổ.' },
+      { en: 'I promise I will call you tonight.', vi: 'Tôi hứa tối nay sẽ gọi cho bạn.' },
+      { en: 'I think it will be sunny tomorrow.', vi: 'Tôi nghĩ ngày mai trời sẽ nắng.' }
+    ],
+    mistake: { wrong: 'I will to help you.', right: 'I will help you.', note: 'Sau will là động từ nguyên thể, không có to.' } },
+  { id: 'present-perfect', lv: 2, name: 'Hiện tại hoàn thành', en: 'Present Perfect',
+    formula: { pos: 'S + have/has + V3', neg: "S + haven't/hasn't + V3", q: 'Have/Has + S + V3?' },
+    usage: ['Kinh nghiệm (đã từng / chưa từng)', 'Việc vừa mới xảy ra, kết quả còn ở hiện tại', 'Việc bắt đầu trong quá khứ và kéo dài đến nay (for/since)'],
+    signals: ['ever', 'never', 'already', 'yet', 'just', 'for', 'since', 'so far'],
     examples: [
-      { en: "He had been working for hours before he took a break.", vi: "Anh ấy đã làm việc nhiều giờ trước khi nghỉ." },
-      { en: "They had been waiting for an hour when the bus arrived.", vi: "Họ đã đợi một giờ khi xe buýt đến." }
-    ]
-  },
-  {
-    group: "Tương lai — Future",
-    name: "Tương lai đơn (Simple Future)",
-    formula: "S + will + V (nguyên thể)",
-    usage: "Diễn tả dự đoán, quyết định tại thời điểm nói, hoặc lời hứa.",
+      { en: 'I have finished my homework.', vi: 'Tôi đã làm xong bài tập.' },
+      { en: 'Have you ever eaten durian?', vi: 'Bạn đã bao giờ ăn sầu riêng chưa?' },
+      { en: 'She has lived here for ten years.', vi: 'Cô ấy đã sống ở đây được 10 năm.' }
+    ],
+    mistake: { wrong: 'I have seen him yesterday.', right: 'I saw him yesterday.', note: 'Có thời điểm cụ thể trong quá khứ (yesterday, last week…) thì dùng quá khứ đơn.' } },
+
+  { id: 'present-perfect-continuous', lv: 3, name: 'Hiện tại hoàn thành tiếp diễn', en: 'Present Perfect Continuous',
+    formula: { pos: 'S + have/has + been + V-ing', neg: "S + haven't/hasn't + been + V-ing", q: 'Have/Has + S + been + V-ing?' },
+    usage: ['Nhấn mạnh quá trình kéo dài từ quá khứ đến hiện tại', 'Việc vừa dừng lại nhưng còn để lại dấu vết'],
+    signals: ['for', 'since', 'all day', 'all morning', 'How long…?', 'lately'],
     examples: [
-      { en: "I will call you tomorrow.", vi: "Tôi sẽ gọi cho bạn ngày mai." },
-      { en: "It will probably rain later.", vi: "Có thể trời sẽ mưa sau đó." }
-    ]
-  },
-  {
-    group: "Tương lai — Future",
-    name: "Tương lai tiếp diễn (Future Continuous)",
-    formula: "S + will + be + V-ing",
-    usage: "Diễn tả hành động sẽ đang xảy ra tại một thời điểm xác định trong tương lai.",
+      { en: 'I have been studying English for two years.', vi: 'Tôi đã học tiếng Anh được hai năm (và vẫn đang học).' },
+      { en: 'It has been raining since morning.', vi: 'Trời mưa từ sáng đến giờ.' },
+      { en: "You're tired because you've been working all day.", vi: 'Bạn mệt vì đã làm việc cả ngày.' }
+    ],
+    mistake: { wrong: 'I have been knowing her for years.', right: 'I have known her for years.', note: 'Động từ chỉ trạng thái (know, like, own…) không dùng dạng tiếp diễn.' } },
+  { id: 'past-perfect', lv: 3, name: 'Quá khứ hoàn thành', en: 'Past Perfect',
+    formula: { pos: 'S + had + V3', neg: "S + hadn't + V3", q: 'Had + S + V3?' },
+    usage: ['Việc xảy ra trước một việc khác trong quá khứ (“quá khứ của quá khứ”)', 'Hay dùng trong kể chuyện và câu tường thuật'],
+    signals: ['before', 'after', 'by the time', 'already', 'when'],
     examples: [
-      { en: "This time tomorrow, I will be flying to Hanoi.", vi: "Giờ này ngày mai, tôi sẽ đang bay đến Hà Nội." },
-      { en: "She will be working when you arrive.", vi: "Cô ấy sẽ đang làm việc khi bạn đến." }
-    ]
-  },
-  {
-    group: "Tương lai — Future",
-    name: "Tương lai hoàn thành (Future Perfect)",
-    formula: "S + will + have + V3",
-    usage: "Diễn tả hành động sẽ hoàn thành trước một thời điểm xác định trong tương lai.",
+      { en: 'When I arrived, the train had already left.', vi: 'Khi tôi đến, tàu đã rời đi rồi.' },
+      { en: 'She had finished dinner before he came home.', vi: 'Cô ấy đã ăn tối xong trước khi anh ấy về.' },
+      { en: 'I had never seen snow before that trip.', vi: 'Trước chuyến đi đó tôi chưa từng thấy tuyết.' }
+    ],
+    mistake: { wrong: 'After he finished, he had gone home.', right: 'After he had finished, he went home.', note: 'Việc xảy ra trước dùng had + V3, việc xảy ra sau dùng quá khứ đơn.' } },
+  { id: 'future-continuous', lv: 3, name: 'Tương lai tiếp diễn', en: 'Future Continuous',
+    formula: { pos: 'S + will be + V-ing', neg: "S + won't be + V-ing", q: 'Will + S + be + V-ing?' },
+    usage: ['Việc sẽ đang diễn ra tại một thời điểm trong tương lai', 'Hỏi lịch sự về kế hoạch của người khác'],
+    signals: ['at this time tomorrow', 'at 8 p.m. tonight', 'this time next week'],
     examples: [
-      { en: "By next year, I will have graduated.", vi: "Đến năm sau, tôi sẽ đã tốt nghiệp." },
-      { en: "They will have finished the project by Friday.", vi: "Họ sẽ hoàn thành dự án trước thứ Sáu." }
-    ]
-  },
-  {
-    group: "Tương lai — Future",
-    name: "Tương lai hoàn thành tiếp diễn (Future Perfect Continuous)",
-    formula: "S + will + have + been + V-ing",
-    usage: "Nhấn mạnh khoảng thời gian một hành động sẽ đã diễn ra liên tục trước một thời điểm trong tương lai.",
+      { en: 'At this time tomorrow, I will be flying to Tokyo.', vi: 'Giờ này ngày mai tôi sẽ đang bay tới Tokyo.' },
+      { en: "Don't call at 8. I'll be having dinner.", vi: 'Đừng gọi lúc 8 giờ. Lúc đó tôi đang ăn tối.' },
+      { en: 'Will you be using the car tonight?', vi: 'Tối nay bạn có dùng xe không?' }
+    ],
+    mistake: { wrong: 'This time next week I will lie on the beach.', right: 'This time next week I will be lying on the beach.', note: 'Nói việc đang diễn ra ở một thời điểm tương lai thì dùng will be + V-ing.' } },
+  { id: 'stative', lv: 3, name: 'Đơn hay tiếp diễn với động từ trạng thái', en: 'State vs action verbs',
+    formula: { pos: 'Động từ trạng thái (know, like, want, believe, own, need…) → thường chỉ dùng thì đơn', neg: 'Không nói: I am knowing · I am wanting', q: 'Một số động từ đổi nghĩa: think, have, see, taste…' },
+    usage: ['Động từ chỉ suy nghĩ, cảm xúc, sở hữu, giác quan thường không dùng dạng -ing', 'Khi mang nghĩa hành động, vài động từ vẫn dùng được dạng -ing'],
+    signals: ['know', 'understand', 'like', 'love', 'hate', 'want', 'need', 'belong', 'own'],
     examples: [
-      { en: "By June, I will have been working here for five years.", vi: "Đến tháng Sáu, tôi sẽ đã làm việc ở đây được 5 năm." },
-      { en: "She will have been studying for three hours by 9pm.", vi: "Đến 9 giờ tối, cô ấy sẽ đã học liên tục 3 giờ." }
-    ]
-  }
+      { en: 'I think this book is great.', vi: 'Tôi nghĩ cuốn sách này hay (ý kiến).' },
+      { en: "I'm thinking about changing jobs.", vi: 'Tôi đang cân nhắc đổi việc (quá trình suy nghĩ).' },
+      { en: 'She has two cats, and she is having lunch now.', vi: 'Cô ấy có hai con mèo, và giờ đang ăn trưa.' }
+    ],
+    mistake: { wrong: 'I am understanding the lesson now.', right: 'I understand the lesson now.', note: 'understand là động từ trạng thái, dùng thì đơn.' } },
+
+  { id: 'past-perfect-continuous', lv: 4, name: 'Quá khứ hoàn thành tiếp diễn', en: 'Past Perfect Continuous',
+    formula: { pos: 'S + had been + V-ing', neg: "S + hadn't been + V-ing", q: 'Had + S + been + V-ing?' },
+    usage: ['Nhấn mạnh một việc đã kéo dài liên tục trước một thời điểm/việc khác trong quá khứ', 'Giải thích nguyên nhân của một tình trạng trong quá khứ'],
+    signals: ['for', 'since', 'before', 'by the time', 'all day', 'how long'],
+    examples: [
+      { en: 'I had been waiting for an hour when the bus came.', vi: 'Tôi đã đợi cả tiếng thì xe buýt mới tới.' },
+      { en: 'Her eyes were red because she had been crying.', vi: 'Mắt cô ấy đỏ vì cô ấy đã khóc.' },
+      { en: 'They had been living in Hanoi for years before they moved.', vi: 'Họ đã sống ở Hà Nội nhiều năm trước khi chuyển đi.' }
+    ],
+    mistake: { wrong: 'He was tired because he has been running.', right: 'He was tired because he had been running.', note: 'Câu ở quá khứ thì lùi have been → had been.' } },
+  { id: 'future-perfect', lv: 4, name: 'Tương lai hoàn thành', en: 'Future Perfect',
+    formula: { pos: 'S + will have + V3', neg: "S + won't have + V3", q: 'Will + S + have + V3?' },
+    usage: ['Việc sẽ hoàn thành trước một thời điểm trong tương lai'],
+    signals: ['by tomorrow', 'by 2030', 'by the end of this year', 'by the time', 'before'],
+    examples: [
+      { en: 'I will have finished the report by Friday.', vi: 'Tôi sẽ làm xong báo cáo trước thứ Sáu.' },
+      { en: 'By 2030, she will have graduated.', vi: 'Đến năm 2030, cô ấy sẽ tốt nghiệp rồi.' },
+      { en: 'Will you have eaten by the time we arrive?', vi: 'Đến lúc chúng tôi tới, bạn đã ăn chưa?' }
+    ],
+    mistake: { wrong: 'By next year I will finish my degree. (khi muốn nhấn mạnh “đã xong”)', right: 'By next year I will have finished my degree.', note: 'Có “by + thời điểm tương lai” và ý “đã xong trước lúc đó” thì dùng will have + V3.' } },
+  { id: 'future-in-past', lv: 4, name: 'Tương lai trong quá khứ', en: 'Future in the past',
+    formula: { pos: 'S + was/were going to + V · S + would + V', neg: "S + wasn't/weren't going to + V · S + wouldn't + V", q: 'Was/Were + S + going to + V?' },
+    usage: ['Dự định trong quá khứ (thường là không thành)', 'Lời nói/suy nghĩ về tương lai, được kể lại từ quá khứ'],
+    signals: ['said', 'thought', 'knew', 'hoped', 'but', 'then'],
+    examples: [
+      { en: 'I was going to call you, but I forgot.', vi: 'Tôi định gọi cho bạn, nhưng lại quên mất.' },
+      { en: 'She said she would help me.', vi: 'Cô ấy nói cô ấy sẽ giúp tôi.' },
+      { en: 'We knew it would be a long night.', vi: 'Chúng tôi biết đó sẽ là một đêm dài.' }
+    ],
+    mistake: { wrong: 'He said he will come.', right: 'He said he would come.', note: 'Kể lại từ quá khứ thì will lùi thành would.' } },
+
+  { id: 'future-perfect-continuous', lv: 5, name: 'Tương lai hoàn thành tiếp diễn', en: 'Future Perfect Continuous',
+    formula: { pos: 'S + will have been + V-ing', neg: "S + won't have been + V-ing", q: 'Will + S + have been + V-ing?' },
+    usage: ['Nhấn mạnh việc sẽ kéo dài bao lâu tính đến một thời điểm trong tương lai'],
+    signals: ['for + khoảng thời gian', 'by + thời điểm tương lai', 'by the time'],
+    examples: [
+      { en: 'By June, I will have been working here for five years.', vi: 'Đến tháng Sáu, tôi sẽ làm việc ở đây được 5 năm.' },
+      { en: 'By the time you arrive, we will have been waiting for two hours.', vi: 'Lúc bạn tới, chúng tôi sẽ đợi được hai tiếng rồi.' },
+      { en: "Next month, she'll have been teaching for a decade.", vi: 'Tháng sau, cô ấy sẽ dạy học tròn mười năm.' }
+    ],
+    mistake: { wrong: 'By June I will work here for five years.', right: 'By June I will have been working here for five years.', note: 'Nhấn mạnh độ dài tính đến mốc tương lai thì dùng will have been + V-ing.' } },
+  { id: 'polite-tenses', lv: 5, name: 'Dùng thì để nói lịch sự, giảm nhẹ', en: 'Tenses for politeness',
+    formula: { pos: 'I was wondering if… · I was hoping… · Did you want…?', neg: 'I wasn’t planning to… (từ chối nhẹ nhàng)', q: "I'm hoping you could… · We'd like…" },
+    usage: ['Dùng quá khứ hoặc tiếp diễn để lời đề nghị, yêu cầu nghe mềm và lịch sự hơn', 'Rất hay gặp trong email công việc và giao tiếp trang trọng'],
+    signals: ['wonder', 'hope', 'think', 'want', 'could', 'would'],
+    examples: [
+      { en: 'I was wondering if you could help me with this.', vi: 'Không biết bạn có thể giúp tôi việc này được không.' },
+      { en: "We're hoping to hear from you soon.", vi: 'Chúng tôi mong sớm nhận được phản hồi của bạn.' },
+      { en: 'Did you want to sit by the window?', vi: 'Anh/chị có muốn ngồi cạnh cửa sổ không ạ?' }
+    ],
+    mistake: { wrong: 'I want you to send me the file.', right: 'I was wondering if you could send me the file.', note: 'Câu đúng ngữ pháp nhưng nghe như ra lệnh. Lùi thì giúp lời nhờ lịch sự hơn.' } },
+  { id: 'inversion-perfect', lv: 5, name: 'Đảo ngữ với quá khứ hoàn thành', en: 'Hardly had… when / No sooner had… than',
+    formula: { pos: 'Hardly/Scarcely + had + S + V3 + when + quá khứ đơn', neg: 'No sooner + had + S + V3 + than + quá khứ đơn', q: 'Never/Rarely + have/had + S + V3…' },
+    usage: ['Nhấn mạnh hai việc xảy ra gần như liền nhau trong quá khứ', 'Văn phong trang trọng, hay gặp trong bài viết và bài thi B2–C1'],
+    signals: ['hardly', 'scarcely', 'no sooner', 'barely', 'never before'],
+    examples: [
+      { en: 'Hardly had I arrived when it started to rain.', vi: 'Tôi vừa mới tới thì trời đổ mưa.' },
+      { en: 'No sooner had she sat down than the phone rang.', vi: 'Cô ấy vừa ngồi xuống thì điện thoại reo.' },
+      { en: 'Never before had I seen such a beautiful sunset.', vi: 'Trước đây tôi chưa từng thấy hoàng hôn đẹp như vậy.' }
+    ],
+    mistake: { wrong: 'No sooner I had arrived than…', right: 'No sooner had I arrived than…', note: 'Sau hardly / no sooner phải đảo had lên trước chủ ngữ.' } }
 ];
 
 /* ============================================================
    IRREGULAR VERBS (V1 - V2 - V3 with Vietnamese meaning)
 ============================================================ */
 const IRREGULAR_VERBS = [
-  { v1: "be",         v2: "was/were",   v3: "been",        ipa: "/biː/",      ipa2: "/wɒz/ · /wɜːr/", ipa3: "/biːn/", meaning: "là, ở, thì" },
-  { v1: "begin",      v2: "began",      v3: "begun",       ipa: "/bɪˈɡɪn/",   ipa2: "/bɪˈɡæn/", ipa3: "/bɪˈɡʌn/", meaning: "bắt đầu" },
-  { v1: "break",      v2: "broke",      v3: "broken",      ipa: "/breɪk/",    ipa2: "/brəʊk/", ipa3: "/ˈbrəʊkən/", meaning: "làm vỡ" },
-  { v1: "bring",      v2: "brought",    v3: "brought",     ipa: "/brɪŋ/",     ipa2: "/brɔːt/", ipa3: "/brɔːt/", meaning: "mang đến" },
-  { v1: "build",      v2: "built",      v3: "built",       ipa: "/bɪld/",     ipa2: "/bɪlt/", ipa3: "/bɪlt/", meaning: "xây dựng" },
-  { v1: "buy",        v2: "bought",     v3: "bought",      ipa: "/baɪ/",      ipa2: "/bɔːt/", ipa3: "/bɔːt/", meaning: "mua" },
-  { v1: "catch",      v2: "caught",     v3: "caught",      ipa: "/kætʃ/",     ipa2: "/kɔːt/", ipa3: "/kɔːt/", meaning: "bắt" },
-  { v1: "choose",     v2: "chose",      v3: "chosen",      ipa: "/tʃuːz/",    ipa2: "/tʃəʊz/", ipa3: "/ˈtʃəʊzn/", meaning: "chọn" },
-  { v1: "come",       v2: "came",       v3: "come",        ipa: "/kʌm/",      ipa2: "/keɪm/", ipa3: "/kʌm/", meaning: "đến" },
-  { v1: "cost",       v2: "cost",       v3: "cost",        ipa: "/kɒst/",     ipa2: "/kɒst/", ipa3: "/kɒst/", meaning: "có giá" },
-  { v1: "cut",        v2: "cut",        v3: "cut",         ipa: "/kʌt/",      ipa2: "/kʌt/", ipa3: "/kʌt/", meaning: "cắt" },
-  { v1: "do",         v2: "did",        v3: "done",        ipa: "/duː/",      ipa2: "/dɪd/", ipa3: "/dʌn/", meaning: "làm" },
-  { v1: "draw",       v2: "drew",       v3: "drawn",       ipa: "/drɔː/",     ipa2: "/druː/", ipa3: "/drɔːn/", meaning: "vẽ" },
-  { v1: "drink",      v2: "drank",      v3: "drunk",       ipa: "/drɪŋk/",    ipa2: "/dræŋk/", ipa3: "/drʌŋk/", meaning: "uống" },
-  { v1: "drive",      v2: "drove",      v3: "driven",      ipa: "/draɪv/",    ipa2: "/drəʊv/", ipa3: "/ˈdrɪvn/", meaning: "lái xe" },
-  { v1: "eat",        v2: "ate",        v3: "eaten",       ipa: "/iːt/",      ipa2: "/eɪt/", ipa3: "/ˈiːtn/", meaning: "ăn" },
-  { v1: "fall",       v2: "fell",       v3: "fallen",      ipa: "/fɔːl/",     ipa2: "/fel/", ipa3: "/ˈfɔːlən/", meaning: "rơi, ngã" },
-  { v1: "feel",       v2: "felt",       v3: "felt",        ipa: "/fiːl/",     ipa2: "/felt/", ipa3: "/felt/", meaning: "cảm thấy" },
-  { v1: "find",       v2: "found",      v3: "found",       ipa: "/faɪnd/",    ipa2: "/faʊnd/", ipa3: "/faʊnd/", meaning: "tìm thấy" },
-  { v1: "fly",        v2: "flew",       v3: "flown",       ipa: "/flaɪ/",     ipa2: "/fluː/", ipa3: "/fləʊn/", meaning: "bay" },
-  { v1: "forget",     v2: "forgot",     v3: "forgotten",   ipa: "/fəˈɡet/",   ipa2: "/fəˈɡɒt/", ipa3: "/fəˈɡɒtn/", meaning: "quên" },
-  { v1: "get",        v2: "got",        v3: "gotten/got",  ipa: "/ɡet/",      ipa2: "/ɡɒt/", ipa3: "/ˈɡɒtn/ · /ɡɒt/", meaning: "lấy, nhận" },
-  { v1: "give",       v2: "gave",       v3: "given",       ipa: "/ɡɪv/",      ipa2: "/ɡeɪv/", ipa3: "/ˈɡɪvn/", meaning: "cho, đưa" },
-  { v1: "go",         v2: "went",       v3: "gone",        ipa: "/ɡəʊ/",      ipa2: "/went/", ipa3: "/ɡɒn/", meaning: "đi" },
-  { v1: "have",       v2: "had",        v3: "had",         ipa: "/hæv/",      ipa2: "/hæd/", ipa3: "/hæd/", meaning: "có" },
-  { v1: "hear",       v2: "heard",      v3: "heard",       ipa: "/hɪər/",     ipa2: "/hɜːd/", ipa3: "/hɜːd/", meaning: "nghe" },
-  { v1: "hide",       v2: "hid",        v3: "hidden",      ipa: "/haɪd/",     ipa2: "/hɪd/", ipa3: "/ˈhɪdn/", meaning: "giấu, trốn" },
-  { v1: "hit",        v2: "hit",        v3: "hit",         ipa: "/hɪt/",      ipa2: "/hɪt/", ipa3: "/hɪt/", meaning: "đánh, va" },
-  { v1: "hold",       v2: "held",       v3: "held",        ipa: "/həʊld/",    ipa2: "/held/", ipa3: "/held/", meaning: "giữ, cầm" },
-  { v1: "keep",       v2: "kept",       v3: "kept",        ipa: "/kiːp/",     ipa2: "/kept/", ipa3: "/kept/", meaning: "giữ lại" },
-  { v1: "know",       v2: "knew",       v3: "known",       ipa: "/nəʊ/",      ipa2: "/njuː/", ipa3: "/nəʊn/", meaning: "biết" },
-  { v1: "leave",      v2: "left",       v3: "left",        ipa: "/liːv/",     ipa2: "/left/", ipa3: "/left/", meaning: "rời đi, để lại" },
-  { v1: "lend",       v2: "lent",       v3: "lent",        ipa: "/lend/",     ipa2: "/lent/", ipa3: "/lent/", meaning: "cho mượn" },
-  { v1: "let",        v2: "let",        v3: "let",         ipa: "/let/",      ipa2: "/let/", ipa3: "/let/", meaning: "để cho, cho phép" },
-  { v1: "lose",       v2: "lost",       v3: "lost",        ipa: "/luːz/",     ipa2: "/lɒst/", ipa3: "/lɒst/", meaning: "mất, thua" },
-  { v1: "make",       v2: "made",       v3: "made",        ipa: "/meɪk/",     ipa2: "/meɪd/", ipa3: "/meɪd/", meaning: "làm, tạo ra" },
-  { v1: "mean",       v2: "meant",      v3: "meant",       ipa: "/miːn/",     ipa2: "/ment/", ipa3: "/ment/", meaning: "có nghĩa là" },
-  { v1: "meet",       v2: "met",        v3: "met",         ipa: "/miːt/",     ipa2: "/met/", ipa3: "/met/", meaning: "gặp" },
-  { v1: "pay",        v2: "paid",       v3: "paid",        ipa: "/peɪ/",      ipa2: "/peɪd/", ipa3: "/peɪd/", meaning: "trả tiền" },
-  { v1: "put",        v2: "put",        v3: "put",         ipa: "/pʊt/",      ipa2: "/pʊt/", ipa3: "/pʊt/", meaning: "đặt, để" },
-  { v1: "read",       v2: "read",       v3: "read",        ipa: "/riːd/",     ipa2: "/red/", ipa3: "/red/", meaning: "đọc" },
-  { v1: "ride",       v2: "rode",       v3: "ridden",      ipa: "/raɪd/",     ipa2: "/rəʊd/", ipa3: "/ˈrɪdn/", meaning: "đi (xe, ngựa)" },
-  { v1: "run",        v2: "ran",        v3: "run",         ipa: "/rʌn/",      ipa2: "/ræn/", ipa3: "/rʌn/", meaning: "chạy" },
-  { v1: "say",        v2: "said",       v3: "said",        ipa: "/seɪ/",      ipa2: "/sed/", ipa3: "/sed/", meaning: "nói" },
-  { v1: "see",        v2: "saw",        v3: "seen",        ipa: "/siː/",      ipa2: "/sɔː/", ipa3: "/siːn/", meaning: "nhìn thấy" },
-  { v1: "sell",       v2: "sold",       v3: "sold",        ipa: "/sel/",      ipa2: "/səʊld/", ipa3: "/səʊld/", meaning: "bán" },
-  { v1: "send",       v2: "sent",       v3: "sent",        ipa: "/send/",     ipa2: "/sent/", ipa3: "/sent/", meaning: "gửi" },
-  { v1: "show",       v2: "showed",     v3: "shown",       ipa: "/ʃəʊ/",      ipa2: "/ʃəʊd/", ipa3: "/ʃəʊn/", meaning: "chỉ, cho xem" },
-  { v1: "sing",       v2: "sang",       v3: "sung",        ipa: "/sɪŋ/",      ipa2: "/sæŋ/", ipa3: "/sʌŋ/", meaning: "hát" },
-  { v1: "sit",        v2: "sat",        v3: "sat",         ipa: "/sɪt/",      ipa2: "/sæt/", ipa3: "/sæt/", meaning: "ngồi" },
-  { v1: "sleep",      v2: "slept",      v3: "slept",       ipa: "/sliːp/",    ipa2: "/slept/", ipa3: "/slept/", meaning: "ngủ" },
-  { v1: "speak",      v2: "spoke",      v3: "spoken",      ipa: "/spiːk/",    ipa2: "/spəʊk/", ipa3: "/ˈspəʊkən/", meaning: "nói chuyện" },
-  { v1: "spend",      v2: "spent",      v3: "spent",       ipa: "/spend/",    ipa2: "/spent/", ipa3: "/spent/", meaning: "chi tiêu, dành (thời gian)" },
-  { v1: "stand",      v2: "stood",      v3: "stood",       ipa: "/stænd/",    ipa2: "/stʊd/", ipa3: "/stʊd/", meaning: "đứng" },
-  { v1: "swim",       v2: "swam",       v3: "swum",        ipa: "/swɪm/",     ipa2: "/swæm/", ipa3: "/swʌm/", meaning: "bơi" },
-  { v1: "take",       v2: "took",       v3: "taken",       ipa: "/teɪk/",     ipa2: "/tʊk/", ipa3: "/ˈteɪkən/", meaning: "lấy, cầm" },
-  { v1: "teach",      v2: "taught",     v3: "taught",      ipa: "/tiːtʃ/",    ipa2: "/tɔːt/", ipa3: "/tɔːt/", meaning: "dạy" },
-  { v1: "tell",       v2: "told",       v3: "told",        ipa: "/tel/",      ipa2: "/təʊld/", ipa3: "/təʊld/", meaning: "kể, nói cho biết" },
-  { v1: "think",      v2: "thought",    v3: "thought",     ipa: "/θɪŋk/",     ipa2: "/θɔːt/", ipa3: "/θɔːt/", meaning: "nghĩ" },
-  { v1: "throw",      v2: "threw",      v3: "thrown",      ipa: "/θrəʊ/",     ipa2: "/θruː/", ipa3: "/θrəʊn/", meaning: "ném, vứt" },
-  { v1: "understand", v2: "understood", v3: "understood",  ipa: "/ˌʌndəˈstænd/", ipa2: "/ˌʌndəˈstʊd/", ipa3: "/ˌʌndəˈstʊd/", meaning: "hiểu" },
-  { v1: "wake",       v2: "woke",       v3: "woken",       ipa: "/weɪk/",     ipa2: "/wəʊk/", ipa3: "/ˈwəʊkən/", meaning: "thức dậy" },
-  { v1: "wear",       v2: "wore",       v3: "worn",        ipa: "/weər/",     ipa2: "/wɔːr/", ipa3: "/wɔːn/", meaning: "mặc, đeo" },
-  { v1: "win",        v2: "won",        v3: "won",         ipa: "/wɪn/",      ipa2: "/wʌn/", ipa3: "/wʌn/", meaning: "thắng" },
-  { v1: "write",      v2: "wrote",      v3: "written",     ipa: "/raɪt/",     ipa2: "/rəʊt/", ipa3: "/ˈrɪtn/", meaning: "viết" }
+  {"v1":"abide","v2":"abode/abided","v3":"abode/abided","ipa":"/əˈbaɪd/","ipa2":"/əˈbəʊd/","ipa3":"/əˈbəʊd/","meaning":"tuân theo, chịu đựng","lv":5},
+  {"v1":"arise","v2":"arose","v3":"arisen","ipa":"/əˈraɪz/","ipa2":"/əˈrəʊz/","ipa3":"/əˈrɪzn/","meaning":"phát sinh, nảy sinh","lv":4},
+  {"v1":"awake","v2":"awoke","v3":"awoken","ipa":"/əˈweɪk/","ipa2":"/əˈwəʊk/","ipa3":"/əˈwəʊkən/","meaning":"tỉnh dậy, đánh thức","lv":4},
+  {"v1":"babysit","v2":"babysat","v3":"babysat","ipa":"/ˈbeɪbisɪt/","ipa2":"/ˈbeɪbisæt/","ipa3":"/ˈbeɪbisæt/","meaning":"trông trẻ","lv":3},
+  {"v1":"be","v2":"was/were","v3":"been","ipa":"/biː/","ipa2":"/wɒz/ · /wɜːr/","ipa3":"/biːn/","meaning":"là, ở, thì","lv":1},
+  {"v1":"bear","v2":"bore","v3":"borne/born","ipa":"/beə/","ipa2":"/bɔː/","ipa3":"/bɔːn/","meaning":"chịu đựng, sinh ra","lv":4},
+  {"v1":"beat","v2":"beat","v3":"beaten","ipa":"/biːt/","ipa2":"/biːt/","ipa3":"/ˈbiːtn/","meaning":"đánh, thắng","lv":3},
+  {"v1":"become","v2":"became","v3":"become","ipa":"/bɪˈkʌm/","ipa2":"/bɪˈkeɪm/","ipa3":"/bɪˈkʌm/","meaning":"trở thành","lv":2},
+  {"v1":"befall","v2":"befell","v3":"befallen","ipa":"/bɪˈfɔːl/","ipa2":"/bɪˈfel/","ipa3":"/bɪˈfɔːlən/","meaning":"xảy đến (điều xấu)","lv":5},
+  {"v1":"beget","v2":"begot","v3":"begotten","ipa":"/bɪˈɡet/","ipa2":"/bɪˈɡɒt/","ipa3":"/bɪˈɡɒtn/","meaning":"sinh ra, gây ra","lv":5},
+  {"v1":"begin","v2":"began","v3":"begun","ipa":"/bɪˈɡɪn/","ipa2":"/bɪˈɡæn/","ipa3":"/bɪˈɡʌn/","meaning":"bắt đầu","lv":2},
+  {"v1":"behold","v2":"beheld","v3":"beheld","ipa":"/bɪˈhəʊld/","ipa2":"/bɪˈheld/","ipa3":"/bɪˈheld/","meaning":"ngắm nhìn (văn chương)","lv":5},
+  {"v1":"bend","v2":"bent","v3":"bent","ipa":"/bend/","ipa2":"/bent/","ipa3":"/bent/","meaning":"uốn cong, cúi xuống","lv":3},
+  {"v1":"beseech","v2":"besought/beseeched","v3":"besought/beseeched","ipa":"/bɪˈsiːtʃ/","ipa2":"/bɪˈsɔːt/","ipa3":"/bɪˈsɔːt/","meaning":"van nài","lv":5},
+  {"v1":"beset","v2":"beset","v3":"beset","ipa":"/bɪˈset/","ipa2":"/bɪˈset/","ipa3":"/bɪˈset/","meaning":"bao vây, gây khó khăn","lv":5},
+  {"v1":"bet","v2":"bet","v3":"bet","ipa":"/bet/","ipa2":"/bet/","ipa3":"/bet/","meaning":"đánh cược","lv":3},
+  {"v1":"bid","v2":"bid","v3":"bid","ipa":"/bɪd/","ipa2":"/bɪd/","ipa3":"/bɪd/","meaning":"trả giá (đấu giá)","lv":5},
+  {"v1":"bind","v2":"bound","v3":"bound","ipa":"/baɪnd/","ipa2":"/baʊnd/","ipa3":"/baʊnd/","meaning":"buộc, ràng buộc","lv":4},
+  {"v1":"bite","v2":"bit","v3":"bitten","ipa":"/baɪt/","ipa2":"/bɪt/","ipa3":"/ˈbɪtn/","meaning":"cắn","lv":2},
+  {"v1":"bleed","v2":"bled","v3":"bled","ipa":"/bliːd/","ipa2":"/bled/","ipa3":"/bled/","meaning":"chảy máu","lv":3},
+  {"v1":"blow","v2":"blew","v3":"blown","ipa":"/bləʊ/","ipa2":"/bluː/","ipa3":"/bləʊn/","meaning":"thổi","lv":2},
+  {"v1":"break","v2":"broke","v3":"broken","ipa":"/breɪk/","ipa2":"/brəʊk/","ipa3":"/ˈbrəʊkən/","meaning":"làm vỡ","lv":2},
+  {"v1":"breed","v2":"bred","v3":"bred","ipa":"/briːd/","ipa2":"/bred/","ipa3":"/bred/","meaning":"nuôi, gây giống","lv":4},
+  {"v1":"bring","v2":"brought","v3":"brought","ipa":"/brɪŋ/","ipa2":"/brɔːt/","ipa3":"/brɔːt/","meaning":"mang đến","lv":2},
+  {"v1":"broadcast","v2":"broadcast","v3":"broadcast","ipa":"/ˈbrɔːdkɑːst/","ipa2":"/ˈbrɔːdkɑːst/","ipa3":"/ˈbrɔːdkɑːst/","meaning":"phát sóng","lv":3},
+  {"v1":"browbeat","v2":"browbeat","v3":"browbeaten","ipa":"/ˈbraʊbiːt/","ipa2":"/ˈbraʊbiːt/","ipa3":"/ˈbraʊbiːtn/","meaning":"dọa nạt","lv":5},
+  {"v1":"build","v2":"built","v3":"built","ipa":"/bɪld/","ipa2":"/bɪlt/","ipa3":"/bɪlt/","meaning":"xây dựng","lv":2},
+  {"v1":"burn","v2":"burnt/burned","v3":"burnt/burned","ipa":"/bɜːn/","ipa2":"/bɜːnt/","ipa3":"/bɜːnt/","meaning":"đốt cháy, bị bỏng","lv":2},
+  {"v1":"burst","v2":"burst","v3":"burst","ipa":"/bɜːst/","ipa2":"/bɜːst/","ipa3":"/bɜːst/","meaning":"nổ tung, vỡ òa","lv":3},
+  {"v1":"buy","v2":"bought","v3":"bought","ipa":"/baɪ/","ipa2":"/bɔːt/","ipa3":"/bɔːt/","meaning":"mua","lv":1},
+  {"v1":"cast","v2":"cast","v3":"cast","ipa":"/kɑːst/","ipa2":"/kɑːst/","ipa3":"/kɑːst/","meaning":"ném, chọn vai diễn","lv":4},
+  {"v1":"catch","v2":"caught","v3":"caught","ipa":"/kætʃ/","ipa2":"/kɔːt/","ipa3":"/kɔːt/","meaning":"bắt","lv":2},
+  {"v1":"choose","v2":"chose","v3":"chosen","ipa":"/tʃuːz/","ipa2":"/tʃəʊz/","ipa3":"/ˈtʃəʊzn/","meaning":"chọn","lv":2},
+  {"v1":"cleave","v2":"cleaved/clove","v3":"cleaved/cloven","ipa":"/kliːv/","ipa2":"/kliːvd/","ipa3":"/kliːvd/","meaning":"chẻ, bổ","lv":5},
+  {"v1":"cling","v2":"clung","v3":"clung","ipa":"/klɪŋ/","ipa2":"/klʌŋ/","ipa3":"/klʌŋ/","meaning":"bám chặt","lv":4},
+  {"v1":"come","v2":"came","v3":"come","ipa":"/kʌm/","ipa2":"/keɪm/","ipa3":"/kʌm/","meaning":"đến","lv":1},
+  {"v1":"cost","v2":"cost","v3":"cost","ipa":"/kɒst/","ipa2":"/kɒst/","ipa3":"/kɒst/","meaning":"có giá","lv":2},
+  {"v1":"creep","v2":"crept","v3":"crept","ipa":"/kriːp/","ipa2":"/krept/","ipa3":"/krept/","meaning":"bò, rón rén","lv":4},
+  {"v1":"cut","v2":"cut","v3":"cut","ipa":"/kʌt/","ipa2":"/kʌt/","ipa3":"/kʌt/","meaning":"cắt","lv":2},
+  {"v1":"daydream","v2":"daydreamt/daydreamed","v3":"daydreamt/daydreamed","ipa":"/ˈdeɪdriːm/","ipa2":"/ˈdeɪdremt/","ipa3":"/ˈdeɪdremt/","meaning":"mơ mộng","lv":3},
+  {"v1":"deal","v2":"dealt","v3":"dealt","ipa":"/diːl/","ipa2":"/delt/","ipa3":"/delt/","meaning":"giải quyết, buôn bán","lv":3},
+  {"v1":"dig","v2":"dug","v3":"dug","ipa":"/dɪɡ/","ipa2":"/dʌɡ/","ipa3":"/dʌɡ/","meaning":"đào","lv":3},
+  {"v1":"dive","v2":"dived/dove","v3":"dived","ipa":"/daɪv/","ipa2":"/daɪvd/","ipa3":"/daɪvd/","meaning":"lặn, nhảy xuống nước","lv":3},
+  {"v1":"do","v2":"did","v3":"done","ipa":"/duː/","ipa2":"/dɪd/","ipa3":"/dʌn/","meaning":"làm","lv":1},
+  {"v1":"draw","v2":"drew","v3":"drawn","ipa":"/drɔː/","ipa2":"/druː/","ipa3":"/drɔːn/","meaning":"vẽ","lv":2},
+  {"v1":"dream","v2":"dreamt/dreamed","v3":"dreamt/dreamed","ipa":"/driːm/","ipa2":"/dremt/","ipa3":"/dremt/","meaning":"mơ, mơ ước","lv":2},
+  {"v1":"drink","v2":"drank","v3":"drunk","ipa":"/drɪŋk/","ipa2":"/dræŋk/","ipa3":"/drʌŋk/","meaning":"uống","lv":1},
+  {"v1":"drive","v2":"drove","v3":"driven","ipa":"/draɪv/","ipa2":"/drəʊv/","ipa3":"/ˈdrɪvn/","meaning":"lái xe","lv":2},
+  {"v1":"dwell","v2":"dwelt/dwelled","v3":"dwelt/dwelled","ipa":"/dwel/","ipa2":"/dwelt/","ipa3":"/dwelt/","meaning":"cư ngụ, nghĩ mãi về","lv":4},
+  {"v1":"eat","v2":"ate","v3":"eaten","ipa":"/iːt/","ipa2":"/eɪt/","ipa3":"/ˈiːtn/","meaning":"ăn","lv":1},
+  {"v1":"fall","v2":"fell","v3":"fallen","ipa":"/fɔːl/","ipa2":"/fel/","ipa3":"/ˈfɔːlən/","meaning":"rơi, ngã","lv":2},
+  {"v1":"feed","v2":"fed","v3":"fed","ipa":"/fiːd/","ipa2":"/fed/","ipa3":"/fed/","meaning":"cho ăn","lv":2},
+  {"v1":"feel","v2":"felt","v3":"felt","ipa":"/fiːl/","ipa2":"/felt/","ipa3":"/felt/","meaning":"cảm thấy","lv":1},
+  {"v1":"fight","v2":"fought","v3":"fought","ipa":"/faɪt/","ipa2":"/fɔːt/","ipa3":"/fɔːt/","meaning":"đánh nhau, chiến đấu","lv":2},
+  {"v1":"find","v2":"found","v3":"found","ipa":"/faɪnd/","ipa2":"/faʊnd/","ipa3":"/faʊnd/","meaning":"tìm thấy","lv":1},
+  {"v1":"flee","v2":"fled","v3":"fled","ipa":"/fliː/","ipa2":"/fled/","ipa3":"/fled/","meaning":"chạy trốn","lv":4},
+  {"v1":"fling","v2":"flung","v3":"flung","ipa":"/flɪŋ/","ipa2":"/flʌŋ/","ipa3":"/flʌŋ/","meaning":"ném mạnh, quăng","lv":4},
+  {"v1":"fly","v2":"flew","v3":"flown","ipa":"/flaɪ/","ipa2":"/fluː/","ipa3":"/fləʊn/","meaning":"bay","lv":2},
+  {"v1":"forbid","v2":"forbade","v3":"forbidden","ipa":"/fəˈbɪd/","ipa2":"/fəˈbæd/","ipa3":"/fəˈbɪdn/","meaning":"cấm","lv":3},
+  {"v1":"forecast","v2":"forecast","v3":"forecast","ipa":"/ˈfɔːkɑːst/","ipa2":"/ˈfɔːkɑːst/","ipa3":"/ˈfɔːkɑːst/","meaning":"dự báo","lv":3},
+  {"v1":"foresee","v2":"foresaw","v3":"foreseen","ipa":"/fɔːˈsiː/","ipa2":"/fɔːˈsɔː/","ipa3":"/fɔːˈsiːn/","meaning":"thấy trước","lv":4},
+  {"v1":"foretell","v2":"foretold","v3":"foretold","ipa":"/fɔːˈtel/","ipa2":"/fɔːˈtəʊld/","ipa3":"/fɔːˈtəʊld/","meaning":"tiên đoán","lv":4},
+  {"v1":"forget","v2":"forgot","v3":"forgotten","ipa":"/fəˈɡet/","ipa2":"/fəˈɡɒt/","ipa3":"/fəˈɡɒtn/","meaning":"quên","lv":2},
+  {"v1":"forgive","v2":"forgave","v3":"forgiven","ipa":"/fəˈɡɪv/","ipa2":"/fəˈɡeɪv/","ipa3":"/fəˈɡɪvn/","meaning":"tha thứ","lv":3},
+  {"v1":"forsake","v2":"forsook","v3":"forsaken","ipa":"/fəˈseɪk/","ipa2":"/fəˈsʊk/","ipa3":"/fəˈseɪkən/","meaning":"từ bỏ, ruồng bỏ","lv":5},
+  {"v1":"freeze","v2":"froze","v3":"frozen","ipa":"/friːz/","ipa2":"/frəʊz/","ipa3":"/ˈfrəʊzn/","meaning":"đóng băng, đông lạnh","lv":3},
+  {"v1":"get","v2":"got","v3":"gotten/got","ipa":"/ɡet/","ipa2":"/ɡɒt/","ipa3":"/ˈɡɒtn/ · /ɡɒt/","meaning":"lấy, nhận","lv":1},
+  {"v1":"give","v2":"gave","v3":"given","ipa":"/ɡɪv/","ipa2":"/ɡeɪv/","ipa3":"/ˈɡɪvn/","meaning":"cho, đưa","lv":1},
+  {"v1":"go","v2":"went","v3":"gone","ipa":"/ɡəʊ/","ipa2":"/went/","ipa3":"/ɡɒn/","meaning":"đi","lv":1},
+  {"v1":"grind","v2":"ground","v3":"ground","ipa":"/ɡraɪnd/","ipa2":"/ɡraʊnd/","ipa3":"/ɡraʊnd/","meaning":"xay, nghiền","lv":4},
+  {"v1":"grow","v2":"grew","v3":"grown","ipa":"/ɡrəʊ/","ipa2":"/ɡruː/","ipa3":"/ɡrəʊn/","meaning":"lớn lên, trồng","lv":2},
+  {"v1":"hang","v2":"hung","v3":"hung","ipa":"/hæŋ/","ipa2":"/hʌŋ/","ipa3":"/hʌŋ/","meaning":"treo","lv":2},
+  {"v1":"have","v2":"had","v3":"had","ipa":"/hæv/","ipa2":"/hæd/","ipa3":"/hæd/","meaning":"có","lv":1},
+  {"v1":"hear","v2":"heard","v3":"heard","ipa":"/hɪər/","ipa2":"/hɜːd/","ipa3":"/hɜːd/","meaning":"nghe","lv":1},
+  {"v1":"hew","v2":"hewed","v3":"hewn/hewed","ipa":"/hjuː/","ipa2":"/hjuːd/","ipa3":"/hjuːn/","meaning":"đốn, chặt","lv":5},
+  {"v1":"hide","v2":"hid","v3":"hidden","ipa":"/haɪd/","ipa2":"/hɪd/","ipa3":"/ˈhɪdn/","meaning":"giấu, trốn","lv":2},
+  {"v1":"hit","v2":"hit","v3":"hit","ipa":"/hɪt/","ipa2":"/hɪt/","ipa3":"/hɪt/","meaning":"đánh, va","lv":2},
+  {"v1":"hold","v2":"held","v3":"held","ipa":"/həʊld/","ipa2":"/held/","ipa3":"/held/","meaning":"giữ, cầm","lv":2},
+  {"v1":"hurt","v2":"hurt","v3":"hurt","ipa":"/hɜːt/","ipa2":"/hɜːt/","ipa3":"/hɜːt/","meaning":"làm đau, bị đau","lv":2},
+  {"v1":"inlay","v2":"inlaid","v3":"inlaid","ipa":"/ˌɪnˈleɪ/","ipa2":"/ˌɪnˈleɪd/","ipa3":"/ˌɪnˈleɪd/","meaning":"khảm, dát","lv":5},
+  {"v1":"input","v2":"input/inputted","v3":"input/inputted","ipa":"/ˈɪnpʊt/","ipa2":"/ˈɪnpʊt/","ipa3":"/ˈɪnpʊt/","meaning":"nhập (dữ liệu)","lv":4},
+  {"v1":"keep","v2":"kept","v3":"kept","ipa":"/kiːp/","ipa2":"/kept/","ipa3":"/kept/","meaning":"giữ lại","lv":2},
+  {"v1":"kneel","v2":"knelt/kneeled","v3":"knelt/kneeled","ipa":"/niːl/","ipa2":"/nelt/","ipa3":"/nelt/","meaning":"quỳ gối","lv":4},
+  {"v1":"knit","v2":"knitted/knit","v3":"knitted/knit","ipa":"/nɪt/","ipa2":"/ˈnɪtɪd/","ipa3":"/ˈnɪtɪd/","meaning":"đan (len)","lv":4},
+  {"v1":"know","v2":"knew","v3":"known","ipa":"/nəʊ/","ipa2":"/njuː/","ipa3":"/nəʊn/","meaning":"biết","lv":1},
+  {"v1":"lay","v2":"laid","v3":"laid","ipa":"/leɪ/","ipa2":"/leɪd/","ipa3":"/leɪd/","meaning":"đặt, đẻ (trứng)","lv":3},
+  {"v1":"lead","v2":"led","v3":"led","ipa":"/liːd/","ipa2":"/led/","ipa3":"/led/","meaning":"dẫn dắt","lv":3},
+  {"v1":"lean","v2":"leant/leaned","v3":"leant/leaned","ipa":"/liːn/","ipa2":"/lent/","ipa3":"/lent/","meaning":"dựa vào, nghiêng","lv":3},
+  {"v1":"leap","v2":"leapt/leaped","v3":"leapt/leaped","ipa":"/liːp/","ipa2":"/lept/","ipa3":"/lept/","meaning":"nhảy vọt","lv":3},
+  {"v1":"learn","v2":"learnt/learned","v3":"learnt/learned","ipa":"/lɜːn/","ipa2":"/lɜːnt/","ipa3":"/lɜːnt/","meaning":"học","lv":1},
+  {"v1":"leave","v2":"left","v3":"left","ipa":"/liːv/","ipa2":"/left/","ipa3":"/left/","meaning":"rời đi, để lại","lv":1},
+  {"v1":"lend","v2":"lent","v3":"lent","ipa":"/lend/","ipa2":"/lent/","ipa3":"/lent/","meaning":"cho mượn","lv":2},
+  {"v1":"let","v2":"let","v3":"let","ipa":"/let/","ipa2":"/let/","ipa3":"/let/","meaning":"để cho, cho phép","lv":2},
+  {"v1":"lie","v2":"lay","v3":"lain","ipa":"/laɪ/","ipa2":"/leɪ/","ipa3":"/leɪn/","meaning":"nằm","lv":2},
+  {"v1":"light","v2":"lit","v3":"lit","ipa":"/laɪt/","ipa2":"/lɪt/","ipa3":"/lɪt/","meaning":"thắp, châm lửa","lv":2},
+  {"v1":"lip-read","v2":"lip-read","v3":"lip-read","ipa":"/ˈlɪpriːd/","ipa2":"/ˈlɪpred/","ipa3":"/ˈlɪpred/","meaning":"đọc khẩu hình","lv":4},
+  {"v1":"lose","v2":"lost","v3":"lost","ipa":"/luːz/","ipa2":"/lɒst/","ipa3":"/lɒst/","meaning":"mất, thua","lv":2},
+  {"v1":"make","v2":"made","v3":"made","ipa":"/meɪk/","ipa2":"/meɪd/","ipa3":"/meɪd/","meaning":"làm, tạo ra","lv":1},
+  {"v1":"mean","v2":"meant","v3":"meant","ipa":"/miːn/","ipa2":"/ment/","ipa3":"/ment/","meaning":"có nghĩa là","lv":2},
+  {"v1":"meet","v2":"met","v3":"met","ipa":"/miːt/","ipa2":"/met/","ipa3":"/met/","meaning":"gặp","lv":1},
+  {"v1":"mislay","v2":"mislaid","v3":"mislaid","ipa":"/ˌmɪsˈleɪ/","ipa2":"/ˌmɪsˈleɪd/","ipa3":"/ˌmɪsˈleɪd/","meaning":"để thất lạc","lv":4},
+  {"v1":"mislead","v2":"misled","v3":"misled","ipa":"/ˌmɪsˈliːd/","ipa2":"/ˌmɪsˈled/","ipa3":"/ˌmɪsˈled/","meaning":"làm hiểu sai, đánh lừa","lv":4},
+  {"v1":"misread","v2":"misread","v3":"misread","ipa":"/ˌmɪsˈriːd/","ipa2":"/ˌmɪsˈred/","ipa3":"/ˌmɪsˈred/","meaning":"đọc nhầm","lv":3},
+  {"v1":"misspell","v2":"misspelt/misspelled","v3":"misspelt/misspelled","ipa":"/ˌmɪsˈspel/","ipa2":"/ˌmɪsˈspelt/","ipa3":"/ˌmɪsˈspelt/","meaning":"viết sai chính tả","lv":3},
+  {"v1":"mistake","v2":"mistook","v3":"mistaken","ipa":"/mɪˈsteɪk/","ipa2":"/mɪˈstʊk/","ipa3":"/mɪˈsteɪkən/","meaning":"nhầm lẫn","lv":3},
+  {"v1":"misunderstand","v2":"misunderstood","v3":"misunderstood","ipa":"/ˌmɪsʌndəˈstænd/","ipa2":"/ˌmɪsʌndəˈstʊd/","ipa3":"/ˌmɪsʌndəˈstʊd/","meaning":"hiểu lầm","lv":3},
+  {"v1":"mow","v2":"mowed","v3":"mown/mowed","ipa":"/məʊ/","ipa2":"/məʊd/","ipa3":"/məʊn/","meaning":"cắt (cỏ)","lv":4},
+  {"v1":"offset","v2":"offset","v3":"offset","ipa":"/ˈɒfset/","ipa2":"/ˈɒfset/","ipa3":"/ˈɒfset/","meaning":"bù đắp","lv":5},
+  {"v1":"outbid","v2":"outbid","v3":"outbid","ipa":"/ˌaʊtˈbɪd/","ipa2":"/ˌaʊtˈbɪd/","ipa3":"/ˌaʊtˈbɪd/","meaning":"trả giá cao hơn","lv":5},
+  {"v1":"outdo","v2":"outdid","v3":"outdone","ipa":"/ˌaʊtˈduː/","ipa2":"/ˌaʊtˈdɪd/","ipa3":"/ˌaʊtˈdʌn/","meaning":"làm giỏi hơn","lv":4},
+  {"v1":"outgrow","v2":"outgrew","v3":"outgrown","ipa":"/ˌaʊtˈɡrəʊ/","ipa2":"/ˌaʊtˈɡruː/","ipa3":"/ˌaʊtˈɡrəʊn/","meaning":"lớn vượt (không vừa nữa)","lv":4},
+  {"v1":"outrun","v2":"outran","v3":"outrun","ipa":"/ˌaʊtˈrʌn/","ipa2":"/ˌaʊtˈræn/","ipa3":"/ˌaʊtˈrʌn/","meaning":"chạy nhanh hơn","lv":4},
+  {"v1":"outshine","v2":"outshone","v3":"outshone","ipa":"/ˌaʊtˈʃaɪn/","ipa2":"/ˌaʊtˈʃɒn/","ipa3":"/ˌaʊtˈʃɒn/","meaning":"nổi bật hơn","lv":5},
+  {"v1":"overcome","v2":"overcame","v3":"overcome","ipa":"/ˌəʊvəˈkʌm/","ipa2":"/ˌəʊvəˈkeɪm/","ipa3":"/ˌəʊvəˈkʌm/","meaning":"vượt qua","lv":3},
+  {"v1":"overdo","v2":"overdid","v3":"overdone","ipa":"/ˌəʊvəˈduː/","ipa2":"/ˌəʊvəˈdɪd/","ipa3":"/ˌəʊvəˈdʌn/","meaning":"làm quá mức","lv":4},
+  {"v1":"overeat","v2":"overate","v3":"overeaten","ipa":"/ˌəʊvərˈiːt/","ipa2":"/ˌəʊvərˈet/","ipa3":"/ˌəʊvərˈiːtn/","meaning":"ăn quá nhiều","lv":3},
+  {"v1":"overfeed","v2":"overfed","v3":"overfed","ipa":"/ˌəʊvəˈfiːd/","ipa2":"/ˌəʊvəˈfed/","ipa3":"/ˌəʊvəˈfed/","meaning":"cho ăn quá nhiều","lv":4},
+  {"v1":"overhang","v2":"overhung","v3":"overhung","ipa":"/ˌəʊvəˈhæŋ/","ipa2":"/ˌəʊvəˈhʌŋ/","ipa3":"/ˌəʊvəˈhʌŋ/","meaning":"nhô ra phía trên","lv":4},
+  {"v1":"overhear","v2":"overheard","v3":"overheard","ipa":"/ˌəʊvəˈhɪə/","ipa2":"/ˌəʊvəˈhɜːd/","ipa3":"/ˌəʊvəˈhɜːd/","meaning":"nghe lỏm","lv":4},
+  {"v1":"overpay","v2":"overpaid","v3":"overpaid","ipa":"/ˌəʊvəˈpeɪ/","ipa2":"/ˌəʊvəˈpeɪd/","ipa3":"/ˌəʊvəˈpeɪd/","meaning":"trả quá nhiều","lv":3},
+  {"v1":"override","v2":"overrode","v3":"overridden","ipa":"/ˌəʊvəˈraɪd/","ipa2":"/ˌəʊvəˈrəʊd/","ipa3":"/ˌəʊvəˈrɪdn/","meaning":"gạt bỏ, ghi đè","lv":4},
+  {"v1":"overrun","v2":"overran","v3":"overrun","ipa":"/ˌəʊvəˈrʌn/","ipa2":"/ˌəʊvəˈræn/","ipa3":"/ˌəʊvəˈrʌn/","meaning":"tràn ngập, vượt quá thời gian","lv":4},
+  {"v1":"oversee","v2":"oversaw","v3":"overseen","ipa":"/ˌəʊvəˈsiː/","ipa2":"/ˌəʊvəˈsɔː/","ipa3":"/ˌəʊvəˈsiːn/","meaning":"giám sát","lv":4},
+  {"v1":"oversleep","v2":"overslept","v3":"overslept","ipa":"/ˌəʊvəˈsliːp/","ipa2":"/ˌəʊvəˈslept/","ipa3":"/ˌəʊvəˈslept/","meaning":"ngủ quên","lv":3},
+  {"v1":"overtake","v2":"overtook","v3":"overtaken","ipa":"/ˌəʊvəˈteɪk/","ipa2":"/ˌəʊvəˈtʊk/","ipa3":"/ˌəʊvəˈteɪkən/","meaning":"vượt (xe), vượt lên","lv":3},
+  {"v1":"overthrow","v2":"overthrew","v3":"overthrown","ipa":"/ˌəʊvəˈθrəʊ/","ipa2":"/ˌəʊvəˈθruː/","ipa3":"/ˌəʊvəˈθrəʊn/","meaning":"lật đổ","lv":4},
+  {"v1":"partake","v2":"partook","v3":"partaken","ipa":"/pɑːˈteɪk/","ipa2":"/pɑːˈtʊk/","ipa3":"/pɑːˈteɪkən/","meaning":"tham gia, dùng (đồ ăn)","lv":5},
+  {"v1":"pay","v2":"paid","v3":"paid","ipa":"/peɪ/","ipa2":"/peɪd/","ipa3":"/peɪd/","meaning":"trả tiền","lv":2},
+  {"v1":"plead","v2":"pleaded/pled","v3":"pleaded/pled","ipa":"/pliːd/","ipa2":"/ˈpliːdɪd/","ipa3":"/ˈpliːdɪd/","meaning":"cầu xin, bào chữa","lv":4},
+  {"v1":"proofread","v2":"proofread","v3":"proofread","ipa":"/ˈpruːfriːd/","ipa2":"/ˈpruːfred/","ipa3":"/ˈpruːfred/","meaning":"đọc soát lỗi","lv":4},
+  {"v1":"prove","v2":"proved","v3":"proven/proved","ipa":"/pruːv/","ipa2":"/pruːvd/","ipa3":"/ˈpruːvn/","meaning":"chứng minh","lv":3},
+  {"v1":"put","v2":"put","v3":"put","ipa":"/pʊt/","ipa2":"/pʊt/","ipa3":"/pʊt/","meaning":"đặt, để","lv":1},
+  {"v1":"quit","v2":"quit","v3":"quit","ipa":"/kwɪt/","ipa2":"/kwɪt/","ipa3":"/kwɪt/","meaning":"bỏ, từ bỏ","lv":3},
+  {"v1":"read","v2":"read","v3":"read","ipa":"/riːd/","ipa2":"/red/","ipa3":"/red/","meaning":"đọc","lv":1},
+  {"v1":"rebuild","v2":"rebuilt","v3":"rebuilt","ipa":"/ˌriːˈbɪld/","ipa2":"/ˌriːˈbɪlt/","ipa3":"/ˌriːˈbɪlt/","meaning":"xây lại","lv":3},
+  {"v1":"redo","v2":"redid","v3":"redone","ipa":"/ˌriːˈduː/","ipa2":"/ˌriːˈdɪd/","ipa3":"/ˌriːˈdʌn/","meaning":"làm lại","lv":3},
+  {"v1":"remake","v2":"remade","v3":"remade","ipa":"/ˌriːˈmeɪk/","ipa2":"/ˌriːˈmeɪd/","ipa3":"/ˌriːˈmeɪd/","meaning":"làm lại (phim)…","lv":3},
+  {"v1":"rend","v2":"rent","v3":"rent","ipa":"/rend/","ipa2":"/rent/","ipa3":"/rent/","meaning":"xé toạc (văn chương)","lv":5},
+  {"v1":"repay","v2":"repaid","v3":"repaid","ipa":"/rɪˈpeɪ/","ipa2":"/rɪˈpeɪd/","ipa3":"/rɪˈpeɪd/","meaning":"trả lại (tiền), đền đáp","lv":3},
+  {"v1":"resell","v2":"resold","v3":"resold","ipa":"/ˌriːˈsel/","ipa2":"/ˌriːˈsəʊld/","ipa3":"/ˌriːˈsəʊld/","meaning":"bán lại","lv":3},
+  {"v1":"reset","v2":"reset","v3":"reset","ipa":"/ˌriːˈset/","ipa2":"/ˌriːˈset/","ipa3":"/ˌriːˈset/","meaning":"cài đặt lại","lv":3},
+  {"v1":"retell","v2":"retold","v3":"retold","ipa":"/ˌriːˈtel/","ipa2":"/ˌriːˈtəʊld/","ipa3":"/ˌriːˈtəʊld/","meaning":"kể lại","lv":3},
+  {"v1":"rethink","v2":"rethought","v3":"rethought","ipa":"/ˌriːˈθɪŋk/","ipa2":"/ˌriːˈθɔːt/","ipa3":"/ˌriːˈθɔːt/","meaning":"nghĩ lại","lv":3},
+  {"v1":"rewind","v2":"rewound","v3":"rewound","ipa":"/ˌriːˈwaɪnd/","ipa2":"/ˌriːˈwaʊnd/","ipa3":"/ˌriːˈwaʊnd/","meaning":"tua lại","lv":3},
+  {"v1":"rewrite","v2":"rewrote","v3":"rewritten","ipa":"/ˌriːˈraɪt/","ipa2":"/ˌriːˈrəʊt/","ipa3":"/ˌriːˈrɪtn/","meaning":"viết lại","lv":3},
+  {"v1":"rid","v2":"rid","v3":"rid","ipa":"/rɪd/","ipa2":"/rɪd/","ipa3":"/rɪd/","meaning":"loại bỏ (get rid of)","lv":4},
+  {"v1":"ride","v2":"rode","v3":"ridden","ipa":"/raɪd/","ipa2":"/rəʊd/","ipa3":"/ˈrɪdn/","meaning":"đi (xe, ngựa)","lv":2},
+  {"v1":"ring","v2":"rang","v3":"rung","ipa":"/rɪŋ/","ipa2":"/ræŋ/","ipa3":"/rʌŋ/","meaning":"reo, gọi điện","lv":2},
+  {"v1":"rise","v2":"rose","v3":"risen","ipa":"/raɪz/","ipa2":"/rəʊz/","ipa3":"/ˈrɪzn/","meaning":"mọc, tăng lên","lv":2},
+  {"v1":"run","v2":"ran","v3":"run","ipa":"/rʌn/","ipa2":"/ræn/","ipa3":"/rʌn/","meaning":"chạy","lv":1},
+  {"v1":"say","v2":"said","v3":"said","ipa":"/seɪ/","ipa2":"/sed/","ipa3":"/sed/","meaning":"nói","lv":1},
+  {"v1":"see","v2":"saw","v3":"seen","ipa":"/siː/","ipa2":"/sɔː/","ipa3":"/siːn/","meaning":"nhìn thấy","lv":1},
+  {"v1":"seek","v2":"sought","v3":"sought","ipa":"/siːk/","ipa2":"/sɔːt/","ipa3":"/sɔːt/","meaning":"tìm kiếm","lv":3},
+  {"v1":"sell","v2":"sold","v3":"sold","ipa":"/sel/","ipa2":"/səʊld/","ipa3":"/səʊld/","meaning":"bán","lv":2},
+  {"v1":"send","v2":"sent","v3":"sent","ipa":"/send/","ipa2":"/sent/","ipa3":"/sent/","meaning":"gửi","lv":2},
+  {"v1":"set","v2":"set","v3":"set","ipa":"/set/","ipa2":"/set/","ipa3":"/set/","meaning":"đặt, thiết lập","lv":2},
+  {"v1":"sew","v2":"sewed","v3":"sewn","ipa":"/səʊ/","ipa2":"/səʊd/","ipa3":"/səʊn/","meaning":"may, khâu","lv":3},
+  {"v1":"shake","v2":"shook","v3":"shaken","ipa":"/ʃeɪk/","ipa2":"/ʃʊk/","ipa3":"/ˈʃeɪkən/","meaning":"lắc, rung","lv":2},
+  {"v1":"shear","v2":"sheared","v3":"shorn/sheared","ipa":"/ʃɪə/","ipa2":"/ʃɪəd/","ipa3":"/ʃɔːn/","meaning":"xén (lông cừu)","lv":5},
+  {"v1":"shed","v2":"shed","v3":"shed","ipa":"/ʃed/","ipa2":"/ʃed/","ipa3":"/ʃed/","meaning":"rụng, rơi (nước mắt), cắt bỏ","lv":4},
+  {"v1":"shine","v2":"shone","v3":"shone","ipa":"/ʃaɪn/","ipa2":"/ʃɒn/","ipa3":"/ʃɒn/","meaning":"chiếu sáng","lv":2},
+  {"v1":"shoot","v2":"shot","v3":"shot","ipa":"/ʃuːt/","ipa2":"/ʃɒt/","ipa3":"/ʃɒt/","meaning":"bắn, quay phim","lv":2},
+  {"v1":"show","v2":"showed","v3":"shown","ipa":"/ʃəʊ/","ipa2":"/ʃəʊd/","ipa3":"/ʃəʊn/","meaning":"chỉ, cho xem","lv":2},
+  {"v1":"shrink","v2":"shrank","v3":"shrunk","ipa":"/ʃrɪŋk/","ipa2":"/ʃræŋk/","ipa3":"/ʃrʌŋk/","meaning":"co lại","lv":3},
+  {"v1":"shut","v2":"shut","v3":"shut","ipa":"/ʃʌt/","ipa2":"/ʃʌt/","ipa3":"/ʃʌt/","meaning":"đóng lại","lv":2},
+  {"v1":"sightsee","v2":"sightsaw","v3":"sightseen","ipa":"/ˈsaɪtsiː/","ipa2":"/ˈsaɪtsɔː/","ipa3":"/ˈsaɪtsiːn/","meaning":"đi ngắm cảnh","lv":4},
+  {"v1":"sing","v2":"sang","v3":"sung","ipa":"/sɪŋ/","ipa2":"/sæŋ/","ipa3":"/sʌŋ/","meaning":"hát","lv":1},
+  {"v1":"sink","v2":"sank","v3":"sunk","ipa":"/sɪŋk/","ipa2":"/sæŋk/","ipa3":"/sʌŋk/","meaning":"chìm","lv":3},
+  {"v1":"sit","v2":"sat","v3":"sat","ipa":"/sɪt/","ipa2":"/sæt/","ipa3":"/sæt/","meaning":"ngồi","lv":1},
+  {"v1":"slay","v2":"slew","v3":"slain","ipa":"/sleɪ/","ipa2":"/sluː/","ipa3":"/sleɪn/","meaning":"giết (văn chương)","lv":5},
+  {"v1":"sleep","v2":"slept","v3":"slept","ipa":"/sliːp/","ipa2":"/slept/","ipa3":"/slept/","meaning":"ngủ","lv":1},
+  {"v1":"slide","v2":"slid","v3":"slid","ipa":"/slaɪd/","ipa2":"/slɪd/","ipa3":"/slɪd/","meaning":"trượt","lv":3},
+  {"v1":"sling","v2":"slung","v3":"slung","ipa":"/slɪŋ/","ipa2":"/slʌŋ/","ipa3":"/slʌŋ/","meaning":"quăng, đeo (qua vai)","lv":5},
+  {"v1":"slink","v2":"slunk","v3":"slunk","ipa":"/slɪŋk/","ipa2":"/slʌŋk/","ipa3":"/slʌŋk/","meaning":"lẻn đi","lv":5},
+  {"v1":"slit","v2":"slit","v3":"slit","ipa":"/slɪt/","ipa2":"/slɪt/","ipa3":"/slɪt/","meaning":"rạch, khứa","lv":4},
+  {"v1":"smell","v2":"smelt/smelled","v3":"smelt/smelled","ipa":"/smel/","ipa2":"/smelt/","ipa3":"/smelt/","meaning":"ngửi, có mùi","lv":2},
+  {"v1":"smite","v2":"smote","v3":"smitten","ipa":"/smaɪt/","ipa2":"/sməʊt/","ipa3":"/ˈsmɪtn/","meaning":"đánh mạnh","lv":null},
+  {"v1":"sow","v2":"sowed","v3":"sown/sowed","ipa":"/səʊ/","ipa2":"/səʊd/","ipa3":"/səʊn/","meaning":"gieo (hạt)","lv":4},
+  {"v1":"speak","v2":"spoke","v3":"spoken","ipa":"/spiːk/","ipa2":"/spəʊk/","ipa3":"/ˈspəʊkən/","meaning":"nói chuyện","lv":1},
+  {"v1":"speed","v2":"sped/speeded","v3":"sped/speeded","ipa":"/spiːd/","ipa2":"/sped/","ipa3":"/sped/","meaning":"chạy nhanh, tăng tốc","lv":4},
+  {"v1":"spell","v2":"spelt/spelled","v3":"spelt/spelled","ipa":"/spel/","ipa2":"/spelt/","ipa3":"/spelt/","meaning":"đánh vần","lv":2},
+  {"v1":"spend","v2":"spent","v3":"spent","ipa":"/spend/","ipa2":"/spent/","ipa3":"/spent/","meaning":"chi tiêu, dành (thời gian)","lv":2},
+  {"v1":"spill","v2":"spilt/spilled","v3":"spilt/spilled","ipa":"/spɪl/","ipa2":"/spɪlt/","ipa3":"/spɪlt/","meaning":"làm đổ, tràn","lv":3},
+  {"v1":"spin","v2":"spun","v3":"spun","ipa":"/spɪn/","ipa2":"/spʌn/","ipa3":"/spʌn/","meaning":"quay tròn","lv":3},
+  {"v1":"spit","v2":"spat","v3":"spat","ipa":"/spɪt/","ipa2":"/spæt/","ipa3":"/spæt/","meaning":"khạc nhổ","lv":4},
+  {"v1":"split","v2":"split","v3":"split","ipa":"/splɪt/","ipa2":"/splɪt/","ipa3":"/splɪt/","meaning":"chia ra, tách","lv":3},
+  {"v1":"spoil","v2":"spoilt/spoiled","v3":"spoilt/spoiled","ipa":"/spɔɪl/","ipa2":"/spɔɪlt/","ipa3":"/spɔɪlt/","meaning":"làm hỏng, chiều hư","lv":3},
+  {"v1":"spoon-feed","v2":"spoon-fed","v3":"spoon-fed","ipa":"/ˈspuːnfiːd/","ipa2":"/ˈspuːnfed/","ipa3":"/ˈspuːnfed/","meaning":"mớm, bón (nghĩa bóng: làm hộ hết)","lv":5},
+  {"v1":"spread","v2":"spread","v3":"spread","ipa":"/spred/","ipa2":"/spred/","ipa3":"/spred/","meaning":"lan rộng, phết","lv":3},
+  {"v1":"spring","v2":"sprang","v3":"sprung","ipa":"/sprɪŋ/","ipa2":"/spræŋ/","ipa3":"/sprʌŋ/","meaning":"nhảy bật lên, nảy ra","lv":4},
+  {"v1":"stand","v2":"stood","v3":"stood","ipa":"/stænd/","ipa2":"/stʊd/","ipa3":"/stʊd/","meaning":"đứng","lv":1},
+  {"v1":"steal","v2":"stole","v3":"stolen","ipa":"/stiːl/","ipa2":"/stəʊl/","ipa3":"/ˈstəʊlən/","meaning":"ăn trộm","lv":2},
+  {"v1":"stick","v2":"stuck","v3":"stuck","ipa":"/stɪk/","ipa2":"/stʌk/","ipa3":"/stʌk/","meaning":"dán, mắc kẹt","lv":3},
+  {"v1":"sting","v2":"stung","v3":"stung","ipa":"/stɪŋ/","ipa2":"/stʌŋ/","ipa3":"/stʌŋ/","meaning":"châm, chích","lv":3},
+  {"v1":"stink","v2":"stank","v3":"stunk","ipa":"/stɪŋk/","ipa2":"/stæŋk/","ipa3":"/stʌŋk/","meaning":"bốc mùi hôi","lv":4},
+  {"v1":"strew","v2":"strewed","v3":"strewn/strewed","ipa":"/struː/","ipa2":"/struːd/","ipa3":"/struːn/","meaning":"rải, rắc","lv":5},
+  {"v1":"stride","v2":"strode","v3":"stridden","ipa":"/straɪd/","ipa2":"/strəʊd/","ipa3":"/ˈstrɪdn/","meaning":"sải bước","lv":5},
+  {"v1":"strike","v2":"struck","v3":"struck","ipa":"/straɪk/","ipa2":"/strʌk/","ipa3":"/strʌk/","meaning":"đánh, đình công","lv":3},
+  {"v1":"string","v2":"strung","v3":"strung","ipa":"/strɪŋ/","ipa2":"/strʌŋ/","ipa3":"/strʌŋ/","meaning":"xâu, căng dây","lv":4},
+  {"v1":"strive","v2":"strove","v3":"striven","ipa":"/straɪv/","ipa2":"/strəʊv/","ipa3":"/ˈstrɪvn/","meaning":"cố gắng, phấn đấu","lv":4},
+  {"v1":"sublet","v2":"sublet","v3":"sublet","ipa":"/ˌsʌbˈlet/","ipa2":"/ˌsʌbˈlet/","ipa3":"/ˌsʌbˈlet/","meaning":"cho thuê lại","lv":4},
+  {"v1":"swear","v2":"swore","v3":"sworn","ipa":"/sweə/","ipa2":"/swɔː/","ipa3":"/swɔːn/","meaning":"thề, chửi thề","lv":3},
+  {"v1":"sweep","v2":"swept","v3":"swept","ipa":"/swiːp/","ipa2":"/swept/","ipa3":"/swept/","meaning":"quét","lv":2},
+  {"v1":"swell","v2":"swelled","v3":"swollen","ipa":"/swel/","ipa2":"/sweld/","ipa3":"/ˈswəʊlən/","meaning":"sưng lên, phình ra","lv":4},
+  {"v1":"swim","v2":"swam","v3":"swum","ipa":"/swɪm/","ipa2":"/swæm/","ipa3":"/swʌm/","meaning":"bơi","lv":1},
+  {"v1":"swing","v2":"swung","v3":"swung","ipa":"/swɪŋ/","ipa2":"/swʌŋ/","ipa3":"/swʌŋ/","meaning":"đu đưa","lv":3},
+  {"v1":"take","v2":"took","v3":"taken","ipa":"/teɪk/","ipa2":"/tʊk/","ipa3":"/ˈteɪkən/","meaning":"lấy, cầm","lv":1},
+  {"v1":"teach","v2":"taught","v3":"taught","ipa":"/tiːtʃ/","ipa2":"/tɔːt/","ipa3":"/tɔːt/","meaning":"dạy","lv":1},
+  {"v1":"tear","v2":"tore","v3":"torn","ipa":"/teə/","ipa2":"/tɔː/","ipa3":"/tɔːn/","meaning":"xé rách","lv":2},
+  {"v1":"tell","v2":"told","v3":"told","ipa":"/tel/","ipa2":"/təʊld/","ipa3":"/təʊld/","meaning":"kể, nói cho biết","lv":1},
+  {"v1":"think","v2":"thought","v3":"thought","ipa":"/θɪŋk/","ipa2":"/θɔːt/","ipa3":"/θɔːt/","meaning":"nghĩ","lv":1},
+  {"v1":"thrive","v2":"thrived/throve","v3":"thrived/thriven","ipa":"/θraɪv/","ipa2":"/θraɪvd/","ipa3":"/θraɪvd/","meaning":"phát triển mạnh","lv":5},
+  {"v1":"throw","v2":"threw","v3":"thrown","ipa":"/θrəʊ/","ipa2":"/θruː/","ipa3":"/θrəʊn/","meaning":"ném, vứt","lv":2},
+  {"v1":"thrust","v2":"thrust","v3":"thrust","ipa":"/θrʌst/","ipa2":"/θrʌst/","ipa3":"/θrʌst/","meaning":"đẩy mạnh, ấn","lv":4},
+  {"v1":"tread","v2":"trod","v3":"trodden","ipa":"/tred/","ipa2":"/trɒd/","ipa3":"/ˈtrɒdn/","meaning":"giẫm, đạp lên","lv":4},
+  {"v1":"undercut","v2":"undercut","v3":"undercut","ipa":"/ˌʌndəˈkʌt/","ipa2":"/ˌʌndəˈkʌt/","ipa3":"/ˌʌndəˈkʌt/","meaning":"bán phá giá, làm suy yếu","lv":5},
+  {"v1":"undergo","v2":"underwent","v3":"undergone","ipa":"/ˌʌndəˈɡəʊ/","ipa2":"/ˌʌndəˈwent/","ipa3":"/ˌʌndəˈɡɒn/","meaning":"trải qua","lv":4},
+  {"v1":"underlie","v2":"underlay","v3":"underlain","ipa":"/ˌʌndəˈlaɪ/","ipa2":"/ˌʌndəˈleɪ/","ipa3":"/ˌʌndəˈleɪn/","meaning":"là cơ sở của","lv":5},
+  {"v1":"underpay","v2":"underpaid","v3":"underpaid","ipa":"/ˌʌndəˈpeɪ/","ipa2":"/ˌʌndəˈpeɪd/","ipa3":"/ˌʌndəˈpeɪd/","meaning":"trả lương thấp","lv":4},
+  {"v1":"undersell","v2":"undersold","v3":"undersold","ipa":"/ˌʌndəˈsel/","ipa2":"/ˌʌndəˈsəʊld/","ipa3":"/ˌʌndəˈsəʊld/","meaning":"bán rẻ hơn","lv":4},
+  {"v1":"understand","v2":"understood","v3":"understood","ipa":"/ˌʌndəˈstænd/","ipa2":"/ˌʌndəˈstʊd/","ipa3":"/ˌʌndəˈstʊd/","meaning":"hiểu","lv":1},
+  {"v1":"undertake","v2":"undertook","v3":"undertaken","ipa":"/ˌʌndəˈteɪk/","ipa2":"/ˌʌndəˈtʊk/","ipa3":"/ˌʌndəˈteɪkən/","meaning":"đảm nhận","lv":4},
+  {"v1":"underwrite","v2":"underwrote","v3":"underwritten","ipa":"/ˌʌndəˈraɪt/","ipa2":"/ˌʌndəˈrəʊt/","ipa3":"/ˌʌndəˈrɪtn/","meaning":"bảo lãnh, bảo hiểm","lv":5},
+  {"v1":"undo","v2":"undid","v3":"undone","ipa":"/ʌnˈduː/","ipa2":"/ʌnˈdɪd/","ipa3":"/ʌnˈdʌn/","meaning":"tháo ra, hoàn tác","lv":4},
+  {"v1":"unwind","v2":"unwound","v3":"unwound","ipa":"/ʌnˈwaɪnd/","ipa2":"/ʌnˈwaʊnd/","ipa3":"/ʌnˈwaʊnd/","meaning":"thư giãn, tháo cuộn","lv":4},
+  {"v1":"uphold","v2":"upheld","v3":"upheld","ipa":"/ʌpˈhəʊld/","ipa2":"/ʌpˈheld/","ipa3":"/ʌpˈheld/","meaning":"giữ vững, ủng hộ","lv":4},
+  {"v1":"upset","v2":"upset","v3":"upset","ipa":"/ʌpˈset/","ipa2":"/ʌpˈset/","ipa3":"/ʌpˈset/","meaning":"làm buồn, làm đảo lộn","lv":3},
+  {"v1":"wake","v2":"woke","v3":"woken","ipa":"/weɪk/","ipa2":"/wəʊk/","ipa3":"/ˈwəʊkən/","meaning":"thức dậy","lv":1},
+  {"v1":"wear","v2":"wore","v3":"worn","ipa":"/weər/","ipa2":"/wɔːr/","ipa3":"/wɔːn/","meaning":"mặc, đeo","lv":1},
+  {"v1":"weave","v2":"wove","v3":"woven","ipa":"/wiːv/","ipa2":"/wəʊv/","ipa3":"/ˈwəʊvn/","meaning":"dệt","lv":4},
+  {"v1":"wed","v2":"wed/wedded","v3":"wed/wedded","ipa":"/wed/","ipa2":"/wed/","ipa3":"/wed/","meaning":"cưới","lv":4},
+  {"v1":"weep","v2":"wept","v3":"wept","ipa":"/wiːp/","ipa2":"/wept/","ipa3":"/wept/","meaning":"khóc","lv":4},
+  {"v1":"wet","v2":"wet/wetted","v3":"wet/wetted","ipa":"/wet/","ipa2":"/wet/","ipa3":"/wet/","meaning":"làm ướt","lv":4},
+  {"v1":"win","v2":"won","v3":"won","ipa":"/wɪn/","ipa2":"/wʌn/","ipa3":"/wʌn/","meaning":"thắng","lv":2},
+  {"v1":"wind","v2":"wound","v3":"wound","ipa":"/waɪnd/","ipa2":"/waʊnd/","ipa3":"/waʊnd/","meaning":"cuộn, lên dây, uốn khúc","lv":4},
+  {"v1":"withdraw","v2":"withdrew","v3":"withdrawn","ipa":"/wɪðˈdrɔː/","ipa2":"/wɪðˈdruː/","ipa3":"/wɪðˈdrɔːn/","meaning":"rút (tiền), rút lui","lv":3},
+  {"v1":"withhold","v2":"withheld","v3":"withheld","ipa":"/wɪðˈhəʊld/","ipa2":"/wɪðˈheld/","ipa3":"/wɪðˈheld/","meaning":"giữ lại, từ chối cho","lv":4},
+  {"v1":"withstand","v2":"withstood","v3":"withstood","ipa":"/wɪðˈstænd/","ipa2":"/wɪðˈstʊd/","ipa3":"/wɪðˈstʊd/","meaning":"chịu đựng được","lv":4},
+  {"v1":"wring","v2":"wrung","v3":"wrung","ipa":"/rɪŋ/","ipa2":"/rʌŋ/","ipa3":"/rʌŋ/","meaning":"vắt (quần áo)","lv":4},
+  {"v1":"write","v2":"wrote","v3":"written","ipa":"/raɪt/","ipa2":"/rəʊt/","ipa3":"/ˈrɪtn/","meaning":"viết","lv":1}
 ];
 
 /* ============================================================
@@ -5480,7 +5919,7 @@ function updateCount() {
 trInput.addEventListener('input', () => {
   updateCount();
   clearTimeout(trTimer);
-  if (!claudeSampleReady) trTimer = setTimeout(runTranslate, 800);
+  if (!claudeSampleReady) trTimer = setTimeout(runTranslate, fxOn ? 1100 : 800);
 });
 
 trBtn.addEventListener('click', () => {
@@ -5572,14 +6011,25 @@ function fxBrAm(a, b) {
   return all === B;
 }
 
+// the free LanguageTool server allows ~20 checks a minute per device: stay under it, and back off after a refusal
+const fxLtLog = [];
+let fxLtCool = 0;
+function fxLtReady() {
+  const now = Date.now();
+  while (fxLtLog.length && now - fxLtLog[0] > 60000) fxLtLog.shift();
+  return now >= fxLtCool && fxLtLog.length < 15;
+}
 async function fxLanguageTool(text) {
+  if (!fxLtReady()) return 'busy';
+  fxLtLog.push(Date.now());
   const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
   const timer = setTimeout(() => ctrl && ctrl.abort(), 7000);
   try {
-    const body = new URLSearchParams({ text, language: 'en-US', disabledCategories: 'STYLE',
+    const body = new URLSearchParams({ text, language: 'en-US', level: 'picky', disabledCategories: 'STYLE',
       disabledRules: 'EN_QUOTES,DASH_RULE,WORD_REPEAT_BEGINNING_RULE,ENGLISH_WORD_REPEAT_BEGINNING_RULE,TOO_LONG_SENTENCE,PLUS_MINUS_SIGN,MULTIPLICATION_SIGN,ARROWS' });
     const res = await fetch('https://api.languagetool.org/v2/check', { method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body, signal: ctrl ? ctrl.signal : undefined });
+    if (res.status === 429 || res.status === 403) { fxLtCool = Date.now() + 60000; return 'busy'; }
     if (!res.ok) return null;
     const data = await res.json();
     if (!data || !Array.isArray(data.matches)) return null;
@@ -5594,6 +6044,8 @@ async function fxLanguageTool(text) {
       const spell = rule.issueType === 'misspelling' || (rule.category && rule.category.id === 'TYPOS');
       const it = { offset: m.offset, length: m.length, orig, rep, alts: m.replacements.slice(1, 4).map(r => r.value).filter(v => v !== rep),
         cat: (rule.category && rule.category.id) || 'MISC', spell, msg: m.message || '', on: true };
+      // extra "picky" checks (mostly commas) are shown as suggestions, not applied
+      if (Array.isArray(rule.tags) && rule.tags.includes('picky') && !spell) it.on = false;
       // A capitalised unknown word in the middle of a sentence is probably a name (Hanoi, Lan...): suggest, don't apply
       const before = text.slice(0, m.offset).replace(/\s+$/, '');
       if (spell && /^[A-Z]/.test(orig) && before && !/[.!?:\n]$/.test(before)) { it.on = false; it.name = true; }
@@ -5683,6 +6135,407 @@ function fxDiff(a, b, lang) {
   return merged;
 }
 
+/* ---------- Built-in rules for mistakes Vietnamese learners often make (work offline, explained in Vietnamese) ---------- */
+const FX_REG_VERBS = ('accept add admire agree allow answer appear arrive ask attend believe belong book borrow brush call carry change chat check ' +
+  'clean climb close collect compare complain cook copy count cover cross cry dance decide deliver depend describe destroy die ' +
+  'divide dress drop end enjoy enter explain fail fill finish fix follow guess hate help hope hug hurry imagine improve invite ' +
+  'join jump kick kill kiss knock laugh learn like listen live look love marry match mind miss move need notice offer open order ' +
+  'paint pass pick plan plant play post practise practice prefer prepare pretend print promise pull push rain reach receive ' +
+  'remember rent repair repeat reply rest return save share shop shout smile smoke snow start stay stop study suggest surprise talk ' +
+  'taste thank touch train travel try turn type use visit wait walk want wash watch wish work worry').split(' ');
+const FX_DOUBLE = new Set('stop plan shop drop chat hug jog rob rub beg nod clap step fit grab ban skip slip trip admit prefer occur refer travel swim run sit get begin put cut hit set win dig'.split(' '));
+let FX_V = null;   // verb tables, built on first use
+function fxVerbs() {
+  if (FX_V) return FX_V;
+  const base = new Set(FX_REG_VERBS), v2 = new Map(), v3 = new Map(), past = new Map();
+  try {
+    IRREGULAR_VERBS.forEach(v => {
+      const b = v.v1.toLowerCase(); base.add(b);
+      const p2 = v.v2.toLowerCase().split('/'), p3 = v.v3.toLowerCase().split('/');
+      past.set(b, b === 'be' ? 'was' : p2[0]);
+      p2.forEach(x => { if (x !== b) v2.set(x, b); });
+      p3.forEach(x => { if (x !== b) v3.set(x, b); });
+    });
+  } catch (e) {}
+  // forms that are also everyday base verbs or nouns: never "correct" them
+  ['lay', 'wound', 'ground', 'bore'].forEach(x => { v2.delete(x); v3.delete(x); });
+  FX_V = { base, v2, v3, past };
+  return FX_V;
+}
+function fxCap(orig, rep) { return /^[A-Z]/.test(orig) && rep ? rep[0].toUpperCase() + rep.slice(1) : rep; }
+function fxIng(v) {
+  if (v === 'be' || v === 'see' || v === 'agree' || v === 'flee') return v + 'ing';
+  if (/ie$/.test(v)) return v.slice(0, -2) + 'ying';
+  if (FX_DOUBLE.has(v)) return v + v.slice(-1) + 'ing';
+  if (/[^aeiouy]e$/.test(v) || /[^e]ue$/.test(v)) return v.slice(0, -1) + 'ing';
+  return v + 'ing';
+}
+function fxIsGerund(w) {
+  if (!/ing$/.test(w)) return false;
+  const st = w.slice(0, -3), B = fxVerbs().base;
+  return B.has(st) || B.has(st + 'e') || (/(.)\1$/.test(st) && B.has(st.slice(0, -1))) || (/y$/.test(st) && B.has(st.slice(0, -1) + 'ie'));
+}
+function fxPast(v) {
+  const V = fxVerbs();
+  if (V.past.has(v)) return V.past.get(v);
+  if (FX_DOUBLE.has(v)) return v + v.slice(-1) + 'ed';
+  if (/e$/.test(v)) return v + 'd';
+  if (/[^aeiou]y$/.test(v)) return v.slice(0, -1) + 'ied';
+  return v + 'ed';
+}
+function fx3rd(v) {
+  if (v === 'have') return 'has';
+  if (v === 'be') return 'is';
+  if (/(s|x|z|ch|sh|o)$/.test(v)) return v + 'es';
+  if (/[^aeiou]y$/.test(v)) return v.slice(0, -1) + 'ies';
+  return v + 's';
+}
+// "goes" → "go", "studies" → "study"… (null when it is not a known verb)
+function fxFrom3rd(w) {
+  const V = fxVerbs();
+  const c = w === 'has' ? 'have' : w === 'does' ? 'do' : w === 'goes' ? 'go' : w === 'is' ? 'be' : null;
+  if (c) return c;
+  const tries = [];
+  if (/ies$/.test(w)) tries.push(w.slice(0, -3) + 'y', w.slice(0, -1));
+  if (/(ches|shes|sses|xes|zes|oes)$/.test(w)) tries.push(w.slice(0, -2));
+  if (/s$/.test(w)) tries.push(w.slice(0, -1));
+  return tries.find(t => V.base.has(t)) || null;
+}
+// "wanted" → "want", "went" → "go", "gone" → "go"
+function fxFromPast(w, allowV3) {
+  const V = fxVerbs();
+  if (V.v2.has(w)) return V.v2.get(w);
+  if (allowV3 && V.v3.has(w)) return V.v3.get(w);
+  if (!/ed$/.test(w)) return null;
+  const tries = [w.slice(0, -2), w.slice(0, -1)];
+  if (/ied$/.test(w)) tries.unshift(w.slice(0, -3) + 'y');
+  if (/([bdgklmnprt])\1ed$/.test(w)) tries.unshift(w.slice(0, -3));
+  return tries.find(t => FX_REG_VERBS.includes(t)) || null;
+}
+const fxPrevWord = (text, idx) => ((text.slice(0, idx).match(/([A-Za-z']+)\W*$/) || [])[1] || '').toLowerCase();
+const FX_SUBJ3 = /^(he|she|it)$/i;
+
+// each rule: re (global), fn(m, text) → null | { rep, from?, to?, on?, alts? }   (from/to: offsets inside the match)
+const FX_RULES_EN = [
+  { re: /\b(I|you|we|they|he|she)\s*(?:'m|'re|'s|’m|’re|’s|\s+am|\s+are|\s+is)\s+(not\s+)?(agree|disagree)\b/gi, cat: 'GRAMMAR',
+    vi: '“agree” là động từ, không đi với am/is/are: I agree, I don’t agree.',
+    fn: m => { const s = m[1] === 'i' ? 'I' : m[1], v = m[3].toLowerCase(), t3 = FX_SUBJ3.test(s);
+      return { rep: m[2] ? `${s} ${t3 ? 'doesn’t' : 'don’t'} ${v}`.replace(/’/g, "'") : `${s} ${t3 ? v + 's' : v}` }; } },
+  { re: /\b(I|you|we|they|he|she)\s*(?:'m|'re|'s|’m|’re|’s|\s+am|\s+are|\s+is)\s+(?:very|really|so)\s+(like|love|enjoy|want|hate|miss|need|agree)\b/gi, cat: 'GRAMMAR',
+    vi: 'Không dùng am/is/are với động từ “like, love, want…”, và không đặt “very” trước động từ: I really like it.',
+    fn: m => { const s = m[1] === 'i' ? 'I' : m[1], v = m[2].toLowerCase(); return { rep: `${s} really ${FX_SUBJ3.test(s) ? fx3rd(v) : v}` }; } },
+  { re: /\b([Ii]|[Yy]ou|[Ww]e|[Tt]hey)\s+(?:(always|usually|often|sometimes|never|also|really|still)\s+)?(is|has|does|goes|[a-z]+s)\b/g, cat: 'GRAMMAR',
+    vi: 'Với I, you, we, they thì động từ không thêm -s: I want, they go (chỉ he, she, it mới thêm -s).',
+    fn: (m, t) => {
+      const w = m[3].toLowerCase(), s = m[1];
+      if (FX_SKIP_BEFORE.test(fxPrevWord(t, m.index)) || /^(thank|thanks|always|perhaps|sometimes|is|was|has|does|us|yes|this|its|less|plus)$/.test(w) && w !== 'is' && w !== 'has' && w !== 'does') return null;
+      if (/^you$/i.test(s) && /^(guys|people|all|two|both)$/.test(w)) return null;
+      let b;
+      if (w === 'is') b = /^i$/i.test(s) ? 'am' : 'are';
+      else { if (fxVerbs().base.has(w)) return null; b = fxFrom3rd(w); }
+      return b ? { from: m[0].length - m[3].length, to: m[0].length, rep: b } : null;
+    } },
+  { re: /\bfor\s+(get|buy|learn|make|see|go|have|improve|find|become|earn|meet|celebrate|eat|know|understand|speak|prepare|pass|apply)\b/gi, cat: 'GRAMMAR',
+    vi: 'Muốn nói “để làm gì” thì dùng “to + động từ” (hoặc “in order to”), không dùng “for + động từ”: I study English to get a better job.',
+    fn: (m, t) => /^(thanks|thank|sorry|time|ready|apologise|apologize|excuse|responsible|reason)$/.test(fxPrevWord(t, m.index)) || /thank you\s*$/i.test(t.slice(0, m.index)) ? null : { rep: fxCap(m[0], 'to ' + m[1]) } },
+  { re: /\b(for|before|after|without|about|by)\s+([a-z]+)(?=\s+(?:me|you|him|her|us|them|my|your|his|our|their|the|a|an|this|that|it|home|out|up|bed|everything|something|to)\b)/gi, cat: 'GRAMMAR',
+    vi: 'Sau giới từ (for, before, after, without, about, by) động từ phải thêm -ing: Thank you for helping me. Before going to bed…',
+    fn: (m, t) => {
+      const v = m[2].toLowerCase();
+      if (/^\s+to\b/i.test(t.slice(m.index + m[0].length)) && !/^(before|after|without)$/i.test(m[1])) return null;
+      if (!fxVerbs().base.has(v) || /^(work|school|train|plan|play|rest|lunch|dinner|walk|drink|love|help|cook|study|visit|watch|call|use|change|return|start|stop|try|wait|need|look|answer|order|book|fly|run|drive|ride|ship|bus|end|post|shop|dance|smile|kiss|hug|guess|wish|hope|offer|rain|snow|lie|name|show|sleep|face|hand|mind|ground|light|place)$/.test(v) && !(m[1].toLowerCase() === 'for' && /^(help|call|visit|use)$/.test(v))) return null;
+      if (m[1].toLowerCase() === 'for' && !(/^(thanks|thank|sorry|apologise|apologize|excuse|responsible|forgive)$/.test(fxPrevWord(t, m.index)) || /thank you\s*$/i.test(t.slice(0, m.index)))) return null;
+      return { from: m[0].length - m[2].length, rep: fxIng(v) };
+    } },
+  { re: /\beveryday(?=\s*(?:[.,!?;]|$)|\s+(?:and|but|so|because|at|in|with|after|before|from|for|until)\b)/gi, cat: 'COMPOUNDING',
+    vi: '“every day” (hai từ) nghĩa là “mỗi ngày”. “everyday” (một từ) là tính từ “hằng ngày”, đứng trước danh từ: everyday life.',
+    fn: m => ({ rep: fxCap(m[0], 'every day') }) },
+  { re: /\bvery\s+(like|likes|liked|love|loves|loved|enjoy|enjoys|enjoyed|want|wants|wanted|hate|hates|miss|misses|missed|appreciate|appreciated|thank)\b/gi, cat: 'GRAMMAR',
+    vi: 'Không đặt “very” trước động từ. Dùng “really” (I really like it) hoặc “… very much” (I like it very much).',
+    fn: (m, t) => /^(is|are|was|were|be|look|looks|looked|seem|seems)$/.test(fxPrevWord(t, m.index)) ? null : { rep: fxCap(m[0], 'really ' + m[1]) } },
+  { re: /\b(do|does)\s+(you|he|she|they|we|I)\s+(can|could|must|should|will)\b/gi, cat: 'GRAMMAR',
+    vi: 'Câu hỏi với can, must, should… đảo động từ khuyết thiếu lên đầu, không dùng do/does: Can you…?',
+    fn: m => ({ rep: fxCap(m[1], m[3].toLowerCase()) + ' ' + m[2] }) },
+  { re: /\b(can|could|must|should|will|would|may|might)\s+to\s+(?=[a-z])/gi, cat: 'GRAMMAR',
+    vi: 'Sau can, could, must, should, will… dùng động từ nguyên mẫu, không có “to”.',
+    fn: (m, t) => /^(the|a|his|her|my|your|their|our|free|strong)$/.test(fxPrevWord(t, m.index)) ? null : { rep: m[1] + ' ' } },
+  { re: /\b(I|you|we|they|he|she)\s+(have|has)\s+(\d+|[a-z]+(?:-[a-z]+)?)\s+(years?)\s+old\b/gi, cat: 'GRAMMAR',
+    vi: 'Nói tuổi dùng “be”, không dùng “have”: I am 20 years old.',
+    fn: m => { const s = m[1] === 'i' ? 'I' : m[1]; const be = /^i$/i.test(s) ? 'am' : FX_SUBJ3.test(s) ? 'is' : 'are';
+      return { rep: `${s} ${be} ${m[3]} ${/^(1|one|a)$/i.test(m[3]) ? 'year' : 'years'} old` }; } },
+  { re: /\b(want|wants|wanted|need|needs|needed|would like|'d like|’d like|hope|hoped|decide|decides|decided|plan|planned|try|tries|tried|forget|forgot|learn|learns|learned|learnt|promise|promised|refuse|refused|choose|chose|expect|expected|seem|seems|seemed|manage|managed|afford)\s+(go|come|eat|buy|see|learn|study|play|visit|be|become|have|make|do|get|take|know|meet|speak|talk|read|write|find|say|tell|ask|give|stay|leave|improve|cook|sing|dance|swim|watch|listen|call|pay|send|bring|sell|move|join|finish|understand|wear|teach|keep|sit|wait|fly|catch|lose|win|spend|sleep|help|work|live|travel|practise|practice|use|try|start|stop|change|return|drink|drive|run|walk|ride)\b/gi, cat: 'GRAMMAR',
+    vi: 'Sau “want, need, hope, decide, would like…” cần “to” trước động từ: want to go.',
+    fn: (m, t) => {
+      const v = m[2].toLowerCase(), w = m[1].toLowerCase();
+      // "need help", "want work", "need sleep" can be nouns: only suggest those
+      const nounish = /^(help|work|sleep|drink|drive|run|walk|ride|travel|practise|practice|use|change|return|start|stop|try|live|watch|call|move|pay|win|swim|dance|cook|study|play|visit|wait|catch)$/.test(v);
+      if (nounish) {
+        // "I need help." / "want work with…" are nouns; "I want help my mum" needs "to"
+        if (/\b(the|a|an|my|your|our|their|his|her)\s*$/i.test(t.slice(0, m.index))) return null;
+        if (!/^\s+(me|you|him|her|us|them|my|your|his|our|their|the|a|an|this|that|these|those)\b/i.test(t.slice(m.index + m[0].length))) return null;
+      }
+      return { rep: m[1] + ' to ' + m[2] };
+    } },
+  { re: /\b(enjoy|enjoys|enjoyed|finish|finishes|finished|avoid|avoids|avoided|mind|suggest|suggests|suggested|keep|keeps|kept|practise|practises|practised|practice|practices|practiced|consider|considered|imagine|miss|missed|deny|denied|recommend|recommended|quit|give up|gave up|can't help|cannot help)\s+to\s+([a-z]+)\b/gi, cat: 'GRAMMAR',
+    vi: 'Sau “enjoy, finish, avoid, mind, suggest, keep, practise…” dùng động từ đuôi -ing: enjoy swimming.',
+    fn: m => { const v = m[2].toLowerCase(); return fxVerbs().base.has(v) ? { rep: m[1] + ' ' + fxIng(v), on: !/^practi[sc]/i.test(m[1]) } : null; } },
+  { re: /\b(look|looks|looked|looking)\s+forward\s+to\s+([a-z]+)\b/gi, cat: 'GRAMMAR',
+    vi: 'Trong “look forward to”, “to” là giới từ nên theo sau là V-ing: look forward to seeing you.',
+    fn: m => { const v = m[2].toLowerCase(); return fxVerbs().base.has(v) ? { rep: `${m[1]} forward to ${fxIng(v)}` } : null; } },
+  { re: /\b(am|is|are|was|were|be|been|get|got|getting|'m|'re|'s|’m|’re|’s)\s+used\s+to\s+([a-z]+)\b/gi, cat: 'GRAMMAR',
+    vi: '“be/get used to” (quen với) đi với V-ing: I am used to getting up early. Còn “used to + động từ” (không có be) nghĩa là “đã từng”.',
+    fn: (m, t) => {
+      const v = m[2].toLowerCase();
+      if (!fxVerbs().base.has(v)) return null;
+      const person = /^(i|you|we|they|he|she)$/.test(fxPrevWord(t, m.index)) || /^get|^got/i.test(m[1]);
+      return person ? { rep: `${m[1]} used to ${fxIng(v)}` } : null;
+    } },
+  { re: /\b(discuss|discussed|discusses|discussing|mention|mentioned|mentions|mentioning)\s+about\b/gi, cat: 'REDUNDANCY',
+    vi: '“discuss” và “mention” không cần “about”: discuss the problem.', fn: m => ({ rep: m[1] }) },
+  { re: /\b(return|returned|returns|returning)\s+back\b/gi, cat: 'REDUNDANCY',
+    vi: '“return” đã có nghĩa là “quay lại”, không cần thêm “back”.', fn: m => ({ rep: m[1] }) },
+  { re: /\b(emphasi[sz]e|emphasi[sz]ed|emphasi[sz]es)\s+on\b/gi, cat: 'REDUNDANCY',
+    vi: '“emphasise” không cần “on” (còn danh từ thì nói “put emphasis on”).', fn: m => ({ rep: m[1] }) },
+  { re: /\b(marry|marries|married)\s+with\b/gi, cat: 'COLLOCATIONS',
+    vi: 'Nói “marry someone” hoặc “be married to someone”, không dùng “with”.',
+    fn: m => ({ rep: /^married$/i.test(m[1]) ? m[1] + ' to' : m[1] }) },
+  { re: /\bdespite\s+of\b/gi, cat: 'COLLOCATIONS', vi: 'Dùng “despite” hoặc “in spite of”, không dùng “despite of”.', fn: m => ({ rep: fxCap(m[0], 'despite') }) },
+  { re: /\b(depend|depends|depended|depending)\s+(of|in|from)\b/gi, cat: 'COLLOCATIONS', vi: '“depend” đi với giới từ “on”: It depends on you.', fn: m => ({ rep: m[1] + ' on' }) },
+  { re: /\binterested\s+(about|on|for|with)\b/gi, cat: 'COLLOCATIONS', vi: '“interested” đi với giới từ “in”: interested in music.', fn: m => ({ rep: 'interested in' }) },
+  { re: /\b(good|bad|better|best|great|excellent|terrible)\s+in\s+(math|maths|english|sports?|football|singing|cooking|drawing|swimming|languages?|[a-z]+ing)\b/gi, cat: 'COLLOCATIONS',
+    vi: 'Giỏi/kém một việc gì dùng “at”: good at English.',
+    fn: m => /ing$/i.test(m[2]) && !fxIsGerund(m[2].toLowerCase()) ? null : { rep: `${m[1]} at ${m[2]}` } },
+  { re: /\b(explain|explains|explained)\s+me\b/gi, cat: 'GRAMMAR', vi: 'Nói “explain something to me”, không nói “explain me”.', fn: m => ({ rep: m[1] + ' to me' }) },
+  { re: /\b(say|says|said)\s+(me|him|her|us|them)\b/gi, cat: 'CONFUSED_WORDS',
+    vi: 'Muốn nói “nói với ai” thì dùng “tell someone” (hoặc “say to someone”).',
+    fn: m => { const t = { say: 'tell', says: 'tells', said: 'told' }[m[1].toLowerCase()]; return { rep: fxCap(m[1], t) + ' ' + m[2] }; } },
+  { re: /\b(listen|listens|listened|listening)\s+(music|the music|the radio|radio|songs?|podcasts?|me|him|her|them|us|my|his|their)\b/gi, cat: 'GRAMMAR',
+    vi: '“listen” cần giới từ “to” trước tân ngữ: listen to music.', fn: m => ({ rep: `${m[1]} to ${m[2]}` }) },
+  { re: /\b(go|goes|went|going|gone|come|comes|came|coming|get|gets|got|arrive|arrives|arrived|return|returns|returned|travel|travels|travelled|traveled)\s+to\s+(home|here|there|abroad|downtown|upstairs|downstairs|overseas)\b/gi, cat: 'GRAMMAR',
+    vi: 'Trước home, here, there, abroad… không dùng “to”: go home, come here, travel abroad.', fn: m => ({ rep: `${m[1]} ${m[2]}` }) },
+  { re: /\b(go|goes|went|going|gone)\s+to\s+(shopping|swimming|fishing|camping|jogging|hiking|dancing|skiing|sightseeing|running|cycling)\b/gi, cat: 'GRAMMAR',
+    vi: 'Nói “go shopping, go swimming…”, không có “to”.', fn: m => ({ rep: `${m[1]} ${m[2]}` }) },
+  { re: /\bsince\s+((?:\d+|a|one|two|three|four|five|six|seven|eight|nine|ten|many|several|a few)\s+(?:years?|months?|weeks?|days?|hours?|minutes?))\b(?!\s+ago)/gi, cat: 'GRAMMAR',
+    vi: '“since” đi với mốc thời gian (since 2020), còn “for” đi với khoảng thời gian (for 3 years).', fn: m => ({ rep: fxCap(m[0], 'for ' + m[1]) }) },
+  { re: /\bin\s+the\s+other\s+hand\b/gi, cat: 'NONSTANDARD_PHRASES', vi: 'Cụm đúng là “on the other hand” (mặt khác).', fn: m => ({ rep: fxCap(m[0], 'on the other hand') }) },
+  { re: /\baccording\s+to\s+me\b/gi, cat: 'NONSTANDARD_PHRASES', vi: 'Không nói “according to me”. Dùng “in my opinion” hoặc “I think”.', fn: m => ({ rep: fxCap(m[0], 'in my opinion') }) },
+  { re: /\b(although|though|even though)\b[^.!?\n]*?(,?\s+but)\b/gi, cat: 'GRAMMAR',
+    vi: 'Đã có “although” thì không dùng thêm “but” (tiếng Việt nói “tuy… nhưng”, tiếng Anh chỉ dùng một từ).',
+    fn: m => { const i = m[0].length - m[2].length; return { from: i, to: m[0].length, rep: m[2].trim().startsWith(',') ? ',' : '' }; } },
+  { re: /\bbecause\b[^.!?\n]*?(,?\s+so)\b/gi, cat: 'GRAMMAR',
+    vi: 'Đã có “because” thì không dùng thêm “so” (tiếng Việt nói “vì… nên”, tiếng Anh chỉ dùng một từ).',
+    fn: m => { const i = m[0].length - m[1].length; return { from: i, to: m[0].length, rep: m[1].trim().startsWith(',') ? ',' : '' }; } },
+  { re: /\b(information|advice|furniture|homework|housework|equipment|luggage|baggage|knowledge|feedback|news|scenery|traffic)s\b/gi, cat: 'GRAMMAR',
+    vi: 'Đây là danh từ không đếm được, không thêm -s (a piece of information, some advice…).',
+    fn: m => m[1].toLowerCase() === 'news' ? null : { rep: m[1] } },
+  { re: /\b(people|children|police)\s+(is|was|has|does|doesn't|wasn't|isn't)\b/gi, cat: 'GRAMMAR',
+    vi: '“people, children, police” là danh từ số nhiều nên động từ chia số nhiều: people are.',
+    fn: m => ({ rep: m[1] + ' ' + { is: 'are', was: 'were', has: 'have', does: 'do', "doesn't": "don't", "wasn't": "weren't", "isn't": "aren't" }[m[2].toLowerCase()] }) },
+  { re: /\b(more|most)\s+(better|best|worse|worst|bigger|biggest|smaller|smallest|easier|easiest|happier|happiest|cheaper|cheapest|faster|fastest|older|oldest|younger|youngest|taller|tallest|longer|longest|larger|largest|stronger|strongest|higher|highest|lower|lowest|harder|hardest|nicer|nicest|richer|richest|busier|busiest|hotter|hottest|colder|coldest|bigger|prettier|prettiest|greater|greatest)\b/gi, cat: 'GRAMMAR',
+    vi: 'Tính từ ngắn đã thêm -er/-est (hoặc better, best) thì không dùng thêm “more/most”.', fn: m => ({ rep: fxCap(m[0], m[2]) }) },
+  { re: /\b(do|does|did|doing|done)\s+((?:a|many|some|lots of|a lot of|so many|too many)\s+)?(mistakes?)\b/gi, cat: 'COLLOCATIONS',
+    vi: 'Mắc lỗi là “make a mistake”, không dùng “do”.',
+    fn: m => ({ rep: fxCap(m[1], { do: 'make', does: 'makes', did: 'made', doing: 'making', done: 'made' }[m[1].toLowerCase()]) + ' ' + (m[2] || '') + m[3] }) },
+  { re: /\b(make|makes|made|making)\s+((?:my|your|his|her|our|their|the)\s+)?(homework|housework)\b/gi, cat: 'COLLOCATIONS',
+    vi: 'Làm bài tập/việc nhà là “do homework / do housework”, không dùng “make”.',
+    fn: m => ({ rep: fxCap(m[1], { make: 'do', makes: 'does', made: 'did', making: 'doing' }[m[1].toLowerCase()]) + ' ' + (m[2] || '') + m[3] }) },
+  { re: /\b(it|that|this)\s*(?:'s|’s|\s+is)\s+depend\b/gi, cat: 'GRAMMAR', vi: '“depend” là động từ: It depends on…, không nói “It’s depend”.',
+    fn: m => ({ rep: m[1] + ' depends' }) },
+  { re: /\b(I'm|I am|I was|I feel|I felt|I get|I got|I'm getting|we're|we are|we were|we feel|we felt)\s+((?:so|very|really|quite|a bit|too)\s+)?(boring|interesting|exciting|tiring|confusing|surprising|embarrassing|disappointing|frightening|worrying|annoying|amazing|satisfying|relaxing)\b(\s+(?:in|about|with|of))?/gi, cat: 'CONFUSED_WORDS',
+    vi: 'Tính từ -ing tả sự vật gây ra cảm xúc (The film is boring), còn -ed tả cảm xúc của người (I am bored). Nếu ý bạn là “tôi thấy chán” thì dùng “bored”.',
+    fn: m => {
+      const adj = m[3].toLowerCase();
+      const fixed = { boring: 'bored', interesting: 'interested', exciting: 'excited', tiring: 'tired', confusing: 'confused', surprising: 'surprised',
+        embarrassing: 'embarrassed', disappointing: 'disappointed', frightening: 'frightened', worrying: 'worried', annoying: 'annoyed',
+        amazing: 'amazed', satisfying: 'satisfied', relaxing: 'relaxed' }[adj];
+      const sure = !!m[4] || /\b(feel|felt|get|got|getting)\b/i.test(m[1]);
+      return { from: m[0].length - (m[4] || '').length - m[3].length, to: m[0].length - (m[4] || '').length, rep: fixed, on: sure };
+    } }
+];
+
+// "I am go", "she is want" → simple present (or -ing when it's happening now)
+const FX_STATE = /^(want|need|love|know|have|hate|understand|prefer|remember|believe|mean|own|belong|seem)$/;
+const FX_RULE_BE = { re: /\b(I am|I'm|I’m|you are|you're|you’re|we are|we're|we’re|they are|they're|they’re|he is|he's|he’s|she is|she's|she’s)\s+(go|come|study|work|play|want|need|love|know|eat|watch|learn|have|hate|understand|prefer|remember|believe|speak|write|swim|sleep|drive|teach|get|take|make|buy|stay|wait|listen|talk|walk)\b/gi,
+  cat: 'GRAMMAR', vi: 'Không dùng am/is/are với động từ nguyên mẫu. Việc thường ngày: I go. Việc đang diễn ra: I am going.',
+  fn: (m, t) => {
+    const subj = m[1].split(/\s|'|’/)[0], v = m[2].toLowerCase(), s = subj === 'i' ? 'I' : subj, t3 = FX_SUBJ3.test(s);
+    const simple = `${s} ${t3 ? fx3rd(v) : v}`, prog = `${m[1]} ${fxIng(v)}`;
+    if (FX_STATE.test(v)) return { rep: simple };
+    const now = /\b(now|right now|at the moment|currently|today|look!|listen!)\b/i.test(t);
+    return { rep: now ? prog : simple, alts: [now ? simple : prog] };
+  } };
+
+// after to / modals / do-forms the verb must be in its base form: "can went", "didn't saw", "to goes"
+const FX_DO_NOUNS = /^(works|plays|needs|likes|cooks|walks|visits|calls|studies|uses|changes|answers|looks|shops|trips|runs|rests|exercises|sports|dishes|things|jobs|wonders|loves|hopes|wishes|rains|smiles|stays|tests|drinks|drives|waits)$/;
+const FX_RULE_FORM = { re: /\b(to|can|could|will|would|shall|should|must|may|might|didn't|did not|doesn't|does not|don't|do not|did|does|do|can't|cannot|couldn't|won't|wouldn't|shouldn't|mustn't|let's|didnt|doesnt|dont|cant|couldnt|wont|wouldnt|shouldnt)\s+(?:(not|never|always|also|really|just|even|still)\s+)?([a-z]+)\b/gi,
+  cat: 'GRAMMAR',
+  fn: (m, t) => {
+    const aux = m[1].toLowerCase(), w = m[3].toLowerCase(), isDo = /^(do|does|did|didn'?t|doesn'?t|don'?t|did not|does not|do not)$/.test(aux);
+    if (fxVerbs().base.has(w)) return null;
+    if (aux !== 'to' && /^(the|a|an|his|her|my|your|their|our|its|this|that|free|good|tin|trash)$/.test(fxPrevWord(t, m.index))) return null;   // "his will was", "the can is"
+    if (/^may$/.test(aux) && /^(is|was|has)$/.test(w)) return null;   // the month of May
+    if (aux === 'to' && /^(saw|left|found|rose|felt|fell|lit)$/.test(w)) return null;
+    let b = fxFromPast(w, true), why = 'past';
+    if (!b && !isDo) { b = fxFrom3rd(w); why = '3rd'; }
+    if (!b || (isDo && FX_DO_NOUNS.test(w))) return null;
+    if (aux === 'to' && (why === '3rd' || /ed$/.test(w)) ) {
+      // "to + noun" happens ("next to visits"), so only suggest
+      const from = m[0].length - m[3].length;
+      return { from, to: m[0].length, rep: b, on: false, vi: 'Sau “to” dùng động từ nguyên mẫu: to go, to see.' };
+    }
+    const from = m[0].length - m[3].length;
+    const vi = aux === 'to' ? 'Sau “to” dùng động từ nguyên mẫu: to go, to see.'
+      : isDo ? 'Sau do/does/did (kể cả don’t, didn’t) dùng động từ nguyên mẫu: didn’t go, doesn’t like.'
+      : 'Sau can, will, should, must… dùng động từ nguyên mẫu: can go, will see.';
+    return { from, to: m[0].length, rep: b, vi };
+  } };
+const FX_RULE_QFORM = { re: /\b(did|does|do|didn'?t|doesn'?t|don'?t)\s+(I|you|we|they|he|she|it)\s+([a-z]+)\b/gi, cat: 'GRAMMAR',
+  vi: 'Câu hỏi với do/does/did thì động từ chính ở dạng nguyên mẫu: Did you go…? Does he like…?',
+  fn: m => {
+    const w = m[3].toLowerCase();
+    if (fxVerbs().base.has(w)) return null;
+    const b = fxFromPast(w, true) || fxFrom3rd(w);
+    return b ? { from: m[0].length - m[3].length, to: m[0].length, rep: b } : null;
+  } };
+
+// "he go" → "he goes" (LanguageTool catches many of these too)
+const FX_SKIP_BEFORE = /^(does|did|doesn't|didn't|will|would|can|could|should|must|may|might|shall|let|make|makes|made|help|helps|helped|see|saw|watch|watched|hear|heard|have|had|to|lets|let's|do|don't)$/;
+const FX_RULE_3RD = { re: /\b(he|she|it|my (?:mother|father|mom|mum|dad|brother|sister|friend|teacher|boss|wife|husband|son|daughter|grandmother|grandfather))\s+(?:(always|usually|often|sometimes|never|also|really|still|rarely|seldom)\s+)?(go|do|have|like|want|need|live|work|study|watch|play|eat|drink|get|make|take|come|say|know|think|love|hate|teach|speak|write|wash|finish|try|use|buy|cook|sleep|wake|walk|run|drive|ride|swim|listen|look|feel|seem|understand|don't|dont)\b/gi,
+  cat: 'GRAMMAR', vi: 'Chủ ngữ ngôi thứ ba số ít (he, she, it, my mother…) ở thì hiện tại đơn: động từ thêm -s/-es, have → has, don’t → doesn’t.',
+  fn: (m, t) => {
+    if (FX_SKIP_BEFORE.test(fxPrevWord(t, m.index))) return null;
+    if (/^it$/i.test(m[1]) && /\b(make|makes|made|let|lets|help|helps|have|has|had|see|saw|want|wants|like|likes|get|gets|got)\s*$/i.test(t.slice(0, m.index))) return null;
+    const v = m[3].toLowerCase(), rep = /^don'?t$/.test(v) ? "doesn't" : fx3rd(v);
+    const sent = (t.slice(m.index).match(/^[^.!?\n]*[.!?]?/) || [''])[0];
+    return { from: m[0].length - m[3].length, to: m[0].length, rep, on: !/\?\s*$/.test(sent) };
+  } };
+
+// "i" on its own is always "I"
+const FX_RULE_I = { re: /(^|[^A-Za-z'’.])i(?=$|[\s,!?;:'’]|\.(?!e\.))/g, cat: 'CASING', vi: 'Đại từ “I” (tôi) luôn viết hoa.',
+  fn: m => ({ from: m[1].length, rep: 'I' }) };
+
+// time words for the past + a present-tense verb: "Yesterday I go" → "Yesterday I went"
+const FX_PAST_MARK = /\b(yesterday|last\s+(?:night|week|weekend|month|year|summer|winter|spring|autumn|fall|time|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|(?:\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten|a few|few|several|many)\s+(?:minutes?|hours?|days?|weeks?|months?|years?)\s+ago|in\s+(?:19\d\d|20[01]\d)|when\s+(?:I|we|he|she|they)\s+(?:was|were)\s+(?:a\s+)?(?:child|kid|young|little|small|student|students|children|kids|at school))\b/i;
+const FX_MENTAL = /^(think|know|believe|hope|guess|remember|forget|mean|feel|understand|wonder|love|like|want|need|wish|bet|say|tell|ask)$/;
+function fxPastRules(text) {
+  const out = [], V = fxVerbs();
+  const re = /[^.!?\n]+[.!?]*/g; let s;
+  while ((s = re.exec(text))) {
+    const sent = s[0], base = s.index;
+    if (!FX_PAST_MARK.test(sent)) continue;
+    const words = sent.replace(FX_PAST_MARK, ' ').toLowerCase().match(/[a-z']+/g) || [];
+    const hasPast = words.some(w => V.v2.has(w) || (/ed$/.test(w) && fxFromPast(w)) || w === 'was' || w === 'were' || w === "didn't" || w === 'did');
+    const complex = /\b(that|what|which|who|while|if|because|why|how|where|whether|until|before|after)\b/i.test(sent) || /\?\s*$/.test(sent);
+    const vre = /\b([Ii]|[Yy]ou|[Ww]e|[Tt]hey|[Hh]e|[Ss]he|[Ii]t|(?:[Mm]y|[Hh]is|[Hh]er|[Oo]ur|[Tt]heir|[Yy]our|[Tt]he)\s+[a-z]+|[A-Z][a-z]+)\s+(?:(always|usually|often|sometimes|never|also|just|really|still|first|then)\s+)?(don'?t|doesn'?t|have|has|am|are|is|[a-z]+)\b(\s+[a-z]+)?/g; let m;
+    let lastOn = null, lastEnd = -1;
+    while ((m = vre.exec(sent))) {
+      vre.lastIndex = m.index + m[1].length;   // rescan right after the subject
+      const prev = fxPrevWord(sent, m.index);
+      if (FX_SKIP_BEFORE.test(prev)) continue;
+      if (/^[A-Z][a-z]+$/.test(m[1]) && !/^(i|you|we|they|he|she|it)$/i.test(m[1]) && /^(yesterday|last|when|in|then|after|before|today|on|at|and|but|so|a|an|the|this|that|there|one|two|three|four|five|six|seven|eight|nine|ten|my|his|her|our|their|your|what|where|why|how|who|which|if|because|although|while|during|since|from|for|every|some|many|all|we|you|they|he|she|it)$/i.test(m[1])) continue;   // a capitalised word is a name unless it's a common sentence starter
+      const subj = m[1], w = m[3].toLowerCase(), nxt = (m[4] || '').trim().toLowerCase();
+      const at = base + m.index + m[0].length - (m[4] || '').length - m[3].length;
+      let rep = null, len = m[3].length, extra = '';
+      if (/^(don'?t|doesn'?t)$/.test(w)) rep = "didn't";
+      else if (w === 'am' || w === 'is') rep = 'was';
+      else if (w === 'are') rep = /^(you|we|they|.+s)$/i.test(subj) ? 'were' : null;
+      else if ((w === 'have' || w === 'has') && nxt) {
+        const b = fxFromPast(nxt, true);
+        if (b) { rep = fxPast(b); len = m[3].length + m[4].length; extra = 'pp'; }   // "have seen yesterday" → "saw"
+        else rep = 'had';
+      } else if (w === 'have' || w === 'has') rep = 'had';
+      else {
+        const b = V.base.has(w) && !/^(can|will|must|should|may|might|would|could|shall)$/.test(w) ? w : fxFrom3rd(w);
+        if (!b || b === 'be') continue;
+        rep = fxPast(b);
+        if (FX_MENTAL.test(b)) { if (complex || hasPast) continue; }
+      }
+      if (!rep || rep === w) continue;
+      lastOn = !complex && !hasPast; lastEnd = at + len;
+      out.push({ offset: at, length: len, rep, on: lastOn,
+        vi: extra === 'pp' ? 'Có mốc thời gian quá khứ (yesterday, last week, … ago) thì dùng quá khứ đơn, không dùng hiện tại hoàn thành: I saw him yesterday.'
+          : 'Câu có mốc thời gian quá khứ (yesterday, last week, … ago) nên động từ chia ở quá khứ đơn: Yesterday I went…' });
+    }
+    // "…I went to the market and buy some…" → the second verb follows the first one
+    if (lastEnd >= 0) {
+      const are = /\b(and|then)\s+([a-z]+)\b(?=\s+(?:a|an|the|some|my|his|her|our|their|your|me|him|them|us|it|to|with|at|in|on|home|out|up|back|lots|many|football|games|tennis|music|tv|lunch|dinner|breakfast|together)\b)/g; let a;
+      while ((a = are.exec(sent))) {
+        const at = base + a.index + a[0].length - a[2].length;
+        if (at < lastEnd) continue;
+        const w = a[2].toLowerCase();
+        const b = V.base.has(w) ? w : fxFrom3rd(w);
+        if (!b || b === 'be' || FX_MENTAL.test(b)) continue;
+        out.push({ offset: at, length: a[2].length, rep: fxPast(b), on: lastOn,
+          vi: 'Hai hành động nối bằng “and” trong cùng câu quá khứ đều chia ở quá khứ: I went to the market and bought some fruit.' });
+      }
+    }
+  }
+  return out;
+}
+
+// Vietnamese chat abbreviations → full words, so the translation is right
+const FX_VI_ABBR = { ko: 'không', k: 'không', kh: 'không', hok: 'không', hông: 'không', khum: 'không', dc: 'được', đc: 'được', dk: 'được', đk: 'được',
+  j: 'gì', vs: 'với', ng: 'người', mn: 'mọi người', mng: 'mọi người', trc: 'trước', r: 'rồi', oy: 'rồi', cx: 'cũng', cg: 'cũng', ntn: 'như thế nào',
+  lm: 'làm', thik: 'thích', iu: 'yêu', bik: 'biết', bít: 'biết', wa: 'quá', mik: 'mình', mk: 'mình', mìk: 'mình', z: 'vậy', v: 'vậy', bh: 'bây giờ',
+  bjo: 'bây giờ', nhìu: 'nhiều', ns: 'nói', nt: 'nhắn tin', tl: 'trả lời', vk: 'vợ', ck: 'chồng', ny: 'người yêu', sn: 'sinh nhật', kq: 'kết quả',
+  đt: 'điện thoại', ae: 'anh em', đag: 'đang', dag: 'đang', ms: 'mới', lun: 'luôn', kím: 'kiếm', hum: 'hôm', bn: 'bạn', mún: 'muốn', hc: 'học', ad: null };
+function fxViRules(text) {
+  const out = [];
+  const re = /(^|[^\p{L}\p{N}])([\p{L}]{1,4})(?=[^\p{L}\p{N}]|$)/gu; let m;
+  while ((m = re.exec(text))) {
+    const w = m[2], low = w.toLowerCase(), full = FX_VI_ABBR[low];
+    if (!full) continue;
+    if (w.length === 1 && w !== low) continue;   // single capital letters are initials (V, K…)
+    if (low === 'v' || low === 'k' || low === 'r' || low === 'z' || low === 'j') {
+      // only when it sits between words like in chat: "đi ăn k", "j vậy"
+      const after = text.slice(m.index + m[0].length);
+      if (/^\s*[.,]?\d/.test(after) || /\d\s*$/.test(text.slice(0, m.index + m[1].length))) continue;
+    }
+    if (low === 'bn' && /^\s*(tuổi|tiền|giờ|lâu|người|cái|con)/i.test(text.slice(m.index + m[0].length))) {
+      out.push({ offset: m.index + m[1].length, length: w.length, rep: 'bao nhiêu', vi: `“${w}” là viết tắt của “bao nhiêu”. Viết đầy đủ để dịch chính xác hơn.` });
+      continue;
+    }
+    out.push({ offset: m.index + m[1].length, length: w.length, rep: /^[A-ZĐ]/.test(w) ? full[0].toUpperCase() + full.slice(1) : full,
+      vi: `“${w}” là cách viết tắt của “${full}”. App viết đầy đủ để dịch chính xác hơn.` });
+  }
+  return out;
+}
+
+function fxOverlap(a, b) {
+  const a1 = a.offset + a.length, b1 = b.offset + b.length;
+  if (!a.length && !b.length) return a.offset === b.offset;
+  if (!a.length) return a.offset > b.offset && a.offset < b1;
+  if (!b.length) return b.offset > a.offset && b.offset < a1;
+  return a.offset < b1 && b.offset < a1;
+}
+// run the built-in rules → fix items (offsets in the original text)
+function fxRules(text, lang) {
+  const items = [];
+  const push = it => { if (it.orig === it.rep) return; if (!items.some(x => fxOverlap(x, it))) items.push(it); };
+  const mk = (offset, length, rep, cat, vi, on, alts) => ({ offset, length, orig: text.substr(offset, length), rep, alts: alts || [], cat, spell: false, msg: '', vi, on: on !== false, rule: true });
+  if (lang === 'vi') { fxViRules(text).forEach(r => push(mk(r.offset, r.length, r.rep, 'NONSTANDARD_PHRASES', r.vi))); return items; }
+  fxPastRules(text).forEach(r => push(mk(r.offset, r.length, r.rep, 'GRAMMAR', r.vi, r.on)));
+  [...FX_RULES_EN, FX_RULE_BE, FX_RULE_QFORM, FX_RULE_FORM, FX_RULE_3RD, FX_RULE_I].forEach(rule => {
+    rule.re.lastIndex = 0; let m;
+    while ((m = rule.re.exec(text))) {
+      const r = rule.fn(m, text);
+      if (r) {
+        const from = r.from || 0, to = r.to == null ? m[0].length : r.to;
+        push(mk(m.index + from, to - from, r.rep, rule.cat, r.vi || rule.vi, r.on, r.alts));
+      }
+      if (m[0].length === 0) rule.re.lastIndex++;
+    }
+  });
+  return items.sort((a, b) => a.offset - b.offset);
+}
+
+function fxMerge(first, rest) {
+  const out = first.slice();
+  (rest || []).forEach(it => { if (!out.some(x => fxOverlap(x, it))) out.push(it); });
+  return out.sort((a, b) => a.offset - b.offset);
+}
+const fxNoTone = t => { const w = t.match(/[A-Za-zÀ-ỹ]+/g) || []; return w.length >= 3 && !FX_VI_CHARS.test(t) && !/[A-Za-z]{2,}(ing|tion|ed)\b/.test(t); };
+
 async function fxCheck(text, lang) {
   const key = lang + '|' + text;
   if (fxCache[key]) return fxCache[key];
@@ -5690,17 +6543,25 @@ async function fxCheck(text, lang) {
   if (lang === 'en' && fxLooksVi(text)) {
     st = { text, lang, items: [], source: '', wrongLang: true };
   } else {
-    let items = null, source = '';
-    if (lang === 'en') { items = await fxLanguageTool(text); if (items) source = 'lt'; }
+    let items = null, source = '', busy = false;
+    const rules = fxRules(text, lang);   // mistakes Vietnamese learners often make, explained in Vietnamese
+    if (lang === 'en') {
+      const lt = await fxLanguageTool(text);
+      if (lt === 'busy') busy = true; else if (lt) { items = lt; source = 'lt'; }
+    }
     if (!items) {
       const g = await fxGoogleSuggest(text, lang);
       const fixed = fxLocal(g || text, lang);
       source = g ? 'google' : 'local';
       items = fxDiff(text, fixed, lang);
     }
-    st = { text, lang, items, source };
+    st = { text, lang, items: fxMerge(rules, items), source, busy, rules: rules.length > 0 };
+    FX_VI_CHARS.lastIndex = 0;
+    if (lang === 'vi' && fxNoTone(text)) st.hint = '💡 Bạn đang gõ tiếng Việt không dấu. Gõ có dấu để bản dịch chính xác hơn.';
+    FX_VI_CHARS.lastIndex = 0;
   }
-  fxCache[key] = st;
+  // English checked without LanguageTool (busy/offline) is not kept, so the next check can use it
+  if (!(lang === 'en' && st.source !== 'lt' && !st.wrongLang)) fxCache[key] = st;
   fxTranslateMsgs(st);
   return st;
 }
@@ -5718,6 +6579,7 @@ function fxApply(st) {
 
 // Vietnamese explanations: built-in for common fixes, Google-translated LanguageTool messages for grammar
 function fxMsgVi(it) {
+  if (it.vi) return it.vi;
   if (it.name) return 'Có thể là tên riêng nên app chưa sửa. Chạm “Sửa” nếu đúng là gõ nhầm.';
   if (it.orig && it.orig.replace(/['’]/g, '') === it.rep.replace(/['’]/g, '')) return 'Thiếu dấu nháy (\') trong dạng viết tắt.';
   if (it.cat === 'CASING') {
@@ -5758,15 +6620,17 @@ function fxRender() {
   const st = fxOn && fxState && fxState.text === trInput.value.trim() && fxState.lang === trSrc ? fxState : null;
   fxNote.hidden = true; fxCard.hidden = true;
   if (!st) return;
-  if (st.wrongLang) { fxNote.textContent = '💡 Có vẻ bạn đang gõ tiếng Việt. Bấm ⇄ để dịch Việt → Anh.'; fxNote.hidden = false; return; }
+  if (st.wrongLang) { fxNote.textContent = '💡 Có vẻ bạn đang gõ tiếng Việt. Bấm ⇄ để dịch Việt → Anh.'; fxNote.className = 'fx-note'; fxNote.hidden = false; return; }
+  const extra = st.hint || (st.busy ? '⏳ LanguageTool đang bận nên app chỉ kiểm tra cơ bản. Bấm Dịch lại sau ít phút để kiểm tra kỹ hơn.' : '');
   if (!st.items.length) {
-    fxNote.textContent = st.source === 'lt' ? '✓ Không thấy lỗi chính tả hay ngữ pháp' : '✓ Không thấy lỗi chính tả';
-    fxNote.className = 'fx-note ok'; fxNote.hidden = false; return;
+    fxNote.textContent = extra || (st.source === 'lt' ? '✓ Không thấy lỗi chính tả hay ngữ pháp' : '✓ Không thấy lỗi chính tả');
+    fxNote.className = extra ? 'fx-note' : 'fx-note ok'; fxNote.hidden = false; return;
   }
   fxNote.className = 'fx-note';
+  if (extra) { fxNote.textContent = extra; fxNote.hidden = false; }
   const on = st.items.filter(it => it.on).length, total = st.items.length;
   document.getElementById('fx-title').textContent = on ? `✨ Đã sửa ${on} lỗi${total > on ? ` · ${total - on} chưa sửa` : ''}` : `💡 ${total} gợi ý sửa lỗi`;
-  document.getElementById('fx-src').textContent = st.source === 'lt' ? 'LanguageTool' : st.source === 'google' ? 'Google' : 'Ngoại tuyến';
+  document.getElementById('fx-src').textContent = (st.source === 'lt' ? 'LanguageTool' : st.source === 'google' ? 'Google' : 'Cơ bản') + (st.items.some(it => it.rule) ? ' + Mẹo' : '');
   // corrected sentence with changes highlighted
   const box = document.getElementById('fx-text');
   box.innerHTML = '';
@@ -5948,7 +6812,7 @@ const PRON_SETS = [
   { id: 'th', icon: '👅', title: 'Âm /θ/ và /ð/', tip: '/θ/: đặt lưỡi giữa hai hàm răng rồi thổi hơi (think). /ð/: giống vậy nhưng rung cổ họng (this). Không đọc thành "th" tiếng Việt, /t/ hay /d/.',
     words: [['think','/θɪŋk/','nghĩ'],['three','/θriː/','số ba'],['thank','/θæŋk/','cảm ơn'],['birthday','/ˈbɜːθdeɪ/','sinh nhật'],['mouth','/maʊθ/','miệng'],['month','/mʌnθ/','tháng'],
             ['this','/ðɪs/','cái này'],['that','/ðæt/','cái kia'],['mother','/ˈmʌðə/','mẹ'],['weather','/ˈweðə/','thời tiết'],['together','/təˈɡeðə/','cùng nhau'],['breathe','/briːð/','thở']] },
-  { id: 'pairs', icon: '⚖️', title: 'Cặp từ dễ nhầm', tip: 'Mỗi cặp chỉ khác nhau một âm. Bấm "So sánh" để nghe liền hai từ, rồi nói thử từng từ.',
+  { id: 'pairs', icon: '⚖️', title: 'Cặp từ dễ nhầm', tip: 'Mỗi cặp chỉ khác nhau một âm. Bấm nút ⇄ để nghe liền hai từ, rồi nói thử từng từ.',
     pairs: [[['ship','/ʃɪp/','con tàu'],['sheep','/ʃiːp/','con cừu']],[['live','/lɪv/','sống'],['leave','/liːv/','rời đi']],[['full','/fʊl/','no, đầy'],['fool','/fuːl/','kẻ ngốc']],
             [['bad','/bæd/','tệ'],['bed','/bed/','cái giường']],[['cat','/kæt/','con mèo'],['cut','/kʌt/','cắt']],[['light','/laɪt/','ánh sáng'],['right','/raɪt/','bên phải; đúng']],
             [['think','/θɪŋk/','nghĩ'],['sink','/sɪŋk/','bồn rửa']],[['three','/θriː/','số ba'],['tree','/triː/','cái cây']],[['very','/ˈveri/','rất'],['berry','/ˈberi/','quả mọng']],
@@ -6349,64 +7213,541 @@ function prLoad(text, hint) {
   try { pronResult.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
 }
 
-/* ---------- practice sets UI ---------- */
+/* ---------- practice sets UI (laid out like the Vocabulary tab) ---------- */
 const pronSets = document.getElementById('pron-sets');
-let prSetId = PRON_SETS[0].id;
-function renderPronSets() {
-  pronSets.innerHTML = '';
-  pronSets.appendChild(prEl('div', 'tense-group-title', 'Luyện các âm khó với người Việt'));
-  const chips = prEl('div', 'colloc-chips');
-  PRON_SETS.forEach(s => {
-    const c = prEl('button', 'colloc-chip' + (s.id === prSetId ? ' active' : ''), s.icon + ' ' + s.title);
-    c.addEventListener('click', () => { prSetId = s.id; renderPronSets(); });
+const pronSetView = document.getElementById('pron-setview');
+const pronHome = document.getElementById('pron-home');
+const pronMore = document.querySelector('#page-pron .pr-more');
+const PR_DONE_KEY = 'hoc-tieng-anh-pron-done';
+const PR_SET_SUB = { ending: 'Đọc rõ âm cuối', th: 'Lưỡi đặt giữa hai răng', pairs: 'Phân biệt âm gần giống', s: 'Đọc /s/, /z/ hay /ɪz/',
+  ed: 'Đọc /t/, /d/ hay /ɪd/', stress: 'Nhấn đúng âm tiết', cluster: 'Không chèn thêm “ơ”', sentences: 'Nối âm và ngữ điệu' };
+let prDone = new Set();
+try { const a = JSON.parse(localStorage.getItem(PR_DONE_KEY) || '[]'); if (Array.isArray(a)) prDone = new Set(a); } catch (e) {}
+const prDoneSave = () => { try { localStorage.setItem(PR_DONE_KEY, JSON.stringify([...prDone])); } catch (e) {} };
+const prSetItems = set => set.words ? set.words.map(x => x[0]) : set.pairs ? set.pairs.map(p => p[0][0] + ' / ' + p[1][0]) : set.sentences.map(x => x[0]);
+const prSetUnit = set => set.words ? 'từ' : set.pairs ? 'cặp' : 'câu';
+const prSetGot = set => prSetItems(set).filter(k => prDone.has(set.id + '|' + k)).length;
+let prOpenSet = null, prSeq = null;
+
+function prBtn(label, aria, fn, alt) {
+  const b = prEl('span', 'play-mini' + (alt ? ' play-alt' : ''), label);
+  b.setAttribute('role', 'button'); b.setAttribute('aria-label', aria); b.tabIndex = 0;
+  b.addEventListener('click', e => { e.stopPropagation(); prSeqStop(); fn(); });
+  return b;
+}
+function prCheck(set, key, row) {
+  const k = set.id + '|' + key;
+  const ck = prEl('button', 'vc-check' + (prDone.has(k) ? ' on' : ''), '✓');
+  ck.setAttribute('aria-label', 'Đánh dấu đã luyện ' + key);
+  ck.addEventListener('click', e => {
+    e.stopPropagation();
+    if (prDone.has(k)) prDone.delete(k); else prDone.add(k);
+    prDoneSave();
+    ck.classList.toggle('on', prDone.has(k)); row.classList.toggle('learned', prDone.has(k));
+    prSetProg(set);
+  });
+  return ck;
+}
+function prSetProg(set) {
+  const el = document.getElementById('pr-set-prog');
+  if (!el) return;
+  const n = prSetItems(set).length, got = prSetGot(set);
+  el.innerHTML = '';
+  el.appendChild(prEl('span', null, `Đã luyện ${got}/${n}`));
+  const bar = prEl('span', 'vc-bar'); const fill = prEl('span'); fill.style.width = (n ? got / n * 100 : 0) + '%'; bar.appendChild(fill);
+  bar.style.flex = '1'; el.appendChild(bar);
+}
+// play the whole list one by one (tap again to stop)
+function prSeqStop() {
+  if (!prSeq) return;
+  prSeq.stop = true;
+  document.querySelectorAll('.pr-now').forEach(x => x.classList.remove('pr-now'));
+  if (prSeq.btn) prSeq.btn.textContent = '▶ Nghe lần lượt';
+  prSeq = null;
+}
+function prSeqPlay(rows, texts, btn) {
+  if (prSeq) { prSeqStop(); try { speechSynthesis.cancel(); } catch (e) {} return; }
+  const st = { stop: false, btn }; prSeq = st;
+  btn.textContent = '⏹ Dừng';
+  let i = 0;
+  const next = () => {
+    if (st.stop) return;
+    document.querySelectorAll('.pr-now').forEach(x => x.classList.remove('pr-now'));
+    if (i >= texts.length) { prSeqStop(); return; }
+    const row = rows[i]; row.classList.add('pr-now');
+    try { row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+    const text = texts[i]; i++;
+    const u = prSay(text);
+    let done = false;
+    const go = () => { if (done || st.stop) return; done = true; setTimeout(next, 700); };
+    try { if (u && u.addEventListener) { u.addEventListener('end', go); u.addEventListener('error', go); } } catch (e) {}
+    setTimeout(go, Math.max(2500, text.length * 140));   // safety net if "end" never fires
+  };
+  next();
+}
+
+/* ---------- IPA chart: the 44 sounds of British English ---------- */
+// [symbol, group, short Vietnamese name, how to make it, tip for Vietnamese learners, examples [word with [highlight], ipa, meaning], extra]
+// extra: vowels 'dài' / 'ngắn' / 'đôi'; consonants [voicing 'vô thanh' | 'hữu thanh', partner symbol]
+const IPA_SOUNDS = [
+  // short / long vowel pairs
+  ['ɪ', 'mono', 'i ngắn', 'Môi thả lỏng, lưỡi hơi thấp hơn /iː/. Đọc ngắn, dứt khoát, nghe gần giữa “i” và “ê”.', 'Đừng kéo dài thành /iː/: ship /ʃɪp/ (con tàu) khác sheep /ʃiːp/ (con cừu).',
+    [['sh[i]p', '/ʃɪp/', 'con tàu'], ['s[i]t', '/sɪt/', 'ngồi'], ['b[u]sy', '/ˈbɪzi/', 'bận rộn']], 'ngắn'],
+  ['iː', 'mono', 'i dài', 'Kéo môi sang hai bên như đang cười, lưỡi nâng cao, kéo dài âm “i”.', 'Dấu ː nghĩa là đọc dài. Giữ âm lâu gần gấp đôi /ɪ/.',
+    [['sh[ee]p', '/ʃiːp/', 'con cừu'], ['s[ea]', '/siː/', 'biển'], ['k[ey]', '/kiː/', 'chìa khóa']], 'dài'],
+  ['ʊ', 'mono', 'u ngắn', 'Môi hơi tròn nhưng thả lỏng, lưỡi lùi về sau. Đọc ngắn, gần giữa “u” và “ư”.', 'full /fʊl/ (đầy) khác fool /fuːl/ (kẻ ngốc). Chữ “oo” có lúc đọc ngắn: book, good.',
+    [['b[oo]k', '/bʊk/', 'quyển sách'], ['p[u]t', '/pʊt/', 'đặt, để'], ['c[ou]ld', '/kʊd/', 'có thể']], 'ngắn'],
+  ['uː', 'mono', 'u dài', 'Chu tròn môi về phía trước, lưỡi lùi về sau, kéo dài âm “u”.', 'Giữ môi tròn suốt cả âm, đừng mở môi giữa chừng.',
+    [['f[oo]d', '/fuːd/', 'thức ăn'], ['bl[ue]', '/bluː/', 'màu xanh dương'], ['t[wo]', '/tuː/', 'số hai']], 'dài'],
+  ['e', 'mono', 'e', 'Miệng mở vừa, môi kéo nhẹ sang hai bên. Gần “e” tiếng Việt nhưng ngắn hơn.', 'bed /bed/ (giường) khác bad /bæd/ (tệ): /æ/ mở miệng rộng hơn nhiều.',
+    [['b[e]d', '/bed/', 'cái giường'], ['t[e]n', '/ten/', 'số mười'], ['fr[ie]nd', '/frend/', 'bạn bè']], 'ngắn'],
+  ['æ', 'mono', 'a bẹt', 'Mở miệng thật rộng, hạ hàm dưới, lưỡi đặt thấp, môi kéo sang hai bên.', 'Tiếng Việt không có âm này. Thử nói “e” nhưng mở miệng rộng như khi nói “a”.',
+    [['c[a]t', '/kæt/', 'con mèo'], ['[a]pple', '/ˈæpl/', 'quả táo'], ['h[a]t', '/hæt/', 'cái mũ']], 'ngắn'],
+  ['ə', 'mono', 'ơ rất nhẹ (schwa)', 'Miệng, môi và lưỡi thả lỏng hoàn toàn. Phát ra “ơ” thật nhẹ và ngắn.', 'Âm gặp nhiều nhất trong tiếng Anh, luôn nằm ở âm tiết không nhấn. Đừng đọc rõ từng chữ cái: about là /əˈbaʊt/.',
+    [['[a]bout', '/əˈbaʊt/', 'về, khoảng'], ['teach[er]', '/ˈtiːtʃə/', 'giáo viên'], ['[a]go', '/əˈɡəʊ/', 'trước đây']], 'ngắn'],
+  ['ɜː', 'mono', 'ơ dài', 'Miệng mở vừa, môi thả lỏng không tròn, kéo dài âm “ơ”.', 'Giọng Anh-Anh không cong lưỡi đọc “r”: bird /bɜːd/, work /wɜːk/.',
+    [['b[ir]d', '/bɜːd/', 'con chim'], ['w[or]k', '/wɜːk/', 'làm việc'], ['l[ear]n', '/lɜːn/', 'học']], 'dài'],
+  ['ɒ', 'mono', 'o ngắn', 'Môi hơi tròn, miệng mở rộng, lưỡi lùi về sau. Đọc ngắn, gần “o” tiếng Việt.', 'Giọng Mỹ thường đọc âm này thành /ɑː/: hot, dog.',
+    [['h[o]t', '/hɒt/', 'nóng'], ['d[o]g', '/dɒɡ/', 'con chó'], ['w[a]tch', '/wɒtʃ/', 'xem; đồng hồ']], 'ngắn'],
+  ['ɔː', 'mono', 'o dài', 'Môi tròn, miệng mở vừa, lưỡi lùi về sau, kéo dài âm “o”.', 'Các chữ “al”, “aw”, “or”, “oor” thường đọc là /ɔː/: talk, saw, door.',
+    [['d[oor]', '/dɔː/', 'cánh cửa'], ['t[a]lk', '/tɔːk/', 'nói chuyện'], ['w[a]ter', '/ˈwɔːtə/', 'nước']], 'dài'],
+  ['ʌ', 'mono', 'ă', 'Miệng mở vừa, lưỡi ở giữa. Đọc ngắn và dứt khoát, gần “ă” tiếng Việt.', 'cup /kʌp/ (cái cốc) khác cap /kæp/ (mũ lưỡi trai). Chữ “o” đôi khi đọc /ʌ/: money, love.',
+    [['c[u]p', '/kʌp/', 'cái cốc'], ['s[u]n', '/sʌn/', 'mặt trời'], ['m[o]ney', '/ˈmʌni/', 'tiền']], 'ngắn'],
+  ['ɑː', 'mono', 'a dài', 'Mở miệng rộng, lưỡi hạ thấp và lùi về sau, kéo dài âm “a”.', 'Giọng Anh-Anh không đọc “r” sau nguyên âm: car /kɑː/, park /pɑːk/.',
+    [['c[ar]', '/kɑː/', 'xe hơi'], ['f[a]ther', '/ˈfɑːðə/', 'bố'], ['h[ear]t', '/hɑːt/', 'trái tim']], 'dài'],
+  // diphthongs
+  ['eɪ', 'diph', 'ây', 'Bắt đầu từ /e/ rồi trượt lên /ɪ/, miệng khép dần.', 'Đừng đọc thành “ê” ngắn: name là /neɪm/, không phải “nêm”.',
+    [['d[ay]', '/deɪ/', 'ngày'], ['n[a]me', '/neɪm/', 'tên'], ['r[ai]n', '/reɪn/', 'mưa']], 'đôi'],
+  ['aɪ', 'diph', 'ai', 'Bắt đầu từ “a” mở rộng miệng rồi trượt lên /ɪ/.', 'Gần “ai” tiếng Việt. Nhớ đọc cả âm cuối phía sau: like /laɪk/, time /taɪm/.',
+    [['m[y]', '/maɪ/', 'của tôi'], ['t[i]me', '/taɪm/', 'thời gian'], ['n[igh]t', '/naɪt/', 'ban đêm']], 'đôi'],
+  ['ɔɪ', 'diph', 'oi', 'Bắt đầu từ “o” môi tròn rồi trượt lên /ɪ/, môi kéo dần sang hai bên.', 'Gần “oi” tiếng Việt: boy, toy.',
+    [['b[oy]', '/bɔɪ/', 'cậu bé'], ['c[oi]n', '/kɔɪn/', 'đồng xu'], ['t[oy]', '/tɔɪ/', 'đồ chơi']], 'đôi'],
+  ['aʊ', 'diph', 'ao', 'Bắt đầu từ “a” mở rộng miệng rồi trượt sang /ʊ/, môi tròn dần.', 'Gần “ao” tiếng Việt: house /haʊs/, now /naʊ/.',
+    [['h[ou]se', '/haʊs/', 'ngôi nhà'], ['n[ow]', '/naʊ/', 'bây giờ'], ['m[ou]th', '/maʊθ/', 'cái miệng']], 'đôi'],
+  ['əʊ', 'diph', 'âu', 'Bắt đầu từ /ə/ thả lỏng rồi trượt sang /ʊ/, môi tròn dần.', 'Đừng đọc thành “ô” ngắn: go là /ɡəʊ/, home là /həʊm/. Giọng Mỹ đọc là /oʊ/.',
+    [['g[o]', '/ɡəʊ/', 'đi'], ['h[o]me', '/həʊm/', 'nhà'], ['b[oa]t', '/bəʊt/', 'con thuyền']], 'đôi'],
+  ['ɪə', 'diph', 'ia', 'Bắt đầu từ /ɪ/ rồi trượt nhẹ về /ə/.', 'Giọng Anh-Anh không đọc “r”: here /hɪə/. Giọng Mỹ đọc là /hɪr/.',
+    [['h[ere]', '/hɪə/', 'ở đây'], ['[ear]', '/ɪə/', 'cái tai'], ['b[eer]', '/bɪə/', 'bia']], 'đôi'],
+  ['eə', 'diph', 'e-ơ', 'Bắt đầu từ /e/ rồi trượt về /ə/ thả lỏng.', 'Giọng Anh-Anh không đọc “r”: hair /heə/, where /weə/.',
+    [['h[air]', '/heə/', 'tóc'], ['wh[ere]', '/weə/', 'ở đâu'], ['ch[air]', '/tʃeə/', 'cái ghế']], 'đôi'],
+  ['ʊə', 'diph', 'ua', 'Bắt đầu từ /ʊ/ môi tròn rồi trượt về /ə/.', 'Âm khá hiếm. Nhiều người Anh hiện nay đọc thành /ɔː/: tour /tɔː/.',
+    [['t[our]', '/tʊə/', 'chuyến du lịch'], ['p[ure]', '/pjʊə/', 'tinh khiết'], ['c[ure]', '/kjʊə/', 'chữa trị']], 'đôi'],
+  // consonants, voiceless / voiced pairs first
+  ['p', 'cons', 'p bật hơi', 'Mím hai môi rồi bật mạnh hơi ra.', 'Đặt tờ giấy trước miệng: giấy phải rung khi đọc /p/. Âm cuối cũng phải nghe được: map /mæp/.',
+    [['[p]en', '/pen/', 'cái bút'], ['[p]ark', '/pɑːk/', 'công viên'], ['ha[pp]y', '/ˈhæpi/', 'vui vẻ']], ['vô thanh', 'b']],
+  ['b', 'cons', 'b', 'Mím hai môi rồi bật ra, cổ họng rung.', 'Âm cuối đọc nhẹ nhưng đừng bỏ: club /klʌb/.',
+    [['[b]ook', '/bʊk/', 'quyển sách'], ['[b]ag', '/bæɡ/', 'cái túi'], ['clu[b]', '/klʌb/', 'câu lạc bộ']], ['hữu thanh', 'p']],
+  ['t', 'cons', 't bật hơi', 'Đầu lưỡi chạm lợi (phần nướu sau răng trên) rồi bật hơi ra.', 'Ở đầu từ, /t/ bật hơi mạnh, nghe gần “th” tiếng Việt. Đừng nuốt /t/ ở cuối từ: cat /kæt/.',
+    [['[t]ea', '/tiː/', 'trà'], ['[t]able', '/ˈteɪbl/', 'cái bàn'], ['ca[t]', '/kæt/', 'con mèo']], ['vô thanh', 'd']],
+  ['d', 'cons', 'đ', 'Đầu lưỡi chạm lợi trên rồi bật ra, cổ họng rung.', 'Khác “đ” tiếng Việt một chút: lưỡi chạm lợi chứ không chạm răng. Âm cuối phải rõ: bad /bæd/.',
+    [['[d]og', '/dɒɡ/', 'con chó'], ['[d]oor', '/dɔː/', 'cánh cửa'], ['ba[d]', '/bæd/', 'tệ']], ['hữu thanh', 't']],
+  ['k', 'cons', 'k bật hơi', 'Cuống lưỡi chạm vòm mềm phía sau miệng rồi bật hơi ra.', 'Đầu từ bật hơi như “kh” nhẹ. Cuối từ vẫn phải nghe thấy: back /bæk/.',
+    [['[c]at', '/kæt/', 'con mèo'], ['[k]ey', '/kiː/', 'chìa khóa'], ['ba[ck]', '/bæk/', 'phía sau']], ['vô thanh', 'ɡ']],
+  ['ɡ', 'cons', 'g', 'Cuống lưỡi chạm vòm mềm, bật ra và rung cổ họng.', 'Âm cuối phải rõ: bag /bæɡ/ khác back /bæk/.',
+    [['[g]o', '/ɡəʊ/', 'đi'], ['[g]ame', '/ɡeɪm/', 'trò chơi'], ['ba[g]', '/bæɡ/', 'cái túi']], ['hữu thanh', 'k']],
+  ['f', 'cons', 'ph', 'Răng trên chạm nhẹ môi dưới rồi thổi hơi ra.', 'Chữ “ph” và “gh” cũng có thể đọc /f/: phone, laugh.',
+    [['[f]ish', '/fɪʃ/', 'con cá'], ['[ph]one', '/fəʊn/', 'điện thoại'], ['lau[gh]', '/lɑːf/', 'cười']], ['vô thanh', 'v']],
+  ['v', 'cons', 'v', 'Răng trên chạm nhẹ môi dưới, thổi hơi và rung cổ họng.', 'Đừng đọc thành /b/: very ≠ berry. Ở cuối từ phải giữ răng chạm môi: five /faɪv/.',
+    [['[v]ery', '/ˈveri/', 'rất'], ['[v]an', '/væn/', 'xe tải nhỏ'], ['fi[v]e', '/faɪv/', 'số năm']], ['hữu thanh', 'f']],
+  ['θ', 'cons', 'th thổi hơi', 'Đặt đầu lưỡi giữa hai hàm răng rồi thổi hơi nhẹ ra.', 'Không đọc thành “th” tiếng Việt, /t/ hay /s/: think khác sink.',
+    [['[th]ink', '/θɪŋk/', 'nghĩ'], ['[th]ree', '/θriː/', 'số ba'], ['mou[th]', '/maʊθ/', 'cái miệng']], ['vô thanh', 'ð']],
+  ['ð', 'cons', 'th rung', 'Lưỡi đặt giữa hai hàm răng như /θ/ nhưng rung cổ họng.', 'Không đọc thành /d/ hay /z/: this /ðɪs/, mother /ˈmʌðə/.',
+    [['[th]is', '/ðɪs/', 'cái này'], ['mo[th]er', '/ˈmʌðə/', 'mẹ'], ['brea[th]e', '/briːð/', 'thở']], ['hữu thanh', 'θ']],
+  ['s', 'cons', 'x', 'Đầu lưỡi gần lợi trên, đẩy hơi qua khe hẹp tạo tiếng “xì”.', 'Đọc rõ /s/ ở cuối từ, nhất là danh từ số nhiều: books /bʊks/.',
+    [['[s]un', '/sʌn/', 'mặt trời'], ['[c]ity', '/ˈsɪti/', 'thành phố'], ['ri[c]e', '/raɪs/', 'gạo']], ['vô thanh', 'z']],
+  ['z', 'cons', 'z rung', 'Giống /s/ nhưng rung cổ họng, nghe như tiếng ong “zzz”.', 'Đuôi -s sau âm hữu thanh đọc là /z/: dogs /dɒɡz/, plays /pleɪz/.',
+    [['[z]oo', '/zuː/', 'sở thú'], ['ro[s]e', '/rəʊz/', 'hoa hồng'], ['dog[s]', '/dɒɡz/', 'những con chó']], ['hữu thanh', 's']],
+  ['ʃ', 'cons', 's nặng (sh)', 'Chu môi ra, mặt lưỡi nâng gần vòm miệng, đẩy hơi như khi suỵt “shhh”.', 'Khác /s/: sea /siː/ khác she /ʃiː/. Đuôi “-tion” đọc là /ʃn/.',
+    [['[sh]e', '/ʃiː/', 'cô ấy'], ['[sh]op', '/ʃɒp/', 'cửa hàng'], ['sta[t]ion', '/ˈsteɪʃn/', 'nhà ga']], ['vô thanh', 'ʒ']],
+  ['ʒ', 'cons', 'giơ rung', 'Giống /ʃ/ nhưng rung cổ họng.', 'Hay gặp trong “-sion”, “-sure”: television, pleasure.',
+    [['televi[s]ion', '/ˈtelɪvɪʒn/', 'ti vi'], ['u[s]ually', '/ˈjuːʒuəli/', 'thường thường'], ['plea[s]ure', '/ˈpleʒə/', 'niềm vui']], ['hữu thanh', 'ʃ']],
+  ['tʃ', 'cons', 'ch', 'Đầu lưỡi chạm lợi trên, chu môi ra rồi bật hơi mạnh.', 'Mạnh và chu môi hơn “ch” tiếng Việt: chair, watch.',
+    [['[ch]air', '/tʃeə/', 'cái ghế'], ['[ch]eese', '/tʃiːz/', 'phô mai'], ['wa[tch]', '/wɒtʃ/', 'xem; đồng hồ']], ['vô thanh', 'dʒ']],
+  ['dʒ', 'cons', 'j rung', 'Giống /tʃ/ nhưng rung cổ họng.', 'Không đọc thành “gi” hay “z”: job /dʒɒb/, page /peɪdʒ/.',
+    [['[j]ob', '/dʒɒb/', 'công việc'], ['[j]uice', '/dʒuːs/', 'nước ép'], ['pa[g]e', '/peɪdʒ/', 'trang sách']], ['hữu thanh', 'tʃ']],
+  // other consonants
+  ['m', 'cons', 'm', 'Mím hai môi lại, hơi đi ra đằng mũi.', 'Âm cuối phải khép môi: home /həʊm/.',
+    [['[m]an', '/mæn/', 'người đàn ông'], ['[m]ilk', '/mɪlk/', 'sữa'], ['ho[m]e', '/həʊm/', 'nhà']], ['hữu thanh', '']],
+  ['n', 'cons', 'n', 'Đầu lưỡi chạm lợi trên, hơi đi ra đằng mũi.', 'Âm cuối để lưỡi chạm lợi, khác “ng”: sun /sʌn/ khác sung /sʌŋ/.',
+    [['[n]ose', '/nəʊz/', 'cái mũi'], ['[n]ine', '/naɪn/', 'số chín'], ['su[n]', '/sʌn/', 'mặt trời']], ['hữu thanh', '']],
+  ['ŋ', 'cons', 'ng', 'Cuống lưỡi chạm vòm mềm, hơi đi ra đằng mũi, giống “ng” tiếng Việt.', 'Không thêm /ɡ/ phía sau: sing /sɪŋ/. Chữ “n” đứng trước k, g cũng đọc /ŋ/: think /θɪŋk/.',
+    [['si[ng]', '/sɪŋ/', 'hát'], ['ri[ng]', '/rɪŋ/', 'chiếc nhẫn'], ['thi[n]k', '/θɪŋk/', 'nghĩ']], ['hữu thanh', '']],
+  ['h', 'cons', 'h', 'Miệng mở, đẩy hơi nhẹ ra từ cổ họng.', 'Nhẹ hơn “h” tiếng Việt. Một số từ có “h” câm: hour, honest.',
+    [['[h]at', '/hæt/', 'cái mũ'], ['[h]ouse', '/haʊs/', 'ngôi nhà'], ['[wh]o', '/huː/', 'ai']], ['vô thanh', '']],
+  ['l', 'cons', 'l', 'Đầu lưỡi chạm lợi trên, hơi thoát ra hai bên lưỡi.', 'Ở cuối từ vẫn giữ lưỡi chạm lợi, đừng bỏ âm hay đọc thành “u”: ball, milk.',
+    [['[l]eg', '/leɡ/', 'cái chân'], ['[l]ove', '/lʌv/', 'yêu'], ['ba[ll]', '/bɔːl/', 'quả bóng']], ['hữu thanh', '']],
+  ['r', 'cons', 'r', 'Cong đầu lưỡi về phía sau, không chạm vòm miệng, môi hơi tròn.', 'Không rung lưỡi như “r” tiếng Việt. Giọng Anh-Anh chỉ đọc /r/ khi ngay sau nó là một nguyên âm: red, very, nhưng car /kɑː/.',
+    [['[r]ed', '/red/', 'màu đỏ'], ['[r]ain', '/reɪn/', 'mưa'], ['ve[r]y', '/ˈveri/', 'rất']], ['hữu thanh', '']],
+  ['w', 'cons', 'qu / u', 'Chu tròn môi như “u” rồi mở nhanh sang nguyên âm phía sau.', 'Khác /v/: wet ≠ vet. Chữ “wh” thường đọc là /w/: what.',
+    [['[w]e', '/wiː/', 'chúng tôi'], ['[w]ater', '/ˈwɔːtə/', 'nước'], ['[wh]at', '/wɒt/', 'cái gì']], ['hữu thanh', '']],
+  ['j', 'cons', 'd (miền Nam) / i', 'Mặt lưỡi nâng gần vòm miệng như “i” rồi trượt nhanh sang nguyên âm sau.', 'Ký hiệu /j/ không phải chữ j! Nó là âm “y” trong yes /jes/, giống “d” giọng miền Nam.',
+    [['[y]es', '/jes/', 'vâng'], ['[y]ellow', '/ˈjeləʊ/', 'màu vàng'], ['[u]se', '/juːz/', 'sử dụng']], ['hữu thanh', '']]
+];
+const IPA_GROUPS = [
+  { id: 'mono', title: 'Nguyên âm đơn', sub: 'Xếp theo cặp ngắn – dài' },
+  { id: 'diph', title: 'Nguyên âm đôi', sub: 'Trượt từ âm đầu sang âm sau' },
+  { id: 'cons', title: 'Phụ âm', sub: 'Hàng trên xếp theo cặp vô thanh – hữu thanh' }
+];
+const IPA_FILTER_KEY = 'hoc-tieng-anh-ipa-filter';
+let ipaFilter = 'all';
+try { ipaFilter = localStorage.getItem(IPA_FILTER_KEY) || 'all'; } catch (e) {}
+const ipaKey = sym => 'ipa|' + sym;
+const ipaGot = () => IPA_SOUNDS.filter(s => prDone.has(ipaKey(s[0]))).length;
+const ipaPlain = w => w.replace(/[\[\]]/g, '');
+function ipaWordEl(w, cls) {
+  const el = prEl('span', cls);
+  w.split(/(\[[^\]]+\])/).forEach(part => {
+    if (!part) return;
+    if (part[0] === '[') el.appendChild(prEl('b', 'ipa-hl', part.slice(1, -1)));
+    else el.appendChild(document.createTextNode(part));
+  });
+  return el;
+}
+// ipa string with the target symbol highlighted (first match)
+function ipaIpaEl(ipa, sym) {
+  const el = prEl('span', 'vc-ipa pr-ipa');
+  const i = ipa.indexOf(sym);
+  if (i < 0) { el.textContent = ipa; return el; }
+  el.appendChild(document.createTextNode(ipa.slice(0, i)));
+  el.appendChild(prEl('b', 'ipa-hl', sym));
+  el.appendChild(document.createTextNode(ipa.slice(i + sym.length)));
+  return el;
+}
+const ipaTypeLabel = s => s[1] === 'cons' ? 'Phụ âm ' + s[6][0] : s[1] === 'diph' ? 'Nguyên âm đôi' : 'Nguyên âm ' + s[6];
+
+function prIpaCard() {
+  const n = IPA_SOUNDS.length, got = ipaGot();
+  const b = prEl('button', 'vc-topic ipa-entry' + (got === n ? ' done' : ''));
+  b.id = 'ipa-entry';
+  const top = prEl('span', 'ipa-entry-top');
+  top.appendChild(prEl('span', 'ipa-entry-sym', '/æ/'));
+  const tx = prEl('span', 'ipa-entry-tx');
+  tx.appendChild(prEl('span', 'vc-tvi', 'Bảng phiên âm IPA'));
+  tx.appendChild(prEl('span', 'vc-ten', '12 nguyên âm đơn · 8 nguyên âm đôi · 24 phụ âm'));
+  top.appendChild(tx);
+  b.appendChild(top);
+  b.appendChild(prEl('span', 'vc-tmeta', got ? `${got}/${n} âm đã thuộc` : `${n} âm · cách đặt lưỡi, môi và ví dụ`));
+  const bar = prEl('span', 'vc-bar'); const fill = prEl('span'); fill.style.width = (got / n * 100) + '%'; bar.appendChild(fill); b.appendChild(bar);
+  b.addEventListener('click', () => { prOpenIpa(); try { document.getElementById('page-pron').scrollIntoView({ block: 'start' }); } catch (e) {} });
+  return b;
+}
+
+function ipaProg() {
+  const el = document.getElementById('pr-set-prog');
+  if (!el) return;
+  const n = IPA_SOUNDS.length, got = ipaGot();
+  el.innerHTML = '';
+  el.appendChild(prEl('span', null, `Đã thuộc ${got}/${n}`));
+  const bar = prEl('span', 'vc-bar'); const fill = prEl('span'); fill.style.width = (got / n * 100) + '%'; bar.appendChild(fill);
+  bar.style.flex = '1'; el.appendChild(bar);
+}
+
+function prOpenIpa() {
+  prSeqStop();
+  prOpenSet = 'ipa';
+  pronHome.hidden = true; pronSets.hidden = true; if (pronMore) pronMore.hidden = true;
+  const v = pronSetView;
+  if (pronResult.parentNode === v) pronSets.parentNode.insertBefore(pronResult, pronSets);
+  pronResult.innerHTML = '';
+  v.innerHTML = ''; v.hidden = false;
+  const back = prEl('button', 'gr-back', '← Tất cả bài luyện');
+  back.addEventListener('click', () => { prShowHome(); try { document.getElementById('page-pron').scrollIntoView({ block: 'start' }); } catch (e) {} });
+  v.appendChild(back);
+  const head = prEl('div', 'vc-head');
+  head.appendChild(prEl('div', 'vc-head-icon ipa-head-icon', '/æ/'));
+  const hm = prEl('div', 'vc-head-meta');
+  hm.appendChild(prEl('div', 'vc-head-vi', 'Bảng phiên âm IPA'));
+  hm.appendChild(prEl('div', 'vc-head-en', '44 âm · giọng Anh-Anh, giống phiên âm trong app'));
+  const pr = prEl('div', 'vc-head-prog'); pr.id = 'pr-set-prog'; hm.appendChild(pr);
+  head.appendChild(hm); v.appendChild(head);
+  ipaProg();
+
+  // how to read the symbols
+  const guide = prEl('details', 'tense-card ipa-guide');
+  guide.appendChild(prEl('summary', null, '📖 Cách đọc ký hiệu phiên âm'));
+  [['ː', 'Âm dài: kéo dài âm phía trước. /iː/ dài hơn /ɪ/.'],
+   ['ˈ', 'Trọng âm chính: âm tiết ngay sau dấu này đọc to, cao và dài hơn. /ˈteɪbl/'],
+   ['ˌ', 'Trọng âm phụ: nhấn nhẹ hơn trọng âm chính. /ˌvjetnəˈmiːz/'],
+   ['/ /', 'Phiên âm luôn viết giữa hai dấu gạch chéo, đọc theo âm chứ không theo chữ cái.'],
+   ['🔇', 'Vô thanh: chỉ có hơi, cổ họng không rung (p, t, k, f, s…).'],
+   ['🔊', 'Hữu thanh: cổ họng rung. Đặt tay lên cổ để cảm nhận (b, d, ɡ, v, z…).']].forEach(([k, t]) => {
+    const r = prEl('div', 'ipa-guide-row');
+    r.appendChild(prEl('span', 'ipa-guide-k', k));
+    r.appendChild(prEl('span', null, t));
+    guide.appendChild(r);
+  });
+  v.appendChild(guide);
+
+  // filter chips + play all
+  const chips = prEl('div', 'colloc-chips ipa-filters');
+  const filters = [['all', 'Tất cả · 44'], ['mono', 'Nguyên âm đơn · 12'], ['diph', 'Nguyên âm đôi · 8'], ['cons', 'Phụ âm · 24']];
+  filters.forEach(([id, label]) => {
+    const c = prEl('button', 'colloc-chip' + (ipaFilter === id ? ' active' : ''), label);
+    c.dataset.f = id;
+    c.addEventListener('click', () => {
+      ipaFilter = id; try { localStorage.setItem(IPA_FILTER_KEY, id); } catch (e) {}
+      chips.querySelectorAll('.colloc-chip').forEach(x => x.classList.toggle('active', x.dataset.f === id));
+      prSeqStop(); drawGrid();
+    });
     chips.appendChild(c);
   });
-  pronSets.appendChild(chips);
-  const set = PRON_SETS.find(s => s.id === prSetId);
-  const card = prEl('div', 'tense-card pr-set');
-  card.appendChild(prEl('div', 'pr-set-tip', set.tip));
-  if (set.words) {
-    const grid = prEl('div', 'pr-grid');
-    set.words.forEach(([w, ipa, vi]) => {
-      const b = prEl('button', 'pr-item');
-      b.appendChild(prEl('b', null, w));
-      b.appendChild(prEl('small', 'pr-item-ipa', ipa));
-      b.appendChild(prEl('small', null, vi));
-      b.addEventListener('click', () => prLoad(w, { ipa, vi }));
-      grid.appendChild(b);
-    });
-    card.appendChild(grid);
-  } else if (set.pairs) {
-    set.pairs.forEach(pair => {
-      const row = prEl('div', 'pr-pair');
-      pair.forEach(([w, ipa, vi]) => {
-        const b = prEl('button', 'pr-item');
-        b.appendChild(prEl('b', null, w));
-        b.appendChild(prEl('small', 'pr-item-ipa', ipa));
-        b.appendChild(prEl('small', null, vi));
-        b.addEventListener('click', () => prLoad(w, { ipa, vi }));
-        row.appendChild(b);
+  v.appendChild(chips);
+  const acts = prEl('div', 'pr-acts');
+  const all = prEl('button', 'ls-slow', '▶ Nghe lần lượt');
+  acts.appendChild(all);
+  acts.appendChild(prEl('span', 'pr-acts-hint', 'Chạm vào một âm để xem cách phát âm, mẹo và 3 từ ví dụ'));
+  v.appendChild(acts);
+
+  const wrap = prEl('div', 'ipa-wrap');
+  v.appendChild(wrap);
+  let tiles = [], tileTexts = [];
+  function drawGrid() {
+    wrap.innerHTML = ''; tiles = []; tileTexts = [];
+    IPA_GROUPS.forEach(g => {
+      if (ipaFilter !== 'all' && ipaFilter !== g.id) return;
+      const list = IPA_SOUNDS.filter(s => s[1] === g.id);
+      const gh = prEl('div', 'ipa-group-h');
+      gh.appendChild(prEl('span', 'tense-group-title', g.title));
+      gh.appendChild(prEl('span', 'ipa-group-sub', g.sub));
+      wrap.appendChild(gh);
+      const grid = prEl('div', 'ipa-grid ipa-grid-' + g.id);
+      list.forEach(s => {
+        const t = prEl('button', 'ipa-tile' + (prDone.has(ipaKey(s[0])) ? ' learned' : ''));
+        t.dataset.sym = s[0];
+        t.setAttribute('aria-label', 'Âm /' + s[0] + '/ như trong ' + ipaPlain(s[5][0][0]));
+        t.appendChild(prEl('span', 'ipa-sym', s[0]));
+        t.appendChild(ipaWordEl(s[5][0][0], 'ipa-ex'));
+        if (s[1] === 'cons') t.appendChild(prEl('span', 'ipa-voice', s[6][0] === 'vô thanh' ? '🔇' : '🔊'));
+        else if (s[1] === 'mono') t.appendChild(prEl('span', 'ipa-len', s[6]));
+        t.addEventListener('click', () => { prSeqStop(); ipaShow(s[0]); });
+        grid.appendChild(t); tiles.push(t); tileTexts.push(ipaPlain(s[5][0][0]));
       });
-      const cmp = prEl('button', 'pr-cmp', 'So sánh');
-      cmp.addEventListener('click', () => {
-        const u = prSay(pair[0][0], 0.7);
-        if (u) u.onend = () => setTimeout(() => speak(pair[1][0], 0.7), 450);
-      });
-      row.appendChild(cmp);
-      card.appendChild(row);
-    });
-  } else {
-    set.sentences.forEach(([en, vi]) => {
-      const b = prEl('button', 'pr-sent');
-      b.appendChild(prEl('b', null, en));
-      b.appendChild(prEl('small', null, vi));
-      b.addEventListener('click', () => prLoad(en, { vi }));
-      card.appendChild(b);
+      wrap.appendChild(grid);
     });
   }
-  pronSets.appendChild(card);
+  drawGrid();
+  all.addEventListener('click', () => prSeqPlay(tiles, tileTexts, all));
+
+  const nx = PRON_SETS[0];
+  const nb = prEl('button', 'btn-primary vc-next-unit', `Bài tiếp: ${nx.icon} ${nx.title} →`);
+  nb.addEventListener('click', () => { prOpenSetView(nx); try { document.getElementById('page-pron').scrollIntoView({ block: 'start' }); } catch (e) {} });
+  v.appendChild(nb);
+}
+
+// detail sheet for one sound
+function ipaRefreshTile(sym) {
+  document.querySelectorAll('.ipa-tile').forEach(t => { if (t.dataset.sym === sym) t.classList.toggle('learned', prDone.has(ipaKey(sym))); });
+  ipaProg();
+}
+function ipaShow(sym, silent) {
+  const sh = document.getElementById('ipasheet');
+  const idx = IPA_SOUNDS.findIndex(s => s[0] === sym);
+  if (!sh || idx < 0) return;
+  const s = IPA_SOUNDS[idx];
+  const body = document.getElementById('ipa-body');
+  body.innerHTML = '';
+  document.getElementById('ipa-title').textContent = ipaTypeLabel(s);
+  const top = prEl('div', 'ipa-d-top');
+  top.appendChild(prEl('div', 'ipa-d-sym', '/' + s[0] + '/'));
+  const meta = prEl('div', 'ipa-d-meta');
+  meta.appendChild(prEl('div', 'ipa-d-name', 'Gần giống: ' + s[2]));
+  const tags = prEl('div', 'ipa-d-tags');
+  if (s[1] === 'cons') {
+    tags.appendChild(prEl('span', 'vc-pos', (s[6][0] === 'vô thanh' ? '🔇 ' : '🔊 ') + s[6][0]));
+    if (s[6][1]) {
+      const pb = prEl('button', 'vc-pos ipa-pair', 'Cặp với /' + s[6][1] + '/ →');
+      pb.addEventListener('click', () => ipaShow(s[6][1]));
+      tags.appendChild(pb);
+    }
+  } else {
+    tags.appendChild(prEl('span', 'vc-pos', s[1] === 'diph' ? 'nguyên âm đôi' : 'nguyên âm ' + s[6]));
+    if (s[1] === 'mono') {
+      const mate = IPA_SOUNDS[idx % 2 ? idx - 1 : idx + 1];   // short/long pairs sit next to each other
+      if (mate && mate[1] === 'mono') {
+        const pb = prEl('button', 'vc-pos ipa-pair', 'So với /' + mate[0] + '/ →');
+        pb.addEventListener('click', () => ipaShow(mate[0]));
+        tags.appendChild(pb);
+      }
+    }
+  }
+  meta.appendChild(tags);
+  top.appendChild(meta);
+  body.appendChild(top);
+  const how = prEl('div', 'ipa-d-sec');
+  how.appendChild(prEl('div', 'ipa-d-h', '👄 Cách phát âm'));
+  how.appendChild(prEl('p', null, s[3]));
+  body.appendChild(how);
+  body.appendChild(prEl('div', 'pr-set-tip', '💡 ' + s[4]));
+  const card = prEl('div', 'tense-card vc-card ipa-d-ex');
+  s[5].forEach(([w, ipa, vi]) => {
+    const plain = ipaPlain(w);
+    const row = prEl('div', 'vc-row pr-row');
+    const main = prEl('div', 'vc-main');
+    main.appendChild(ipaWordEl(w, 'vc-word'));
+    const ip = prEl('div'); ip.appendChild(ipaIpaEl(ipa, s[0])); main.appendChild(ip);
+    main.appendChild(prEl('div', 'vc-mean', vi));
+    const btns = prEl('div', 'vc-btns');
+    btns.appendChild(prBtn('▶', 'Nghe ' + plain, () => prSay(plain)));
+    btns.appendChild(prBtn('🐢', 'Nghe chậm ' + plain, () => prSay(plain, 0.5), true));
+    row.appendChild(main); row.appendChild(btns);
+    card.appendChild(row);
+  });
+  body.appendChild(card);
+  const acts = prEl('div', 'ipa-d-acts');
+  const play3 = prEl('button', 'ls-slow', '▶ Nghe 3 ví dụ');
+  play3.addEventListener('click', () => { prSeqStop(); prSay(s[5].map(x => ipaPlain(x[0])).join(', '), Math.min(prRate, 0.75)); });
+  const k = ipaKey(s[0]);
+  const ck = prEl('button', 'btn-ghost ipa-d-check' + (prDone.has(k) ? ' on' : ''), prDone.has(k) ? '✓ Đã thuộc' : '✓ Đánh dấu đã thuộc');
+  ck.addEventListener('click', () => {
+    if (prDone.has(k)) prDone.delete(k); else prDone.add(k);
+    prDoneSave();
+    ck.classList.toggle('on', prDone.has(k)); ck.textContent = prDone.has(k) ? '✓ Đã thuộc' : '✓ Đánh dấu đã thuộc';
+    ipaRefreshTile(s[0]);
+  });
+  acts.appendChild(play3); acts.appendChild(ck);
+  body.appendChild(acts);
+  // previous / next sound
+  const nav = prEl('div', 'ipa-d-nav');
+  const pv = IPA_SOUNDS[idx - 1], nv = IPA_SOUNDS[idx + 1];
+  const pbtn = prEl('button', 'btn-ghost', pv ? '← /' + pv[0] + '/' : '←'); pbtn.disabled = !pv;
+  const nbtn = prEl('button', 'btn-ghost', nv ? '/' + nv[0] + '/ →' : '→'); nbtn.disabled = !nv;
+  if (pv) pbtn.addEventListener('click', () => ipaShow(pv[0]));
+  if (nv) nbtn.addEventListener('click', () => ipaShow(nv[0]));
+  nav.appendChild(pbtn); nav.appendChild(prEl('span', 'ipa-d-pos', (idx + 1) + '/' + IPA_SOUNDS.length)); nav.appendChild(nbtn);
+  body.appendChild(nav);
+  document.querySelectorAll('.vsheet:not([hidden])').forEach(x => { if (x !== sh) x.hidden = true; });
+  sh.hidden = false; document.body.classList.add('vsheet-open');
+  const p = sh.querySelector('.vsheet-panel'); if (p) p.scrollTop = 0;
+  if (!silent) prSay(ipaPlain(s[5][0][0]));
+}
+(() => {
+  const sh = document.getElementById('ipasheet');
+  if (!sh) return;
+  const close = () => { sh.hidden = true; document.body.classList.remove('vsheet-open'); };
+  sh.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sh.hidden) close(); });
+})();
+
+function renderPronSets() {
+  pronSets.innerHTML = '';
+  pronSets.appendChild(prEl('div', 'tense-group-title', 'Bảng phiên âm IPA'));
+  pronSets.appendChild(prIpaCard());
+  pronSets.appendChild(prEl('div', 'tense-group-title ipa-sets-title', 'Luyện các âm khó với người Việt'));
+  const grid = prEl('div', 'vc-grid');
+  PRON_SETS.forEach(set => {
+    const n = prSetItems(set).length, got = prSetGot(set);
+    const b = prEl('button', 'vc-topic' + (got === n ? ' done' : ''));
+    b.appendChild(prEl('span', 'vc-ticon', set.icon));
+    b.appendChild(prEl('span', 'vc-tvi', set.title));
+    b.appendChild(prEl('span', 'vc-ten', PR_SET_SUB[set.id] || ''));
+    b.appendChild(prEl('span', 'vc-tmeta', got ? `${got}/${n} đã luyện` : `${n} ${prSetUnit(set)}`));
+    const bar = prEl('span', 'vc-bar'); const fill = prEl('span'); fill.style.width = (got / n * 100) + '%'; bar.appendChild(fill); b.appendChild(bar);
+    b.addEventListener('click', () => prOpenSetView(set));
+    grid.appendChild(b);
+  });
+  pronSets.appendChild(grid);
+}
+
+function prShowHome() {
+  prSeqStop();
+  prOpenSet = null;
+  pronSetView.hidden = true; pronSetView.innerHTML = '';
+  pronHome.hidden = false; pronSets.hidden = false; if (pronMore) pronMore.hidden = false;
+  pronSets.parentNode.insertBefore(pronResult, pronSets);   // the detail card goes back above the sets
+  pronResult.innerHTML = '';
+  renderPronSets();
+}
+
+function prOpenSetView(set) {
+  prSeqStop();
+  prOpenSet = set;
+  pronHome.hidden = true; pronSets.hidden = true; if (pronMore) pronMore.hidden = true;
+  const v = pronSetView;
+  if (pronResult.parentNode === v) pronSets.parentNode.insertBefore(pronResult, pronSets);
+  v.innerHTML = ''; v.hidden = false;
+  const back = prEl('button', 'gr-back', '← Tất cả bài luyện');
+  back.addEventListener('click', () => { prShowHome(); try { document.getElementById('page-pron').scrollIntoView({ block: 'start' }); } catch (e) {} });
+  v.appendChild(back);
+  const n = prSetItems(set).length;
+  const head = prEl('div', 'vc-head');
+  head.appendChild(prEl('div', 'vc-head-icon', set.icon));
+  const hm = prEl('div', 'vc-head-meta');
+  hm.appendChild(prEl('div', 'vc-head-vi', set.title));
+  hm.appendChild(prEl('div', 'vc-head-en', `${PR_SET_SUB[set.id] || ''} · ${n} ${prSetUnit(set)}`));
+  const pr = prEl('div', 'vc-head-prog'); pr.id = 'pr-set-prog'; hm.appendChild(pr);
+  head.appendChild(hm); v.appendChild(head);
+  prSetProg(set);
+  v.appendChild(prEl('div', 'pr-set-tip pr-set-tip2', set.tip));
+  const acts = prEl('div', 'pr-acts');
+  const all = prEl('button', 'ls-slow', '▶ Nghe lần lượt');
+  acts.appendChild(all);
+  acts.appendChild(prEl('span', 'pr-acts-hint', 'Chạm vào chữ để xem phiên âm chi tiết và nói thử'));
+  v.appendChild(acts);
+  v.appendChild(pronResult);           // the detail card shows up here, above the list
+  pronResult.innerHTML = '';
+  const card = prEl('div', 'tense-card vc-card');
+  const rows = [], texts = [];
+  const openDetail = (text, hint) => { prSeqStop(); renderPronResult(text, hint); prSay(text); try { pronResult.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} };
+
+  if (set.words || set.sentences) {
+    (set.words || set.sentences).forEach(item => {
+      const isSent = !set.words;
+      const w = item[0], ipa = isSent ? '' : item[1], vi = isSent ? item[1] : item[2];
+      const row = prEl('div', 'vc-row pr-row' + (prDone.has(set.id + '|' + w) ? ' learned' : ''));
+      const main = prEl('div', 'vc-main pr-tap');
+      main.setAttribute('role', 'button'); main.tabIndex = 0;
+      main.appendChild(prEl('div', isSent ? 'vc-word pr-sent-w' : 'vc-word', w));
+      if (ipa) main.appendChild(prEl('div', 'vc-ipa pr-ipa', ipa));
+      main.appendChild(prEl('div', 'vc-mean', vi));
+      main.addEventListener('click', () => openDetail(w, isSent ? { vi } : { ipa, vi }));
+      const btns = prEl('div', 'vc-btns');
+      btns.appendChild(prBtn('▶', 'Nghe ' + w, () => prSay(w)));
+      btns.appendChild(prBtn('🐢', 'Nghe chậm ' + w, () => prSay(w, 0.5), true));
+      btns.appendChild(prCheck(set, w, row));
+      row.appendChild(main); row.appendChild(btns);
+      card.appendChild(row); rows.push(row); texts.push(w);
+    });
+  } else {
+    set.pairs.forEach(pair => {
+      const key = pair[0][0] + ' / ' + pair[1][0];
+      const row = prEl('div', 'vc-row pr-row pr-pairrow' + (prDone.has(set.id + '|' + key) ? ' learned' : ''));
+      const cols = prEl('div', 'pr-paircols');
+      pair.forEach(([w, ipa, vi]) => {
+        const col = prEl('div', 'pr-paircol');
+        const t = prEl('div', 'vc-main pr-tap'); t.setAttribute('role', 'button'); t.tabIndex = 0;
+        t.appendChild(prEl('div', 'vc-word', w));
+        t.appendChild(prEl('div', 'vc-ipa pr-ipa', ipa));
+        t.appendChild(prEl('div', 'vc-mean', vi));
+        t.addEventListener('click', () => openDetail(w, { ipa, vi }));
+        col.appendChild(t);
+        col.appendChild(prBtn('▶', 'Nghe ' + w, () => prSay(w)));
+        cols.appendChild(col);
+      });
+      const side = prEl('div', 'vc-btns');
+      const cmp = prBtn('⇄', 'So sánh ' + key, () => {
+        const u = prSay(pair[0][0], 0.7);
+        if (u) u.onend = () => setTimeout(() => speak(pair[1][0], 0.7), 450);
+      }, true);
+      cmp.classList.add('pr-cmp-btn');
+      side.appendChild(cmp);
+      side.appendChild(prCheck(set, key, row));
+      row.appendChild(cols); row.appendChild(side);
+      card.appendChild(row); rows.push(row); texts.push(pair[0][0] + ', ' + pair[1][0]);
+    });
+  }
+  v.appendChild(card);
+  all.addEventListener('click', () => prSeqPlay(rows, texts, all));
+  // next lesson, like the Vocabulary tab
+  const idx = PRON_SETS.indexOf(set), nx = PRON_SETS[idx + 1];
+  if (nx) {
+    const nb = prEl('button', 'btn-primary vc-next-unit', `Bài tiếp: ${nx.icon} ${nx.title} →`);
+    nb.addEventListener('click', () => { prOpenSetView(nx); try { document.getElementById('page-pron').scrollIntoView({ block: 'start' }); } catch (e) {} });
+    v.appendChild(nb);
+  }
 }
 renderPronSets();
+// leaving the tab stops the "play all" loop
+document.querySelectorAll('nav.tabbar button').forEach(b => b.addEventListener('click', () => { if (b.dataset.page !== 'page-pron') prSeqStop(); }));
 
 // quick word chips: words Vietnamese learners often say wrong
 ['comfortable', 'vegetable', 'Wednesday', 'clothes', 'develop', 'schedule', 'temperature', 'pronunciation'].forEach(w => {
@@ -6440,101 +7781,327 @@ tabButtons.forEach(btn => {
 /* ============================================================
    UI WIRING - Tenses page
 ============================================================ */
+/* ---------- Tenses by CEFR level (A1 → C1) ---------- */
 const tensesList = document.getElementById('tenses-list');
-let lastTenseGroup = null;
-TENSES.forEach(tense => {
-  if (tense.group !== lastTenseGroup) {
-    const groupTitle = document.createElement('div');
-    groupTitle.className = 'tense-group-title';
-    groupTitle.textContent = tense.group;
-    tensesList.appendChild(groupTitle);
-    lastTenseGroup = tense.group;
+const TN_LEVELS = [
+  { n: 1, code: 'A1', vi: 'Mới bắt đầu', goal: 'Nói về bản thân, thói quen hằng ngày và việc đang làm. Kể đơn giản hôm qua ở đâu, thế nào.' },
+  { n: 2, code: 'A2', vi: 'Sơ cấp', goal: 'Kể lại chuyện đã xảy ra, nói về kế hoạch, dự định và kinh nghiệm của bản thân.' },
+  { n: 3, code: 'B1', vi: 'Trung cấp', goal: 'Kể chuyện có trước có sau, nhấn mạnh quá trình, nói về việc sẽ đang diễn ra, và dùng đúng thì với động từ trạng thái.' },
+  { n: 4, code: 'B2', vi: 'Trung cao cấp', goal: 'Diễn đạt chính xác mốc thời gian phức tạp ở quá khứ và tương lai, kể lại dự định và lời nói trong quá khứ.' },
+  { n: 5, code: 'C1', vi: 'Nâng cao', goal: 'Dùng thì một cách tinh tế: nhấn mạnh độ dài, nói lịch sự và giảm nhẹ, và dùng đảo ngữ trong văn phong trang trọng.' }
+];
+const TN_LV_KEY = 'hoc-tieng-anh-tense-level', TN_DONE_KEY = 'hoc-tieng-anh-tense-done';
+let tnLevel = 1, tnDone = new Set();
+try { tnLevel = Math.min(5, Math.max(1, +localStorage.getItem(TN_LV_KEY) || 1)); } catch (e) {}
+try { const a = JSON.parse(localStorage.getItem(TN_DONE_KEY) || '[]'); if (Array.isArray(a)) tnDone = new Set(a); } catch (e) {}
+const tnEl = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const tnOf = n => TENSES.filter(t => t.lv === n);
+const tnGot = n => tnOf(n).filter(t => tnDone.has(t.id)).length;
+
+function tnPlay(text, aria) {
+  const b = tnEl('span', 'play-mini', '▶');
+  b.setAttribute('role', 'button'); b.setAttribute('aria-label', aria || ('Nghe: ' + text)); b.tabIndex = 0;
+  b.addEventListener('click', e => { e.stopPropagation(); speak(text, 0.85); });
+  return b;
+}
+
+function tnCard(t) {
+  const card = tnEl('div', 'tense-card tn-card' + (tnDone.has(t.id) ? ' done' : ''));
+  const top = tnEl('div', 'tn-top');
+  const ttl = tnEl('div', 'tn-title');
+  ttl.appendChild(tnEl('h3', null, t.name));
+  ttl.appendChild(tnEl('div', 'tn-en', t.en));
+  top.appendChild(ttl);
+  const ck = tnEl('button', 'tn-done' + (tnDone.has(t.id) ? ' on' : ''), tnDone.has(t.id) ? '✓ Đã nắm' : 'Đánh dấu đã nắm');
+  ck.addEventListener('click', () => {
+    if (tnDone.has(t.id)) tnDone.delete(t.id); else tnDone.add(t.id);
+    try { localStorage.setItem(TN_DONE_KEY, JSON.stringify([...tnDone])); } catch (e) {}
+    renderTenses(true);
+  });
+  top.appendChild(ck);
+  card.appendChild(top);
+
+  const f = tnEl('div', 'tn-formula');
+  [['+', 'Khẳng định', t.formula.pos], ['−', 'Phủ định', t.formula.neg], ['?', 'Câu hỏi', t.formula.q]].forEach(([sym, lbl, txt]) => {
+    if (!txt) return;
+    const r = tnEl('div', 'tn-frow');
+    const s = tnEl('span', 'tn-sym', sym); s.title = lbl;
+    r.appendChild(s); r.appendChild(tnEl('span', 'tn-ftxt', txt));
+    f.appendChild(r);
+  });
+  card.appendChild(f);
+
+  card.appendChild(tnEl('div', 'tn-sub', 'Dùng khi'));
+  const ul = tnEl('ul', 'tn-usage');
+  t.usage.forEach(u => ul.appendChild(tnEl('li', null, u)));
+  card.appendChild(ul);
+
+  if (t.signals && t.signals.length) {
+    card.appendChild(tnEl('div', 'tn-sub', 'Dấu hiệu nhận biết'));
+    const sg = tnEl('div', 'tn-signals');
+    t.signals.forEach(x => sg.appendChild(tnEl('span', 'tn-sig', x)));
+    card.appendChild(sg);
   }
 
-  const card = document.createElement('div');
-  card.className = 'tense-card';
-  const examplesHtml = tense.examples.map(ex => `
-    <div class="ex-row">
-      ${ex.en}
-      <span class="vi">${ex.vi}</span>
-    </div>
-  `).join('');
-  card.innerHTML = `
-    <h3>${tense.name}</h3>
-    <div class="formula">${tense.formula}</div>
-    <div class="usage">${tense.usage}</div>
-    ${examplesHtml}
-  `;
-  tensesList.appendChild(card);
-});
+  card.appendChild(tnEl('div', 'tn-sub', 'Ví dụ'));
+  t.examples.forEach(ex => {
+    const row = tnEl('div', 'tn-ex');
+    const txt = tnEl('div', 'tn-ex-txt');
+    txt.appendChild(tnEl('div', 'tn-ex-en', ex.en));
+    txt.appendChild(tnEl('div', 'tn-ex-vi', ex.vi));
+    row.appendChild(txt);
+    row.appendChild(tnPlay(ex.en, 'Nghe câu ví dụ'));
+    card.appendChild(row);
+  });
+
+  if (t.mistake) {
+    const m = tnEl('div', 'tn-mistake');
+    m.appendChild(tnEl('div', 'tn-mis-t', '⚠️ Lỗi hay gặp'));
+    const w = tnEl('div', 'tn-mis-row'); w.appendChild(tnEl('span', 'tn-x', '✗')); w.appendChild(tnEl('s', null, t.mistake.wrong)); m.appendChild(w);
+    const r = tnEl('div', 'tn-mis-row'); r.appendChild(tnEl('span', 'tn-v', '✓')); r.appendChild(tnEl('b', null, t.mistake.right)); r.appendChild(tnPlay(t.mistake.right, 'Nghe câu đúng')); m.appendChild(r);
+    m.appendChild(tnEl('div', 'tn-mis-note', t.mistake.note));
+    card.appendChild(m);
+  }
+  return card;
+}
+
+function renderTenses(keepScroll) {
+  const y = window.scrollY;
+  tensesList.innerHTML = '';
+  // level chips, same look as the Vocabulary tab
+  const chips = tnEl('div', 'vc-levels tn-levels');
+  TN_LEVELS.forEach(L => {
+    const n = tnOf(L.n).length, got = tnGot(L.n);
+    const b = tnEl('button', 'vc-level vc-lvl' + L.n + (L.n === tnLevel ? ' active' : '') + (got === n ? ' done' : ''));
+    b.appendChild(tnEl('span', 'vc-level-code', L.code));
+    b.appendChild(tnEl('span', 'vc-level-vi', L.vi));
+    b.appendChild(tnEl('span', 'vc-level-n', got === n ? `✓ ${n} bài` : got ? `${got}/${n}` : `${n} bài`));
+    b.setAttribute('aria-pressed', L.n === tnLevel ? 'true' : 'false');
+    b.addEventListener('click', () => {
+      tnLevel = L.n;
+      try { localStorage.setItem(TN_LV_KEY, String(L.n)); } catch (e) {}
+      renderTenses();
+      try { tensesList.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (e) {}
+    });
+    chips.appendChild(b);
+  });
+  tensesList.appendChild(chips);
+
+  const L = TN_LEVELS[tnLevel - 1], list = tnOf(tnLevel), got = tnGot(tnLevel);
+  const intro = tnEl('div', 'tense-card tn-intro');
+  const ih = tnEl('div', 'tn-intro-h');
+  ih.appendChild(tnEl('span', 'tn-badge', L.code));
+  ih.appendChild(tnEl('b', null, `${L.vi} · ${list.length} bài`));
+  intro.appendChild(ih);
+  intro.appendChild(tnEl('p', 'tn-goal', 'Mục tiêu: ' + L.goal));
+  const pg = tnEl('div', 'vc-head-prog');
+  pg.appendChild(tnEl('span', null, `Đã nắm ${got}/${list.length}`));
+  const bar = tnEl('span', 'vc-bar'); const fill = tnEl('span'); fill.style.width = (got / list.length * 100) + '%'; bar.appendChild(fill); bar.style.flex = '1';
+  pg.appendChild(bar);
+  intro.appendChild(pg);
+  if (tnLevel > 1) {
+    const prev = tnOf(tnLevel - 1), pgot = tnGot(tnLevel - 1);
+    if (pgot < prev.length) intro.appendChild(tnEl('p', 'tn-tip', `💡 Bạn còn ${prev.length - pgot} bài ở ${TN_LEVELS[tnLevel - 2].code} chưa đánh dấu. Nên chắc phần nền trước khi học cấp này.`));
+  }
+  const which = tnEl('details', 'tn-which');
+  which.appendChild(tnEl('summary', null, 'Mình nên học ở trình độ nào?'));
+  [['A1', 'Mới học, chỉ biết vài từ và câu chào hỏi.'], ['A2', 'Giới thiệu được bản thân, hỏi đáp đơn giản về cuộc sống hằng ngày.'],
+   ['B1', 'Kể được chuyện đã qua, xem video có phụ đề, viết được đoạn văn ngắn.'], ['B2', 'Giao tiếp khá tự nhiên, đọc báo và xem phim hiểu ý chính.'],
+   ['C1', 'Dùng tiếng Anh trôi chảy trong công việc và học thuật, muốn diễn đạt tinh tế hơn.']].forEach(([c, d]) => {
+    const r = tnEl('div', 'tn-which-row'); r.appendChild(tnEl('span', 'tn-badge', c)); r.appendChild(tnEl('span', null, d)); which.appendChild(r);
+  });
+  intro.appendChild(which);
+  tensesList.appendChild(intro);
+
+  list.forEach(t => tensesList.appendChild(tnCard(t)));
+
+  if (tnLevel < 5) {
+    const nx = TN_LEVELS[tnLevel];
+    const nb = tnEl('button', 'btn-primary vc-next-unit', `Học tiếp cấp ${nx.code} · ${nx.vi} →`);
+    nb.addEventListener('click', () => {
+      tnLevel = nx.n; try { localStorage.setItem(TN_LV_KEY, String(nx.n)); } catch (e) {}
+      renderTenses();
+      try { tensesList.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (e) {}
+    });
+    tensesList.appendChild(nb);
+  }
+  if (keepScroll) window.scrollTo(0, y);
+}
+renderTenses();
 
 /* ============================================================
    UI WIRING - Irregular Verbs page
 ============================================================ */
 const verbTable = document.getElementById('verb-table');
 const verbSearch = document.getElementById('verb-search');
+const verbLevelsBox = document.getElementById('verb-levels');
+const IRR_LEVELS = [
+  { n: 1, code: 'A1', vi: 'Mới bắt đầu', goal: 'Những động từ dùng hằng ngày nhất (be, have, go, eat…). Thuộc nhóm này là kể được những việc đơn giản trong quá khứ.' },
+  { n: 2, code: 'A2', vi: 'Sơ cấp', goal: 'Động từ thông dụng khi kể chuyện, đi lại, mua sắm, học tập. Đây là nhóm gặp nhiều nhất trong bài thi cơ bản.' },
+  { n: 3, code: 'B1', vi: 'Trung cấp', goal: 'Mở rộng vốn động từ để kể chuyện chi tiết, hiểu tin tức và phim ảnh. Có thêm các động từ ghép re-, mis-, over-.' },
+  { n: 4, code: 'B2', vi: 'Trung cao cấp', goal: 'Động từ trong văn viết, tin tức và công việc, nhiều động từ ghép under-, over-, with-, out-.' },
+  { n: 5, code: 'C1', vi: 'Nâng cao', goal: 'Động từ trang trọng, mang tính văn chương hoặc ít gặp, giúp đọc hiểu sách báo nâng cao.' }
+];
+const IRR_PATTERNS = { AAA: 'A-A-A', ABB: 'A-B-B', ABA: 'A-B-A', ABC: 'A-B-C' };
+const IRR_PAT_HINT = { AAA: 'Ba dạng giống nhau (cut – cut – cut)', ABB: 'V2 giống V3 (buy – bought – bought)', ABA: 'V3 giống V1 (come – came – come)', ABC: 'Ba dạng khác nhau (go – went – gone)' };
+const irrFirst = x => x.split('/')[0].trim().toLowerCase();
+IRREGULAR_VERBS.forEach(v => {
+  const a = irrFirst(v.v1), b = irrFirst(v.v2), c = irrFirst(v.v3);
+  v.pat = a === b && b === c ? 'AAA' : b === c ? 'ABB' : a === c ? 'ABA' : 'ABC';
+});
+const IRR_LV_KEY = 'hoc-tieng-anh-irr-level', IRR_DONE_KEY = 'hoc-tieng-anh-irr-done';
+let irrLevel = 1, irrPat = 'all', irrDone = new Set(), irrSeq = null;
+try { irrLevel = Math.min(5, Math.max(1, +localStorage.getItem(IRR_LV_KEY) || 1)); } catch (e) {}
+try { const a = JSON.parse(localStorage.getItem(IRR_DONE_KEY) || '[]'); if (Array.isArray(a)) irrDone = new Set(a); } catch (e) {}
+const irrOf = n => IRREGULAR_VERBS.filter(v => v.lv === n);
+const irrGot = n => irrOf(n).filter(v => irrDone.has(v.v1)).length;
+const irrEl = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+function irrSeqStop() {
+  if (!irrSeq) return;
+  irrSeq.stop = true;
+  document.querySelectorAll('.verb-row.pr-now').forEach(x => x.classList.remove('pr-now'));
+  if (irrSeq.btn) irrSeq.btn.textContent = '▶ Nghe lần lượt';
+  irrSeq = null;
+}
+function irrSeqPlay(btn) {
+  if (irrSeq) { irrSeqStop(); try { speechSynthesis.cancel(); } catch (e) {} return; }
+  const rows = [...verbTable.querySelectorAll('.verb-row[data-v1]')];
+  if (!rows.length) return;
+  const st = { stop: false, btn }; irrSeq = st; btn.textContent = '⏹ Dừng';
+  let i = 0;
+  const next = () => {
+    if (st.stop) return;
+    document.querySelectorAll('.verb-row.pr-now').forEach(x => x.classList.remove('pr-now'));
+    if (i >= rows.length) { irrSeqStop(); return; }
+    const row = rows[i++]; row.classList.add('pr-now');
+    try { row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+    const v = IRREGULAR_VERBS.find(x => x.v1 === row.dataset.v1);
+    const text = [v.v1, v.v2, v.v3].map(irrFirst).join(', ');
+    const u = speak(text, 0.75);
+    let done = false;
+    const go = () => { if (done || st.stop) return; done = true; setTimeout(next, 800); };
+    try { if (u && u.addEventListener) { u.addEventListener('end', go); u.addEventListener('error', go); } } catch (e) {}
+    setTimeout(go, 3500);
+  };
+  next();
+}
+
+function renderVerbLevels() {
+  verbLevelsBox.innerHTML = '';
+  const chips = irrEl('div', 'vc-levels tn-levels');
+  IRR_LEVELS.forEach(L => {
+    const n = irrOf(L.n).length, got = irrGot(L.n);
+    const b = irrEl('button', 'vc-level vc-lvl' + L.n + (L.n === irrLevel ? ' active' : '') + (got === n ? ' done' : ''));
+    b.appendChild(irrEl('span', 'vc-level-code', L.code));
+    b.appendChild(irrEl('span', 'vc-level-vi', L.vi));
+    b.appendChild(irrEl('span', 'vc-level-n', got === n ? `✓ ${n} từ` : got ? `${got}/${n}` : `${n} từ`));
+    b.addEventListener('click', () => {
+      irrSeqStop(); irrLevel = L.n; irrPat = 'all';
+      try { localStorage.setItem(IRR_LV_KEY, String(L.n)); } catch (e) {}
+      verbSearch.value = '';
+      renderVerbLevels(); renderVerbTable('');
+    });
+    chips.appendChild(b);
+  });
+  verbLevelsBox.appendChild(chips);
+
+  const L = IRR_LEVELS[irrLevel - 1], list = irrOf(irrLevel), got = irrGot(irrLevel);
+  const intro = irrEl('div', 'tense-card tn-intro');
+  const ih = irrEl('div', 'tn-intro-h');
+  ih.appendChild(irrEl('span', 'tn-badge', L.code));
+  ih.appendChild(irrEl('b', null, `${L.vi} · ${list.length} động từ`));
+  intro.appendChild(ih);
+  intro.appendChild(irrEl('p', 'tn-goal', L.goal));
+  const pg = irrEl('div', 'vc-head-prog');
+  pg.appendChild(irrEl('span', null, `Đã thuộc ${got}/${list.length}`));
+  const bar = irrEl('span', 'vc-bar'); const fill = irrEl('span'); fill.style.width = (got / list.length * 100) + '%'; bar.appendChild(fill); bar.style.flex = '1';
+  pg.appendChild(bar); intro.appendChild(pg);
+  // learn by pattern: A-A-A, A-B-B, A-B-A, A-B-C
+  const pats = irrEl('div', 'irr-pats');
+  [['all', 'Tất cả'], ...Object.entries(IRR_PATTERNS)].forEach(([k, label]) => {
+    const n = k === 'all' ? list.length : list.filter(v => v.pat === k).length;
+    if (!n) return;
+    const c = irrEl('button', 'colloc-chip' + (irrPat === k ? ' active' : ''), `${label} · ${n}`);
+    if (k !== 'all') c.title = IRR_PAT_HINT[k];
+    c.addEventListener('click', () => { irrSeqStop(); irrPat = k; renderVerbLevels(); renderVerbTable(verbSearch.value); });
+    pats.appendChild(c);
+  });
+  intro.appendChild(irrEl('div', 'tn-sub', 'Học theo nhóm cách biến đổi'));
+  intro.appendChild(pats);
+  if (irrPat !== 'all') intro.appendChild(irrEl('p', 'tn-tip', '💡 ' + IRR_PAT_HINT[irrPat]));
+  const acts = irrEl('div', 'pr-acts');
+  const all = irrEl('button', 'ls-slow', '▶ Nghe lần lượt');
+  all.addEventListener('click', () => irrSeqPlay(all));
+  acts.appendChild(all);
+  acts.appendChild(irrEl('span', 'pr-acts-hint', 'Đọc lần lượt V1, V2, V3 của từng động từ trong danh sách'));
+  intro.appendChild(acts);
+  verbLevelsBox.appendChild(intro);
+}
 
 function renderVerbTable(filter) {
   const q = (filter || '').trim().toLowerCase();
   verbTable.innerHTML = '';
-
-  const head = document.createElement('div');
-  head.className = 'verb-row head';
+  const head = irrEl('div', 'verb-row head');
   head.innerHTML = `<span>V1</span><span>V2</span><span>V3</span>`;
   verbTable.appendChild(head);
 
-  const filtered = IRREGULAR_VERBS.filter(v => {
-    if (!q) return true;
-    return v.v1.toLowerCase().includes(q) ||
-           v.v2.toLowerCase().includes(q) ||
-           v.v3.toLowerCase().includes(q) ||
-           v.meaning.toLowerCase().includes(q);
-  });
+  const filtered = q
+    ? IRREGULAR_VERBS.filter(v => [v.v1, v.v2, v.v3].some(x => x.toLowerCase().includes(q))
+        || new RegExp('(^|[\\s,;()/])' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(v.meaning.toLowerCase()))
+    : irrOf(irrLevel).filter(v => irrPat === 'all' || v.pat === irrPat);
+  if (q) verbTable.appendChild(irrEl('div', 'irr-search-note', `Tìm trong cả 240 động từ: ${filtered.length} kết quả`));
 
   if (filtered.length === 0) {
-    const empty = document.createElement('div');
-    empty.className = 'empty-state';
+    const empty = irrEl('div', 'empty-state');
     empty.innerHTML = `<div class="big">¯\\_(ツ)_/¯</div>Không tìm thấy động từ phù hợp.`;
     verbTable.appendChild(empty);
     return;
   }
 
   function buildVerbCell(formText, ipa) {
-    const cell = document.createElement('span');
-    cell.className = 'verb-cell';
-    // forms like "was/were" or "gotten/got" — speak the first variant listed
-    const speakText = formText.split('/')[0].trim();
-    cell.innerHTML = `
-      <span class="v-wrap">
-        <span class="v">${formText}</span>
-        <span class="v-ipa">${ipa || ''}</span>
-      </span>
-      <span class="play-mini" role="button" aria-label="Đọc ${formText}">▶</span>
-    `;
-    cell.querySelector('.play-mini').addEventListener('click', () => {
-      speak(speakText, 0.8);
-    });
+    const cell = irrEl('span', 'verb-cell');
+    const speakText = formText.split('/')[0].trim();     // "was/were" → speak the first form
+    const wrap = irrEl('span', 'v-wrap');
+    wrap.appendChild(irrEl('span', 'v', formText));
+    wrap.appendChild(irrEl('span', 'v-ipa', ipa || ''));
+    const play = irrEl('span', 'play-mini', '▶');
+    play.setAttribute('role', 'button'); play.setAttribute('aria-label', 'Đọc ' + formText);
+    play.addEventListener('click', () => { irrSeqStop(); speak(speakText, 0.8); });
+    cell.appendChild(wrap); cell.appendChild(play);
     return cell;
   }
 
   filtered.forEach(v => {
-    const row = document.createElement('div');
-    row.className = 'verb-row';
+    const row = irrEl('div', 'verb-row' + (irrDone.has(v.v1) ? ' learned' : ''));
+    row.dataset.v1 = v.v1;
     row.appendChild(buildVerbCell(v.v1, v.ipa));
     row.appendChild(buildVerbCell(v.v2, v.ipa2));
     row.appendChild(buildVerbCell(v.v3, v.ipa3));
-    const meaningRow = document.createElement('span');
-    meaningRow.className = 'meaning-row';
-    meaningRow.textContent = v.meaning;
+    const meaningRow = irrEl('span', 'meaning-row irr-meaning');
+    meaningRow.appendChild(irrEl('span', 'irr-mean-t', v.meaning));
+    const tags = irrEl('span', 'irr-tags');
+    if (q) tags.appendChild(irrEl('span', 'vc-lv vc-lv' + v.lv, IRR_LEVELS[v.lv - 1].code));
+    tags.appendChild(irrEl('span', 'irr-pat', IRR_PATTERNS[v.pat]));
+    const ck = irrEl('button', 'vc-check' + (irrDone.has(v.v1) ? ' on' : ''), '✓');
+    ck.setAttribute('aria-label', 'Đánh dấu đã thuộc ' + v.v1);
+    ck.addEventListener('click', () => {
+      if (irrDone.has(v.v1)) irrDone.delete(v.v1); else irrDone.add(v.v1);
+      try { localStorage.setItem(IRR_DONE_KEY, JSON.stringify([...irrDone])); } catch (e) {}
+      ck.classList.toggle('on', irrDone.has(v.v1)); row.classList.toggle('learned', irrDone.has(v.v1));
+      const y = window.scrollY; renderVerbLevels(); window.scrollTo(0, y);
+    });
+    tags.appendChild(ck);
+    meaningRow.appendChild(tags);
     row.appendChild(meaningRow);
     verbTable.appendChild(row);
   });
 }
 
+renderVerbLevels();
 renderVerbTable('');
-verbSearch.addEventListener('input', () => {
-  renderVerbTable(verbSearch.value);
-});
+verbSearch.addEventListener('input', () => { irrSeqStop(); renderVerbTable(verbSearch.value); });
+document.querySelectorAll('nav.tabbar button').forEach(b => b.addEventListener('click', () => { if (b.dataset.page !== 'page-irregular') irrSeqStop(); }));
 
 /* ============================================================
    UI WIRING - Adjectives & Adverbs page
@@ -6624,38 +8191,160 @@ function grEl(tag, cls, text) {
   return el;
 }
 
+/* ---------- Grammar by CEFR level (A1 → C1) ---------- */
+const GR_LEVELS = [
+  { n: 1, code: 'A1', vi: 'Mới bắt đầu', goal: 'Nắm những mẫu câu nền tảng: chỉ vật, nói có gì ở đâu, dùng mạo từ, đại từ, giới từ và can/could.' },
+  { n: 2, code: 'A2', vi: 'Sơ cấp', goal: 'So sánh, đưa lời khuyên và sự bắt buộc, nói điều kiện có thể xảy ra, dùng các mẫu câu “quá… để”, “đủ… để”.' },
+  { n: 3, code: 'B1', vi: 'Trung cấp', goal: 'Câu bị động, câu tường thuật, mệnh đề quan hệ, V-ing/To V, câu điều kiện loại 2 và các cấu trúc câu thông dụng.' },
+  { n: 4, code: 'B2', vi: 'Trung cao cấp', goal: 'Câu điều kiện loại 3, mệnh đề quan hệ không xác định, cấu trúc nhờ vả, nhượng bộ và các cấu trúc nhấn mạnh.' },
+  { n: 5, code: 'C1', vi: 'Nâng cao', goal: 'Diễn đạt tinh tế, trang trọng: câu ước, đảo ngữ, câu điều kiện hỗn hợp, câu chẻ và “càng… càng”.' }
+];
+// [id, level, from topic, section indexes (null = all), title override, subtitle override]
+const GR_PLAN = [
+  ['thereis', 1, 'thereis'], ['demonstratives', 1, 'demonstratives'], ['articles', 1, 'articles'], ['nouns', 1, 'nouns'],
+  ['pronouns', 1, 'pronouns'], ['prepositions', 1, 'prepositions'], ['modal-can', 1, 'modal', [0], 'Can / Could', 'Modal verbs: can, could'],
+  ['compare', 2, 'compare'], ['modal-more', 2, 'modal', [1, 2, 3, 4], 'Động từ khuyết thiếu: may, must, should…', 'Modal verbs'],
+  ['cond-1', 2, 'conditional', [0, 1, 4], 'Câu điều kiện loại 0 & 1', 'Zero & first conditional'],
+  ['too', 2, 'too'], ['enough', 2, 'enough'], ['ittakes', 2, 'ittakes'], ['itsadj', 2, 'itsadj'],
+  ['passive', 3, 'passive'], ['cond-2', 3, 'conditional', [2], 'Câu điều kiện loại 2', 'Second conditional'],
+  ['gerund-1', 3, 'gerund', [0, 1, 3], 'V-ing và To V', 'Gerunds & infinitives'],
+  ['relative-1', 3, 'relative', [0, 1], 'Mệnh đề quan hệ xác định', 'Defining relative clauses'],
+  ['reported', 3, 'reported'], ['tag', 3, 'tag'], ['sothat', 3, 'sothat'], ['suchthat', 3, 'suchthat'], ['makelet', 3, 'makelet'],
+  ['asktell', 3, 'asktell'], ['usedto', 3, 'usedto'], ['hadbetter', 3, 'hadbetter'], ['spend', 3, 'spend'],
+  ['cond-3', 4, 'conditional', [3], 'Câu điều kiện loại 3', 'Third conditional'],
+  ['relative-2', 4, 'relative', [2], 'Mệnh đề quan hệ không xác định', 'Non-defining relative clauses'],
+  ['gerund-2', 4, 'gerund', [2], 'V-ing hay To V: khác nghĩa', 'stop, remember, try…'],
+  ['havedone', 4, 'havedone'], ['suggest', 4, 'suggest'], ['prefer', 4, 'prefer'], ['itstime', 4, 'itstime'],
+  ['although', 4, 'although'], ['paired', 4, 'paired'], ['prevent', 4, 'prevent'],
+  ['wish', 5, 'wish'], ['inversion', 5, 'inversion'], ['mixedcond', 5, 'mixedcond'], ['cleft', 5, 'cleft'], ['themore', 5, 'themore']
+];
+const GR_LESSONS = GR_PLAN.map(([id, lv, from, secs, title, en]) => {
+  const src = GRAMMAR_TOPICS.find(t => t.id === from);
+  return { id, lv, title: title || src.title, en: en || src.en, intro: src.intro, tips: src.tips || [],
+    sections: secs ? secs.map(i => src.sections[i]).filter(Boolean) : src.sections };
+});
+// Formulas shown like the Tenses tab: + affirmative, − negative, ? question (or numbered variants)
+const GR_FX = {
+  'thereis:0': [['+', 'There is + danh từ số ít / không đếm được'], ['+', 'There are + danh từ số nhiều'], ['−', "There isn't / There aren't + …"], ['?', 'Is there …? · Are there …?']],
+  'passive:0': [['+', 'S + be + V3/V-ed (+ by O)'], ['−', 'S + be + not + V3/V-ed'], ['?', 'Be + S + V3/V-ed?']],
+  'modal:0': [['+', 'S + can / could + V'], ['−', "S + can't / couldn't + V"], ['?', 'Can / Could + S + V?']],
+  'modal:1': [['+', 'S + may / might + V'], ['−', 'S + may not / might not + V'], ['?', 'May I + V? (xin phép lịch sự)']],
+  'modal:2': [['+', 'S + must / have to + V'], ['−', "S + mustn't + V (cấm) · S + don't have to + V (không cần)"], ['?', 'Must + S + V? · Do + S + have to + V?']],
+  'modal:3': [['+', 'S + should / ought to + V'], ['−', "S + shouldn't + V"], ['?', 'Should + S + V?']],
+  'modal:4': [['+', 'S + will / would + V'], ['−', "S + won't / wouldn't + V"], ['?', 'Will / Would + S + V?']],
+  'conditional:0': [['If', 'S + V (hiện tại)'], ['→', 'S + V (hiện tại)']],
+  'conditional:1': [['If', 'S + V (hiện tại đơn)'], ['→', 'S + will + V']],
+  'conditional:2': [['If', 'S + V2 (be → were)'], ['→', 'S + would + V']],
+  'conditional:3': [['If', 'S + had + V3'], ['→', 'S + would have + V3']],
+  'mixedcond:0': [['If', 'S + had + V3 (quá khứ)'], ['→', 'S + would + V (hiện tại)']],
+  'mixedcond:1': [['If', 'S + V2 / were (hiện tại)'], ['→', 'S + would have + V3 (quá khứ)']],
+  'usedto:0': [['+', 'S + used to + V'], ['−', "S + didn't use to + V"], ['?', 'Did + S + use to + V?']],
+  'usedto:1': [['+', 'S + be / get used to + V-ing / N'], ['−', 'S + be + not + used to + V-ing / N'], ['?', 'Be + S + used to + V-ing / N?']],
+  'hadbetter:0': [['+', 'S + had better + V'], ['−', 'S + had better not + V']],
+  'tag:0': [['+', 'Câu khẳng định, + trợ động từ + n\'t + đại từ?'], ['−', 'Câu phủ định, + trợ động từ + đại từ?']],
+  'compare:0': [['+', 'S + be + as + adj + as + O'], ['−', 'S + be + not + as/so + adj + as + O']]
+};
+GRAMMAR_TOPICS.forEach(t => t.sections.forEach((sec, i) => { const fx = GR_FX[t.id + ':' + i]; if (fx) sec.fx = fx; }));
+function grFormula(sec) {
+  let rows = sec.fx;
+  if (!rows) {
+    const parts = String(sec.formula).split(/\s+·\s+/).map(x => x.trim()).filter(Boolean);
+    rows = parts.map((p, i) => [parts.length > 1 ? String(i + 1) : '+', p]);
+  }
+  const box = grEl('div', 'tn-formula');
+  rows.forEach(([sym, txt]) => {
+    const r = grEl('div', 'tn-frow');
+    const m = txt.match(/^([^:+()]{2,24}):\s+(.*)$/);           // "Tính từ ngắn: adj-er + than"
+    const sy = grEl('span', 'tn-sym' + (sym.length > 1 ? ' tn-sym-w' : ''), sym);
+    sy.title = { '+': 'Khẳng định', '−': 'Phủ định', '?': 'Câu hỏi', 'If': 'Mệnh đề điều kiện', '→': 'Mệnh đề kết quả' }[sym] || '';
+    r.appendChild(sy);
+    const tx = grEl('span', 'tn-ftxt');
+    if (m) { tx.appendChild(grEl('span', 'tn-flabel', m[1])); tx.appendChild(document.createTextNode(m[2])); }
+    else tx.textContent = txt;
+    r.appendChild(tx);
+    box.appendChild(r);
+  });
+  return box;
+}
+const GR_LV_KEY = 'hoc-tieng-anh-grammar-level', GR_DONE_KEY = 'hoc-tieng-anh-grammar-done';
+let grLevel = 1, grDone = new Set();
+try { grLevel = Math.min(5, Math.max(1, +localStorage.getItem(GR_LV_KEY) || 1)); } catch (e) {}
+try { const a = JSON.parse(localStorage.getItem(GR_DONE_KEY) || '[]'); if (Array.isArray(a)) grDone = new Set(a); } catch (e) {}
+const grOf = n => GR_LESSONS.filter(t => t.lv === n);
+const grGot = n => grOf(n).filter(t => grDone.has(t.id)).length;
+const grSetLevel = n => { grLevel = n; try { localStorage.setItem(GR_LV_KEY, String(n)); } catch (e) {} };
+function grToggleDone(id) {
+  if (grDone.has(id)) grDone.delete(id); else grDone.add(id);
+  try { localStorage.setItem(GR_DONE_KEY, JSON.stringify([...grDone])); } catch (e) {}
+}
+
 function renderGrammarHome() {
   grRoot.innerHTML = '';
-  grRoot.appendChild(grEl('div', 'section-title', 'Ngữ pháp'));
-  grRoot.appendChild(grEl('div', 'section-sub', 'Các cấu trúc ngữ pháp nền tảng ngoài 12 thì và 20 cấu trúc câu quan trọng cần nhớ. Chọn một cấu trúc để xem công thức, ví dụ và lỗi hay gặp.'));
-  [['basics', 'Cấu trúc ngữ pháp nền tảng'], ['core20', '20 cấu trúc câu quan trọng']].forEach(([group, label]) => {
-    grRoot.appendChild(grEl('div', 'tense-group-title', label));
-    const grid = grEl('div', 'gr-grid');
-    GRAMMAR_TOPICS.filter(t => t.group === group).forEach((t, i) => {
-      const b = grEl('button', 'gr-topic');
-      if (group === 'core20') b.appendChild(grEl('span', 'gr-num', String(i + 1)));
-      b.appendChild(grEl('span', 'gr-t-title', t.title));
-      b.appendChild(grEl('span', 'gr-t-en', t.en));
-      b.addEventListener('click', () => renderGrammarTopic(t.id));
-      grid.appendChild(b);
-    });
-    grRoot.appendChild(grid);
+  grRoot.appendChild(grEl('div', 'section-title', 'Ngữ pháp theo trình độ'));
+  grRoot.appendChild(grEl('div', 'section-sub', 'Chọn đúng trình độ của bạn (A1 → C1) và tập trung vào các cấu trúc ở cấp đó. Chạm vào một bài để xem công thức, ví dụ có nút nghe và lỗi hay gặp.'));
+  const chips = grEl('div', 'vc-levels tn-levels');
+  GR_LEVELS.forEach(L => {
+    const n = grOf(L.n).length, got = grGot(L.n);
+    const b = grEl('button', 'vc-level vc-lvl' + L.n + (L.n === grLevel ? ' active' : '') + (got === n ? ' done' : ''));
+    b.appendChild(grEl('span', 'vc-level-code', L.code));
+    b.appendChild(grEl('span', 'vc-level-vi', L.vi));
+    b.appendChild(grEl('span', 'vc-level-n', got === n ? `✓ ${n} bài` : got ? `${got}/${n}` : `${n} bài`));
+    b.setAttribute('aria-pressed', L.n === grLevel ? 'true' : 'false');
+    b.addEventListener('click', () => { grSetLevel(L.n); renderGrammarHome(); });
+    chips.appendChild(b);
   });
+  grRoot.appendChild(chips);
+
+  const L = GR_LEVELS[grLevel - 1], list = grOf(grLevel), got = grGot(grLevel);
+  const intro = grEl('div', 'tense-card tn-intro');
+  const ih = grEl('div', 'tn-intro-h');
+  ih.appendChild(grEl('span', 'tn-badge', L.code));
+  ih.appendChild(grEl('b', null, `${L.vi} · ${list.length} bài`));
+  intro.appendChild(ih);
+  intro.appendChild(grEl('p', 'tn-goal', 'Mục tiêu: ' + L.goal));
+  const pg = grEl('div', 'vc-head-prog');
+  pg.appendChild(grEl('span', null, `Đã nắm ${got}/${list.length}`));
+  const bar = grEl('span', 'vc-bar'); const fill = grEl('span'); fill.style.width = (got / list.length * 100) + '%'; bar.appendChild(fill); bar.style.flex = '1';
+  pg.appendChild(bar); intro.appendChild(pg);
+  if (grLevel > 1) {
+    const prev = grOf(grLevel - 1), pgot = grGot(grLevel - 1);
+    if (pgot < prev.length) intro.appendChild(grEl('p', 'tn-tip', `💡 Bạn còn ${prev.length - pgot} bài ở ${GR_LEVELS[grLevel - 2].code} chưa đánh dấu. Nên chắc phần nền trước khi học cấp này.`));
+  }
+  grRoot.appendChild(intro);
+
+  const grid = grEl('div', 'gr-grid');
+  list.forEach((t, i) => {
+    const done = grDone.has(t.id);
+    const b = grEl('button', 'gr-topic' + (done ? ' done' : ''));
+    b.appendChild(grEl('span', 'gr-num', done ? '✓' : String(i + 1)));
+    b.appendChild(grEl('span', 'gr-t-title', t.title));
+    b.appendChild(grEl('span', 'gr-t-en', t.en));
+    b.addEventListener('click', () => renderGrammarTopic(t.id));
+    grid.appendChild(b);
+  });
+  grRoot.appendChild(grid);
+
+  if (grLevel < 5) {
+    const nx = GR_LEVELS[grLevel];
+    const nb = grEl('button', 'btn-primary vc-next-unit', `Học tiếp cấp ${nx.code} · ${nx.vi} →`);
+    nb.addEventListener('click', () => { grSetLevel(nx.n); renderGrammarHome(); grScrollTop(); });
+    grRoot.appendChild(nb);
+  }
 }
 
 function renderGrammarTopic(id) {
-  const idx = GRAMMAR_TOPICS.findIndex(t => t.id === id);
-  const t = GRAMMAR_TOPICS[idx];
+  const t = GR_LESSONS.find(x => x.id === id);
   if (!t) return renderGrammarHome();
+  grSetLevel(t.lv);
+  const L = GR_LEVELS[t.lv - 1], list = grOf(t.lv), pos = list.indexOf(t);
   grRoot.innerHTML = '';
 
-  const back = grEl('button', 'gr-back', '← Tất cả cấu trúc câu');
+  const back = grEl('button', 'gr-back', `← Ngữ pháp ${L.code}`);
   back.addEventListener('click', () => { renderGrammarHome(); grScrollTop(); });
   grRoot.appendChild(back);
 
   const head = grEl('div', 'gr-head');
-  const coreIdx = GRAMMAR_TOPICS.filter(x => x.group === 'core20').indexOf(t);
-  head.appendChild(grEl('div', 'gr-en', coreIdx >= 0 ? `Cấu trúc ${coreIdx + 1} / 20 · ${t.en}` : t.en));
+  head.appendChild(grEl('div', 'gr-en', `${L.code} · Bài ${pos + 1}/${list.length} · ${t.en}`));
   head.appendChild(grEl('h2', 'gr-title', t.title));
   head.appendChild(grEl('p', 'gr-intro', t.intro));
   grRoot.appendChild(head);
@@ -6663,8 +8352,8 @@ function renderGrammarTopic(id) {
   t.sections.forEach(sec => {
     const card = grEl('div', 'tense-card');
     card.appendChild(grEl('h3', null, sec.name));
-    if (sec.formula) card.appendChild(grEl('div', 'formula', sec.formula));
-    if (sec.usage) card.appendChild(grEl('div', 'usage', sec.usage));
+    if (sec.formula || sec.fx) card.appendChild(grFormula(sec));
+    if (sec.usage) card.appendChild(grEl('div', 'usage gr-usage', sec.usage));
     if (sec.table) {
       const wrap = grEl('div', 'gr-table-wrap');
       const table = grEl('table', 'gr-table');
@@ -6672,11 +8361,7 @@ function renderGrammarTopic(id) {
       sec.table.head.forEach(h => hr.appendChild(grEl('th', null, h)));
       thead.appendChild(hr); table.appendChild(thead);
       const tbody = grEl('tbody');
-      sec.table.rows.forEach(r => {
-        const tr = grEl('tr');
-        r.forEach(c => tr.appendChild(grEl('td', null, c)));
-        tbody.appendChild(tr);
-      });
+      sec.table.rows.forEach(r => { const tr = grEl('tr'); r.forEach(c => tr.appendChild(grEl('td', null, c))); tbody.appendChild(tr); });
       table.appendChild(tbody); wrap.appendChild(table); card.appendChild(wrap);
     }
     (sec.examples || []).forEach(ex => {
@@ -6702,11 +8387,21 @@ function renderGrammarTopic(id) {
     grRoot.appendChild(tips);
   }
 
+  const done = grEl('button', 'tn-done gr-done' + (grDone.has(t.id) ? ' on' : ''), grDone.has(t.id) ? '✓ Đã nắm bài này' : 'Đánh dấu đã nắm bài này');
+  done.addEventListener('click', () => {
+    grToggleDone(t.id);
+    done.classList.toggle('on', grDone.has(t.id));
+    done.textContent = grDone.has(t.id) ? '✓ Đã nắm bài này' : 'Đánh dấu đã nắm bài này';
+  });
+  grRoot.appendChild(done);
+
+  // previous / next inside the level; the last lesson leads to the next level
   const nav = grEl('div', 'gr-nav');
-  [[idx - 1, '← Trước'], [idx + 1, 'Tiếp →']].forEach(([i, label]) => {
-    const other = GRAMMAR_TOPICS[i];
+  const prev = list[pos - 1];
+  const next = list[pos + 1] || (t.lv < 5 ? grOf(t.lv + 1)[0] : null);
+  [[prev, '← Trước'], [next, next && next.lv !== t.lv ? `Sang cấp ${GR_LEVELS[next.lv - 1].code} →` : 'Tiếp →']].forEach(([other, label], k) => {
     if (!other) { nav.appendChild(grEl('span', 'gr-nav-gap')); return; }
-    const b = grEl('button', 'gr-nav-btn' + (i > idx ? ' next' : ''));
+    const b = grEl('button', 'gr-nav-btn' + (k ? ' next' : ''));
     b.appendChild(grEl('span', 'gr-nav-label', label));
     b.appendChild(grEl('span', 'gr-nav-title', other.title));
     b.addEventListener('click', () => { renderGrammarTopic(other.id); grScrollTop(); });
@@ -21252,7 +22947,7 @@ vUpdateButton();
   const el = document.getElementById('hero-stats');
   if (el) {
     const phrases = COLLOCATIONS.reduce((n, g) => n + g.items.length, 0);
-    [[VC_ALL.length, 'từ vựng'], [phrases, 'cụm từ'], [IRREGULAR_VERBS.length, 'động từ bất quy tắc'], [TENSES.length + GRAMMAR_TOPICS.length, 'bài ngữ pháp']]
+    [[VC_ALL.length, 'từ vựng'], [phrases, 'cụm từ'], [IRREGULAR_VERBS.length, 'động từ bất quy tắc'], [TENSES.length + GR_LESSONS.length, 'bài ngữ pháp']]
       .forEach(([n, label]) => {
         const box = document.createElement('div');
         box.className = 'hero-stat';
