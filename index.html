@@ -1665,6 +1665,9 @@
   .ex-tools{ display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; margin:14px 0 4px; }
   .ex-hint{ margin:4px 0 12px; font-size:13px; line-height:1.6; color:var(--ink-soft); }
   .ex-list{ display:flex; flex-direction:column; gap:12px; }
+  .ex-divider{ display:flex; align-items:center; gap:10px; margin:10px 0 2px; font:700 12px/1.4 var(--font-mono);
+    letter-spacing:.06em; text-transform:uppercase; color:var(--rust); }
+  .ex-divider::after{ content:''; flex:1; height:1px; background:var(--paper-line); }
   .ex-card{ border-left:4px solid var(--paper-line); }
   .ex-card.ok{ border-left-color:var(--moss); }
   .ex-card.bad{ border-left-color:var(--mark); }
@@ -2187,7 +2190,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v45</span>
+      <span class="hero-badge">EN ⇄ VI · v47</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -2390,7 +2393,7 @@
   <!-- PAGE: EXERCISES -->
   <section class="page" id="page-exercise">
     <div class="section-title">Bài tập dịch</div>
-    <div class="section-sub">Dịch Việt → Anh theo trình độ A1 → C1 · Mỗi bài 12 câu, chỉ dùng đúng cấu trúc đã học ở tab Các thì và Ngữ pháp</div>
+    <div class="section-sub">Dịch Việt → Anh theo trình độ A1 → C1 · Mỗi bài 17 câu kèm công thức câu hỏi Wh- và How-, chỉ dùng đúng cấu trúc đã học ở tab Các thì và Ngữ pháp</div>
     <div id="ex-root"></div>
   </section>
 
@@ -24728,6 +24731,684 @@ const EX_MORE = {
 };
 Object.keys(EX_MORE).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].concat(EX_MORE[k]); });
 
+/* ---------- Câu hỏi Wh-: công thức riêng cho từng bài ---------- */
+const EX_WH_FX = {
+  'present-simple': 'Wh- + do + I/you/we/they + V? · Wh- + does + he/she/it + V? · Wh- + am/is/are + chủ ngữ …? · Who/What làm chủ ngữ thì không cần do/does: Who lives here?',
+  'present-continuous': 'Wh- + am/is/are + chủ ngữ + V-ing? · Who/What + is + V-ing? (khi hỏi về chủ ngữ)',
+  'past-be': 'Wh- + was + I/he/she/it …? · Wh- + were + you/we/they …?',
+  'past-simple': 'Wh- + did + chủ ngữ + V (nguyên thể)? · Who/What làm chủ ngữ thì giữ V2, bỏ did: Who broke it?',
+  'past-continuous': 'Wh- + was + I/he/she/it + V-ing? · Wh- + were + you/we/they + V-ing?',
+  'going-to': 'Wh- + am/is/are + chủ ngữ + going to + V?',
+  'future-simple': 'Wh- + will + chủ ngữ + V? · Who will + V? (hỏi về chủ ngữ)',
+  'present-perfect': 'Wh- + have + I/you/we/they + V3? · Wh- + has + he/she/it + V3? · How long / How many times + have/has + chủ ngữ + V3?',
+  'present-perfect-continuous': 'How long + have/has + chủ ngữ + been + V-ing? · Wh- + have/has + chủ ngữ + been + V-ing?',
+  'past-perfect': 'Wh- + had + chủ ngữ + V3 (+ before / when + quá khứ đơn)?',
+  'future-continuous': 'Wh- + will + chủ ngữ + be + V-ing?',
+  'stative': 'Wh- + do/does + chủ ngữ + think / know / want / like …? · Không dùng V-ing: không nói “What are you knowing?”',
+  'past-perfect-continuous': 'How long + had + chủ ngữ + been + V-ing? · Wh- + had + chủ ngữ + been + V-ing?',
+  'future-perfect': 'Wh- + will + chủ ngữ + have + V3 + by + mốc thời gian?',
+  'future-in-past': 'Wh- + was/were + chủ ngữ + going to + V? · Wh- + would + chủ ngữ + V?',
+  'future-perfect-continuous': 'How long + will + chủ ngữ + have been + V-ing + by + mốc thời gian?',
+  'polite-tenses': 'I was wondering + Wh- + chủ ngữ + V (trật tự câu kể, không đảo) · Could you tell me + Wh- + chủ ngữ + V?',
+  'inversion-perfect': 'Câu hỏi không đảo ngữ Hardly/No sooner; hỏi bằng trật tự thường: Wh- + had + chủ ngữ + V3 + when …?',
+  'thereis': 'How many + danh từ số nhiều + are there …? · How much + danh từ không đếm được + is there …? · What is there + …?',
+  'demonstratives': 'What + is this / that? · What + are these / those? · Whose + danh từ + is this / that?',
+  'articles': 'Wh- + is + the + danh từ (đã xác định)? · Why + do/does + chủ ngữ + want + a / an + danh từ?',
+  'nouns': 'How many + danh từ đếm được số nhiều …? · How much + danh từ không đếm được …?',
+  'pronouns': 'Who + V …? (hỏi chủ ngữ) · Who(m) + do/does/did + chủ ngữ + V? (hỏi tân ngữ) · Whose + danh từ + …?',
+  'prepositions': 'Where …? (nơi chốn) · When / What time …? (thời gian) · Who … with? · What … for? (giới từ đứng cuối câu)',
+  'modal-can': 'Wh- + can / could + chủ ngữ + V (nguyên thể)?',
+  'compare': 'Which + danh từ + is + adj-er / more + adj …? · Who / Which + is + the + adj-est / the most + adj …?',
+  'modal-more': 'Wh- + should / must / may + chủ ngữ + V? · Wh- + do/does + chủ ngữ + have to + V?',
+  'cond-1': 'Wh- + will + chủ ngữ + V + if + chủ ngữ + V (hiện tại đơn)? · What will happen if …?',
+  'too': 'Why + am/is/are + chủ ngữ + too + adj + to V? · Who / What + is + too + adj + to V?',
+  'enough': 'Why + isn’t / aren’t + chủ ngữ + adj + enough + to V? · Who + is + adj + enough + to V?',
+  'ittakes': 'How long + does / did + it take + (ai đó) + to V? · Why + does it take + so long + to V?',
+  'itsadj': 'Why + is it + adj + to V? · What + is + adj + to V?',
+  'passive': 'Wh- + am/is/are + chủ ngữ + V3? · When / Where + was/were + chủ ngữ + V3? · Who + was + … + V3 + by? (by đứng cuối)',
+  'cond-2': 'Wh- + would + chủ ngữ + V + if + chủ ngữ + V2 / were …?',
+  'gerund-1': 'Wh- + do/does + chủ ngữ + enjoy / like / avoid + V-ing? · Wh- + do/does + chủ ngữ + want / decide + to V?',
+  'relative-1': 'Wh- + am/is/are + danh từ + who / that / which + V …? · Which + danh từ + that + chủ ngữ + V …?',
+  'reported': 'Hỏi trực tiếp: Wh- + did + chủ ngữ + say / tell …? · Tường thuật câu hỏi Wh-: chủ ngữ + asked + Wh- + chủ ngữ + V (lùi thì, trật tự câu kể)',
+  'tag': 'Câu hỏi đuôi không dùng Wh- Wh- · Nhưng mệnh đề Wh- nằm được trong câu: You know where she lives, don’t you?',
+  'sothat': 'Why + was/were + chủ ngữ + so + adj + that + …? · Who / What + V + so + adv + that + …?',
+  'suchthat': 'Why + was it + such + (a/an) + adj + danh từ + that + …? · Who + is + such + (a/an) + adj + danh từ + that + …?',
+  'makelet': 'What + makes + ai đó + V? · Who + made + ai đó + V? · Why + do/does + chủ ngữ + let + ai đó + V?',
+  'asktell': 'Wh- + did + chủ ngữ + ask / tell / advise + ai đó + to V? · Who + told + ai đó + to V?',
+  'usedto': 'Wh- + did + chủ ngữ + use to + V? (bỏ -d của used) · Why + am/is/are + chủ ngữ + not used to + V-ing?',
+  'hadbetter': 'Wh- + had + chủ ngữ + better + V? · Hoặc hỏi lời khuyên bằng: What should + chủ ngữ + V?',
+  'spend': 'How much time / How much money + do/does + chủ ngữ + spend + V-ing? · Why + do/does + chủ ngữ + spend + … + V-ing?',
+  'cond-3': 'Wh- + would + chủ ngữ + have + V3 + if + chủ ngữ + had + V3?',
+  'relative-2': 'Wh- + … + , who / which + V … ? (mệnh đề phụ nằm giữa hai dấu phẩy, chỉ bổ sung thông tin)',
+  'gerund-2': 'Why + did + chủ ngữ + stop + V-ing (bỏ hẳn) / to V (dừng lại để làm)? · What + do/does + chủ ngữ + remember / forget + V-ing hay to V?',
+  'havedone': 'Where / When + do/does/did + chủ ngữ + have + cái gì + V3? · How much + did it cost + to have + cái gì + V3?',
+  'suggest': 'Wh- + do/does + chủ ngữ + suggest + V-ing? · Where / What + do you suggest + (that) + chủ ngữ + V?',
+  'prefer': 'Which + do/does + chủ ngữ + prefer, A or B? · Wh- + would + chủ ngữ + rather + V?',
+  'itstime': 'Why / When + is it time + (for ai đó) + to V? · What + do you think + it’s time + to V?',
+  'although': 'Wh- + did + chủ ngữ + V + although + chủ ngữ + V? · Wh- + did + chủ ngữ + V + despite + danh từ / V-ing?',
+  'paired': 'Who + V + both … and …? · Which + danh từ + is + not only … but also …? · Why + can + neither … nor … + V?',
+  'prevent': 'What + prevented / stopped + ai đó + from + V-ing? · Why + did + chủ ngữ + stop + ai đó + from + V-ing?',
+  'wish': 'Wh- + do/does + chủ ngữ + wish + (that) + chủ ngữ + V2 / had + V3 / could + V?',
+  'inversion': 'Câu hỏi Wh- vốn đã đảo trợ động từ lên trước chủ ngữ: Wh- + do/did/have/am-is-are + chủ ngữ + V? · Câu trả lời mới dùng đảo ngữ: Not until … did I …',
+  'mixedcond': 'Wh- + would + chủ ngữ + V (bây giờ) + if + chủ ngữ + had + V3 (quá khứ)? · Wh- + would + chủ ngữ + have + V3 + if + chủ ngữ + V2 / were?',
+  'cleft': 'What + is it + that + chủ ngữ + V? · Who / Where + was it + that + … ?',
+  'themore': 'What / How much + … + the + so sánh hơn + chủ ngữ + V? · Why + do/does + chủ ngữ + V + the + so sánh hơn + chủ ngữ + V?'
+};
+
+/* ---------- 3 câu hỏi Wh- cho mỗi bài ---------- */
+const EX_WH = {
+  'present-simple': [
+    ['Where do you live?', 'Bạn sống ở đâu?'],
+    ['What does your sister do every morning?', 'Chị của bạn làm gì mỗi sáng?'],
+    ['Why is he always late?', 'Sao anh ấy lúc nào cũng trễ?']
+  ],
+  'present-continuous': [
+    ['What are you doing now?', 'Bây giờ bạn đang làm gì?'],
+    ['Why is the baby crying?', 'Sao em bé đang khóc?'],
+    ['Who is standing at the door?', 'Ai đang đứng ở cửa?']
+  ],
+  'past-be': [
+    ['Where were you yesterday?', 'Hôm qua bạn ở đâu?'],
+    ['Why was she so tired last night?', 'Sao tối qua cô ấy mệt vậy?'],
+    ['Who was your first teacher?', 'Giáo viên đầu tiên của bạn là ai?']
+  ],
+  'thereis': [
+    ['How many people are there in your family?', 'Gia đình bạn có bao nhiêu người?'],
+    ['What is there to eat in the fridge?', 'Trong tủ lạnh có gì để ăn?'],
+    ['How much sugar is there in this cake?', 'Trong cái bánh này có bao nhiêu đường?']
+  ],
+  'demonstratives': [
+    ['What is this?', 'Cái này là cái gì?'],
+    ['Whose bag is that?', 'Cái túi kia là của ai?'],
+    ['Who are those people?', 'Những người kia là ai?']
+  ],
+  'articles': [
+    ['Where is the nearest bus stop?', 'Trạm xe buýt gần nhất ở đâu?'],
+    ['Who is the man at the door?', 'Người đàn ông ở cửa là ai?'],
+    ['Why do you want a new phone?', 'Sao bạn muốn một chiếc điện thoại mới?']
+  ],
+  'nouns': [
+    ['How many eggs are there in the box?', 'Trong hộp có bao nhiêu quả trứng?'],
+    ['How much water do you drink every day?', 'Mỗi ngày bạn uống bao nhiêu nước?'],
+    ['How many friends does she have in Da Nang?', 'Cô ấy có bao nhiêu người bạn ở Đà Nẵng?']
+  ],
+  'pronouns': [
+    ['Who called you this morning?', 'Sáng nay ai gọi cho bạn?'],
+    ['Whose phone is this?', 'Điện thoại này của ai?'],
+    ['Who did you invite to your house?', 'Bạn đã mời ai đến nhà bạn?']
+  ],
+  'prepositions': [
+    ['Where do you work?', 'Bạn làm việc ở đâu?'],
+    ['When does the shop open?', 'Cửa hàng mở cửa khi nào?'],
+    ['Who do you live with?', 'Bạn sống với ai?']
+  ],
+  'modal-can': [
+    ['What can you cook?', 'Bạn có thể nấu món gì?'],
+    ['Where can I buy a SIM card?', 'Tôi có thể mua sim ở đâu?'],
+    ['When can we meet?', 'Khi nào chúng ta có thể gặp nhau?']
+  ],
+  'past-simple': [
+    ['Where did you go last weekend?', 'Cuối tuần trước bạn đã đi đâu?'],
+    ['What time did the film start?', 'Bộ phim bắt đầu lúc mấy giờ?'],
+    ['Who broke this glass?', 'Ai đã làm vỡ cái ly này?']
+  ],
+  'past-continuous': [
+    ['What were you doing at nine last night?', 'Chín giờ tối qua bạn đang làm gì?'],
+    ['Where were they going when you saw them?', 'Họ đang đi đâu khi bạn thấy họ?'],
+    ['Why was she crying this morning?', 'Sáng nay sao cô ấy khóc?']
+  ],
+  'going-to': [
+    ['What are you going to do tomorrow?', 'Ngày mai bạn định làm gì?'],
+    ['Where are they going to stay in Hue?', 'Họ định ở đâu khi tới Huế?'],
+    ['When is she going to start her new job?', 'Khi nào cô ấy bắt đầu công việc mới?']
+  ],
+  'future-simple': [
+    ['What will you do after work?', 'Sau giờ làm bạn sẽ làm gì?'],
+    ['When will they arrive?', 'Khi nào họ sẽ đến?'],
+    ['Who will pay for the tickets?', 'Ai sẽ trả tiền vé?']
+  ],
+  'present-perfect': [
+    ['How long have you lived in this city?', 'Bạn đã sống ở thành phố này bao lâu?'],
+    ['Where have you been?', 'Bạn đã đi đâu vậy?'],
+    ['How many times has she visited Hue?', 'Cô ấy đã đến Huế mấy lần rồi?']
+  ],
+  'compare': [
+    ['Which bag is cheaper?', 'Cái túi nào rẻ hơn?'],
+    ['Who is the tallest in your class?', 'Ai cao nhất lớp bạn?'],
+    ['Which city is more beautiful, Hue or Hoi An?', 'Thành phố nào đẹp hơn, Huế hay Hội An?']
+  ],
+  'modal-more': [
+    ['What should I do now?', 'Giờ tôi nên làm gì?'],
+    ['Why must we leave so early?', 'Sao chúng ta phải đi sớm vậy?'],
+    ['When do you have to finish the report?', 'Khi nào bạn phải hoàn thành báo cáo?']
+  ],
+  'cond-1': [
+    ['What will you do if it rains tomorrow?', 'Nếu mai trời mưa bạn sẽ làm gì?'],
+    ['Where will we go if the beach is closed?', 'Chúng ta sẽ đi đâu nếu bãi biển đóng cửa?'],
+    ["Who will help us if he doesn't come?", 'Ai sẽ giúp chúng ta nếu anh ấy không đến?']
+  ],
+  'too': [
+    ['Why is this coffee too hot to drink?', 'Sao cà phê này nóng quá không uống được?'],
+    ['Who is too young to drive a car?', 'Ai còn quá nhỏ để lái xe hơi?'],
+    ['What is too heavy for you to carry?', 'Cái gì quá nặng để bạn mang?']
+  ],
+  'enough': [
+    ["Why isn't this room big enough for us?", 'Sao phòng này không đủ rộng cho chúng ta?'],
+    ['Who is old enough to vote?', 'Ai đủ tuổi để đi bầu cử?'],
+    ["Why don't you have enough money to buy it?", 'Sao bạn không có đủ tiền để mua nó?']
+  ],
+  'ittakes': [
+    ['How long did it take her to finish the book?', 'Cô ấy mất bao lâu để đọc xong quyển sách?'],
+    ['How long does it take to cook this dish?', 'Mất bao lâu để nấu món này?'],
+    ['Why does it take so long to repair a phone?', 'Sao sửa một cái điện thoại lại lâu vậy?']
+  ],
+  'itsadj': [
+    ['Why is it difficult to get up early?', 'Sao thức dậy sớm lại khó vậy?'],
+    ['What is important to remember before the test?', 'Điều gì quan trọng cần nhớ trước kỳ thi?'],
+    ['Why is it dangerous to use a phone while driving?', 'Sao dùng điện thoại khi lái xe lại nguy hiểm?']
+  ],
+  'present-perfect-continuous': [
+    ['How long have you been learning English?', 'Bạn đã học tiếng Anh bao lâu rồi?'],
+    ['What have you been doing all morning?', 'Cả buổi sáng bạn đã làm gì vậy?'],
+    ['Why has she been crying?', 'Sao nãy giờ cô ấy khóc vậy?']
+  ],
+  'past-perfect': [
+    ['Where had she gone before you arrived?', 'Cô ấy đã đi đâu trước khi bạn đến?'],
+    ['What had you done before the meeting started?', 'Bạn đã làm gì trước khi cuộc họp bắt đầu?'],
+    ['Why had the train already left?', 'Sao tàu đã khởi hành rồi?']
+  ],
+  'future-continuous': [
+    ['What will your sister be doing this time tomorrow?', 'Giờ này ngày mai chị của bạn sẽ đang làm gì?'],
+    ['Where will they be waiting for us?', 'Họ sẽ đang đợi chúng ta ở đâu?'],
+    ['Who will be driving tomorrow morning?', 'Sáng mai ai sẽ lái xe?']
+  ],
+  'stative': [
+    ['What do you think about this plan?', 'Bạn nghĩ gì về kế hoạch này?'],
+    ['Who knows the answer?', 'Ai biết câu trả lời?'],
+    ['Why do you want to change jobs?', 'Sao bạn muốn đổi công việc?']
+  ],
+  'passive': [
+    ['When was this house built?', 'Ngôi nhà này được xây khi nào?'],
+    ['Where are these shoes made?', 'Đôi giày này được sản xuất ở đâu?'],
+    ['Who was the window broken by?', 'Cửa sổ bị ai làm vỡ?']
+  ],
+  'cond-2': [
+    ['Where would you live if you had a lot of money?', 'Nếu có nhiều tiền bạn sẽ sống ở đâu?'],
+    ['What would you say if he asked you for help?', 'Bạn sẽ nói gì nếu anh ấy nhờ bạn giúp?'],
+    ['Who would you call if you needed help at night?', 'Bạn sẽ gọi ai nếu bạn cần giúp đỡ lúc nửa đêm?']
+  ],
+  'gerund-1': [
+    ['What do you enjoy doing at the weekend?', 'Cuối tuần bạn thích làm gì?'],
+    ['Why did they decide to stay at home?', 'Sao họ quyết định ở nhà?'],
+    ['What are you interested in learning?', 'Bạn hứng thú học cái gì?']
+  ],
+  'relative-1': [
+    ['Who is the man who is wearing a blue shirt?', 'Người đàn ông đang mặc áo xanh là ai?'],
+    ['Which is the book that you bought yesterday?', 'Quyển sách mà bạn mua hôm qua là quyển nào?'],
+    ['Where is the café that serves the best coffee?', 'Quán cà phê phục vụ cà phê ngon nhất ở đâu?']
+  ],
+  'reported': [
+    ['What did she say to you?', 'Cô ấy đã nói gì với bạn?'],
+    ['He asked me why I was late.', 'Anh ấy hỏi tôi tại sao tôi đến trễ.'],
+    ['She asked me how long I had waited.', 'Cô ấy hỏi tôi đã đợi bao lâu.']
+  ],
+  'tag': [
+    ["You know where she lives, don't you?", 'Bạn biết cô ấy sống ở đâu, phải không?'],
+    ["You remember what time it starts, don't you?", 'Bạn nhớ mấy giờ nó bắt đầu, phải không?'],
+    ["She told you why she left, didn't she?", 'Cô ấy đã nói với bạn vì sao cô ấy đi, phải không?']
+  ],
+  'sothat': [
+    ['Why was the film so boring that you fell asleep?', 'Sao bộ phim chán đến nỗi bạn ngủ gục vậy?'],
+    ['Who ran so fast that nobody could catch him?', 'Ai chạy nhanh đến nỗi không ai bắt kịp?'],
+    ['What was so heavy that you had to stop?', 'Cái gì nặng đến nỗi bạn phải dừng lại?']
+  ],
+  'suchthat': [
+    ['Why was it such a good film that you watched it twice?', 'Sao đó lại là bộ phim hay đến nỗi bạn xem hai lần?'],
+    ['Who is such a kind person that everyone likes her?', 'Ai là người tốt đến nỗi ai cũng quý?'],
+    ['What made it such a long day that you went to bed early?', 'Điều gì làm hôm đó dài đến nỗi bạn đi ngủ sớm?']
+  ],
+  'makelet': [
+    ['What makes you laugh?', 'Điều gì làm bạn cười?'],
+    ['Who made you clean the room?', 'Ai bắt bạn dọn phòng?'],
+    ["Why don't your parents let you go out late?", 'Sao ba mẹ bạn không cho bạn ra ngoài khuya?']
+  ],
+  'asktell': [
+    ['What did she ask you to do?', 'Cô ấy đã nhờ bạn làm gì?'],
+    ['Who told you to wait outside?', 'Ai bảo bạn đợi ở ngoài?'],
+    ['Why did the doctor advise him to eat less sugar?', 'Sao bác sĩ khuyên anh ấy ăn ít đường hơn?']
+  ],
+  'usedto': [
+    ['Where did you use to live?', 'Trước đây bạn từng sống ở đâu?'],
+    ['What did he use to do before he moved here?', 'Trước khi chuyển đến đây anh ấy từng làm gì?'],
+    ["Why aren't you used to this weather yet?", 'Sao bạn vẫn chưa quen với thời tiết này?']
+  ],
+  'hadbetter': [
+    ['What had I better do now?', 'Giờ tôi nên làm gì?'],
+    ['Where had we better park the car?', 'Chúng ta nên đậu xe ở đâu?'],
+    ['When had they better book the tickets?', 'Họ nên đặt vé khi nào?']
+  ],
+  'spend': [
+    ['How much time do you spend learning English every day?', 'Mỗi ngày bạn dành bao nhiêu thời gian để học tiếng Anh?'],
+    ['How much money does he spend buying books?', 'Anh ấy tiêu bao nhiêu tiền để mua sách?'],
+    ['Why do they spend so much time arguing?', 'Sao họ dành nhiều thời gian để cãi nhau vậy?']
+  ],
+  'past-perfect-continuous': [
+    ['How long had you been waiting when the bus came?', 'Bạn đã đợi bao lâu thì xe buýt đến?'],
+    ['What had she been doing before dinner?', 'Trước bữa tối cô ấy đã làm gì?'],
+    ['Why had he been working all night?', 'Sao anh ấy đã làm việc cả đêm?']
+  ],
+  'future-perfect': [
+    ['What will you have finished by Friday?', 'Đến thứ Sáu bạn sẽ làm xong việc gì?'],
+    ['How much money will you have saved by next month?', 'Đến tháng sau bạn sẽ tiết kiệm được bao nhiêu tiền?'],
+    ['Where will they have gone by the time we arrive?', 'Lúc chúng ta đến thì họ sẽ đi đâu rồi?']
+  ],
+  'future-in-past': [
+    ['What were you going to say?', 'Bạn đã định nói gì?'],
+    ['Where were they going to travel last summer?', 'Mùa hè năm ngoái họ đã định đi đâu?'],
+    ['Who did she say would help her?', 'Cô ấy nói ai sẽ giúp cô ấy?']
+  ],
+  'cond-3': [
+    ['What would you have done if you had known?', 'Nếu biết thì bạn đã làm gì?'],
+    ["Where would we have gone if it hadn't rained?", 'Nếu trời không mưa thì chúng ta đã đi đâu?'],
+    ["Who would have helped you if I hadn't been there?", 'Nếu tôi không ở đó thì ai đã giúp bạn?']
+  ],
+  'relative-2': [
+    ['What do you think of Hoi An, which is famous for its old town?', 'Bạn nghĩ gì về Hội An, nơi nổi tiếng với phố cổ?'],
+    ['When did you last see Mr Nam, who taught us English?', 'Lần cuối bạn gặp thầy Nam, người dạy chúng ta tiếng Anh, là khi nào?'],
+    ['Why did she leave early, which surprised everyone?', 'Sao cô ấy về sớm, điều đó làm mọi người ngạc nhiên?']
+  ],
+  'gerund-2': [
+    ['Why did he stop smoking?', 'Sao anh ấy bỏ thuốc lá?'],
+    ['What do you remember doing that day?', 'Bạn nhớ mình đã làm gì hôm đó?'],
+    ['What did you forget to buy?', 'Bạn đã quên mua gì?']
+  ],
+  'havedone': [
+    ['Where do you have your hair cut?', 'Bạn cắt tóc ở đâu?'],
+    ['When did she have her car repaired?', 'Cô ấy đem xe đi sửa khi nào?'],
+    ['How much did it cost to have the house painted?', 'Sơn lại nhà tốn bao nhiêu tiền?']
+  ],
+  'suggest': [
+    ['What do you suggest doing this weekend?', 'Cuối tuần này bạn đề nghị làm gì?'],
+    ['Where do you suggest we eat tonight?', 'Tối nay bạn đề nghị chúng ta ăn ở đâu?'],
+    ['Who suggested taking the train?', 'Ai đã đề nghị đi tàu?']
+  ],
+  'prefer': [
+    ['Which do you prefer, tea or coffee?', 'Bạn thích cái nào hơn, trà hay cà phê?'],
+    ['Why does she prefer walking to driving?', 'Sao cô ấy thích đi bộ hơn lái xe?'],
+    ['Where would you rather live, in the city or in the countryside?', 'Bạn thà sống ở đâu, thành phố hay nông thôn?']
+  ],
+  'itstime': [
+    ['Why is it time to leave now?', 'Sao bây giờ đã đến lúc phải đi?'],
+    ['When is it time for the children to go to bed?', 'Khi nào là đến giờ bọn trẻ đi ngủ?'],
+    ["What do you think it's time to change?", 'Bạn nghĩ đã đến lúc thay đổi điều gì?']
+  ],
+  'although': [
+    ['Why did you go out although it was raining?', 'Sao bạn vẫn ra ngoài mặc dù trời mưa?'],
+    ['How did she finish the work although she was tired?', 'Sao cô ấy làm xong việc được mặc dù cô ấy mệt?'],
+    ['Where did they go despite the heavy rain?', 'Họ đã đi đâu mặc dù mưa to?']
+  ],
+  'paired': [
+    ['Who speaks both English and Chinese?', 'Ai nói được cả tiếng Anh và tiếng Trung?'],
+    ['Which hotel is not only cheap but also clean?', 'Khách sạn nào không chỉ rẻ mà còn sạch?'],
+    ['Why can neither your father nor your mother come?', 'Sao cả ba và mẹ bạn đều không đến được?']
+  ],
+  'prevent': [
+    ['What prevented you from coming yesterday?', 'Điều gì đã ngăn bạn đến hôm qua?'],
+    ['Why did they stop the children from playing near the road?', 'Sao họ ngăn bọn trẻ chơi gần đường?'],
+    ['Who stopped him from buying that motorbike?', 'Ai đã ngăn anh ấy mua chiếc xe máy đó?']
+  ],
+  'future-perfect-continuous': [
+    ['How long will you have been working here by June?', 'Đến tháng Sáu bạn sẽ đã làm việc ở đây được bao lâu?'],
+    ['How long will they have been waiting by the time we arrive?', 'Lúc chúng ta đến thì họ sẽ đã đợi được bao lâu?'],
+    ['How long will he have been living abroad by 2030?', 'Đến năm 2030 anh ấy sẽ đã sống ở nước ngoài được bao lâu?']
+  ],
+  'polite-tenses': [
+    ['I was wondering what time the shop opens.', 'Không biết cửa hàng mở cửa lúc mấy giờ.'],
+    ['Could you tell me where the station is?', 'Bạn chỉ giúp tôi nhà ga ở đâu được không?'],
+    ['I was wondering how much this tour costs.', 'Không biết tour này giá bao nhiêu.']
+  ],
+  'inversion-perfect': [
+    ['What had he done when the police arrived?', 'Khi cảnh sát đến thì anh ấy đã làm gì?'],
+    ['Where had she gone when you called her?', 'Khi bạn gọi thì cô ấy đã đi đâu?'],
+    ['Why had they left before the show started?', 'Sao họ đã rời đi trước khi buổi diễn bắt đầu?']
+  ],
+  'wish': [
+    ['What do you wish you had studied?', 'Bạn ước gì mình đã học ngành nào?'],
+    ['Where do you wish you lived?', 'Bạn ước mình sống ở đâu?'],
+    ['What do you wish you could do better?', 'Bạn ước mình có thể làm gì giỏi hơn?']
+  ],
+  'inversion': [
+    ['When did you realise your mistake?', 'Bạn nhận ra lỗi của mình khi nào?', ['When did you realize your mistake?']],
+    ['What have you never seen before?', 'Bạn chưa bao giờ thấy thứ gì?'],
+    ['How often does he complain about his work?', 'Anh ấy phàn nàn về công việc bao lâu một lần?']
+  ],
+  'mixedcond': [
+    ['Where would you be now if you had taken that job?', 'Nếu bạn nhận công việc đó thì giờ bạn đang ở đâu?'],
+    ['What would she be doing now if she had studied medicine?', 'Nếu cô ấy học y thì giờ cô ấy đang làm gì?'],
+    ["What would you have bought if you weren't so careful with money?", 'Nếu bạn không quá cẩn thận với tiền thì bạn đã mua gì?']
+  ],
+  'cleft': [
+    ['What is it that you want to know?', 'Điều bạn muốn biết là gì?'],
+    ['Who was it that called you last night?', 'Người gọi cho bạn tối qua là ai?'],
+    ['Where was it that you met her?', 'Bạn đã gặp cô ấy ở đâu vậy?']
+  ],
+  'themore': [
+    ['What gets easier the more you practise?', 'Cái gì trở nên dễ hơn khi bạn càng luyện tập nhiều?', ['What gets easier the more you practice?']],
+    ['Why do you sleep better the more you exercise?', 'Sao bạn ngủ ngon hơn khi càng tập thể dục nhiều?'],
+    ['How much cheaper is it the earlier you book?', 'Đặt càng sớm thì rẻ hơn bao nhiêu?']
+  ]
+};
+Object.keys(EX_WH).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].concat(EX_WH[k]); });
+
+/* ---------- Câu hỏi How-: công thức riêng cho từng bài ---------- */
+const EX_HOW_FX = {
+  'present-simple': 'How + do + I/you/we/they + V? · How + does + he/she/it + V? · How + am/is/are + chủ ngữ + tính từ? · How often / How far / How old …?',
+  'present-continuous': 'How + am/is/are + chủ ngữ + V-ing? · How many + danh từ số nhiều + are + V-ing?',
+  'past-be': 'How + was + I/he/she/it …? · How + were + you/we/they …? · How old / How long + was/were …?',
+  'past-simple': 'How + did + chủ ngữ + V (nguyên thể)? · How long / How often / How many + did + chủ ngữ + V?',
+  'past-continuous': 'How + was/were + chủ ngữ + V-ing? · How fast / How many + was/were + … + V-ing?',
+  'going-to': 'How + am/is/are + chủ ngữ + going to + V? · How long + am/is/are + chủ ngữ + going to + V?',
+  'future-simple': 'How + will + chủ ngữ + V? · How much / How long + will + chủ ngữ + V?',
+  'present-perfect': 'How long + have/has + chủ ngữ + V3? · How many (times) + have/has + chủ ngữ + V3?',
+  'present-perfect-continuous': 'How long + have/has + chủ ngữ + been + V-ing? (đây là câu hỏi How- hay gặp nhất của thì này)',
+  'past-perfect': 'How long + had + chủ ngữ + V3 + before/when …? · How many times + had + chủ ngữ + V3?',
+  'future-continuous': 'How long + will + chủ ngữ + be + V-ing? · How many + … + will be + V-ing?',
+  'stative': 'How + do/does + chủ ngữ + feel / like …? · How much + do/does + chủ ngữ + know / want / need …?',
+  'past-perfect-continuous': 'How long + had + chủ ngữ + been + V-ing + before/when …?',
+  'future-perfect': 'How much / How many + will + chủ ngữ + have + V3 + by + mốc thời gian?',
+  'future-in-past': 'How + was/were + chủ ngữ + going to + V? · How long + was/were + chủ ngữ + going to + V?',
+  'future-perfect-continuous': 'How long + will + chủ ngữ + have been + V-ing + by + mốc thời gian?',
+  'polite-tenses': 'I was wondering how + chủ ngữ + V (trật tự câu kể) · Could you tell me how long / how much …?',
+  'inversion-perfect': 'How long / How many + had + chủ ngữ + V3 + when …? (hỏi bằng trật tự thường, không đảo ngữ)',
+  'thereis': 'How many + danh từ số nhiều + are there …? · How much + danh từ không đếm được + is there …?',
+  'demonstratives': 'How much + is + this / that? · How many + of these / those + danh từ …?',
+  'articles': 'How much + is + a / an + danh từ? · How far + is + the + danh từ?',
+  'nouns': 'How many + danh từ đếm được số nhiều …? · How much + danh từ không đếm được …? · How many + bottles / kilos of + danh từ …?',
+  'pronouns': 'How + do/does + chủ ngữ + help + me / him / her / them? · How many of + us / them / you …?',
+  'prepositions': 'How + do/does + chủ ngữ + go + to + nơi chốn? · How far + is it + from … to …?',
+  'modal-can': 'How + can / could + chủ ngữ + V? · How well + can + chủ ngữ + V?',
+  'compare': 'How + adj + am/is/are + chủ ngữ? · How much + adj-er / more + adj + is + A + than + B?',
+  'modal-more': 'How + should / must + chủ ngữ + V? · How often + do/does + chủ ngữ + have to + V?',
+  'cond-1': 'How + will + chủ ngữ + V + if + chủ ngữ + V (hiện tại đơn)? · How much + will …?',
+  'too': 'How + can + chủ ngữ + V + khi + … + too + adj? · How many + danh từ + are + too + adj + to V?',
+  'enough': 'How many of + us / them + am/is/are + adj + enough + to V? · How + can + chủ ngữ + V + nếu không có + enough + danh từ?',
+  'ittakes': 'How long + does / did + it take + (ai đó) + to V? (dạng How- chuẩn của cấu trúc này)',
+  'itsadj': 'How + adj + is it + (for ai đó) + to V? · How easy / How important + is it + to V?',
+  'passive': 'How + was/were + chủ ngữ + V3? · How many + danh từ + are + V3 + mỗi năm?',
+  'cond-2': 'How + would + chủ ngữ + V + if + chủ ngữ + V2 / were …? · How much + would …?',
+  'gerund-1': 'How good + am/is/are + chủ ngữ + at + V-ing? · How + do/does + chủ ngữ + avoid / enjoy + V-ing?',
+  'relative-1': 'How much + is + danh từ + that + chủ ngữ + V? · How many + danh từ + who / that + V …?',
+  'reported': 'Tường thuật câu hỏi How-: chủ ngữ + asked + how (long / much / often) + chủ ngữ + V (lùi thì, trật tự câu kể)',
+  'tag': 'Mệnh đề How- nằm được trong câu hỏi đuôi: You know how it works, don’t you?',
+  'sothat': 'How + did + chủ ngữ + V + so + adv + that + …? · How many + … + were + so + adj + that + …?',
+  'suchthat': 'How + was it + such + (a/an) + adj + danh từ + that + …? · How many of + … + are + such + adj + danh từ …?',
+  'makelet': 'How + does + cái gì + make + ai đó + V? · How often + do/does + chủ ngữ + make / let + ai đó + V?',
+  'asktell': 'How + did + chủ ngữ + ask / tell / advise + ai đó + to V? · How many times + did + chủ ngữ + ask + ai đó + to V?',
+  'usedto': 'How often + did + chủ ngữ + use to + V? · How long + have/has + chủ ngữ + been used to + V-ing?',
+  'hadbetter': 'How many / How early + had + chủ ngữ + better + V? · Hoặc hỏi nhẹ hơn: How do you think we had better + V?',
+  'spend': 'How much time / How much money + do/does + chủ ngữ + spend + V-ing? (dạng How- chuẩn của cấu trúc này)',
+  'cond-3': 'How + would + chủ ngữ + have + V3 + if + chủ ngữ + had + V3? · How much + would + … + have + V3?',
+  'relative-2': 'How far / How old + is + danh từ, which / who + V …?',
+  'gerund-2': 'How + did + chủ ngữ + stop + V-ing? · How often + do/does + chủ ngữ + forget + to V?',
+  'havedone': 'How often + do/does + chủ ngữ + have + cái gì + V3? · How much + does it cost + to have + cái gì + V3?',
+  'suggest': 'How + do/does + chủ ngữ + suggest + V-ing? · How about + V-ing? (cách đề nghị thân mật)',
+  'prefer': 'How + do/does + chủ ngữ + prefer + danh từ? · How many + người + prefer + A + to + B?',
+  'itstime': 'How + do you know + it’s time + to V? · How many times + …+ it’s time + for ai đó + to V?',
+  'although': 'How + did + chủ ngữ + V + although + chủ ngữ + V? · How many + … + V + despite + danh từ / V-ing?',
+  'paired': 'How many of + người + V + both … and …? · How + can + chủ ngữ + be + not only … but also …?',
+  'prevent': 'How + can + chủ ngữ + prevent / stop + ai đó + from + V-ing? · How often + does + cái gì + prevent + ai đó + from + V-ing?',
+  'wish': 'How + do/does + chủ ngữ + wish + (that) + chủ ngữ + V2 / had + V3? · How often + do you wish …?',
+  'inversion': 'Câu hỏi How- cũng đảo trợ động từ lên trước chủ ngữ: How + do/did/have/am-is-are + chủ ngữ + V? · Đảo ngữ nhấn mạnh nằm ở câu trả lời',
+  'mixedcond': 'How + would + chủ ngữ + V (bây giờ) + if + chủ ngữ + had + V3 (quá khứ)?',
+  'cleft': 'How + was it + that + chủ ngữ + V? · How much + was it + that + chủ ngữ + V?',
+  'themore': 'How much + so sánh hơn + … + the + so sánh hơn + chủ ngữ + V?'
+};
+
+/* ---------- 2 câu hỏi How- cho mỗi bài ---------- */
+const EX_HOW = {
+  'present-simple': [
+    ['How do you go to work every day?', 'Mỗi ngày bạn đi làm bằng cách nào?'],
+    ['How often does she visit her parents?', 'Cô ấy về thăm ba mẹ bao lâu một lần?']
+  ],
+  'present-continuous': [
+    ['How are you feeling today?', 'Hôm nay bạn thấy trong người thế nào?'],
+    ['How many people are waiting outside?', 'Có bao nhiêu người đang đợi ở ngoài?']
+  ],
+  'past-be': [
+    ['How was your trip to Da Lat?', 'Chuyến đi Đà Lạt của bạn thế nào?'],
+    ['How old were you when you moved here?', 'Bạn bao nhiêu tuổi khi chuyển đến đây?']
+  ],
+  'thereis': [
+    ['How many chairs are there in this room?', 'Trong phòng này có bao nhiêu cái ghế?'],
+    ['How much milk is there in the fridge?', 'Trong tủ lạnh còn bao nhiêu sữa?']
+  ],
+  'demonstratives': [
+    ['How much is this shirt?', 'Cái áo này giá bao nhiêu?'],
+    ['How many of these books are yours?', 'Trong mấy quyển sách này có bao nhiêu quyển là của bạn?']
+  ],
+  'articles': [
+    ['How far is the airport from here?', 'Sân bay cách đây bao xa?'],
+    ['How much is a cup of coffee here?', 'Ở đây một ly cà phê giá bao nhiêu?']
+  ],
+  'nouns': [
+    ['How many bottles of water do we need?', 'Chúng ta cần bao nhiêu chai nước?'],
+    ['How much rice is left?', 'Còn lại bao nhiêu gạo?']
+  ],
+  'pronouns': [
+    ['How often does she help you?', 'Cô ấy giúp bạn bao lâu một lần?'],
+    ['How many of them live near us?', 'Trong số họ có bao nhiêu người sống gần chúng tôi?']
+  ],
+  'prepositions': [
+    ['How do you go to school?', 'Bạn đi học bằng gì?'],
+    ['How far is it from your house to the office?', 'Từ nhà bạn đến công ty bao xa?']
+  ],
+  'modal-can': [
+    ['How can I help you?', 'Tôi có thể giúp gì cho bạn?'],
+    ['How well can she speak English?', 'Cô ấy nói tiếng Anh giỏi tới mức nào?']
+  ],
+  'past-simple': [
+    ['How did you get here yesterday?', 'Hôm qua bạn đến đây bằng cách nào?'],
+    ['How long did the meeting last?', 'Cuộc họp kéo dài bao lâu?']
+  ],
+  'past-continuous': [
+    ['How fast were they driving when the accident happened?', 'Họ đang lái xe nhanh cỡ nào khi tai nạn xảy ra?'],
+    ['How many people were waiting at the station?', 'Có bao nhiêu người đang đợi ở nhà ga?']
+  ],
+  'going-to': [
+    ['How are you going to get to the airport?', 'Bạn định đến sân bay bằng cách nào?'],
+    ['How long are they going to stay in Hue?', 'Họ định ở Huế bao lâu?']
+  ],
+  'future-simple': [
+    ['How will you pay, by card or in cash?', 'Bạn sẽ trả bằng thẻ hay tiền mặt?'],
+    ['How much will the tickets cost?', 'Vé sẽ tốn bao nhiêu tiền?']
+  ],
+  'present-perfect': [
+    ['How many books have you read this year?', 'Năm nay bạn đã đọc bao nhiêu quyển sách?'],
+    ['How long has he worked in this company?', 'Anh ấy đã làm ở công ty này bao lâu?']
+  ],
+  'compare': [
+    ['How much cheaper is this bag than that one?', 'Cái túi này rẻ hơn cái kia bao nhiêu?'],
+    ['How tall is your brother?', 'Anh trai bạn cao bao nhiêu?']
+  ],
+  'modal-more': [
+    ['How often do you have to work at the weekend?', 'Bạn phải làm việc cuối tuần bao lâu một lần?'],
+    ['How should I tell her the news?', 'Tôi nên báo tin đó cho cô ấy thế nào?']
+  ],
+  'cond-1': [
+    ['How will you get home if it rains?', 'Nếu trời mưa bạn sẽ về nhà bằng cách nào?'],
+    ['How much will we save if we book early?', 'Nếu đặt sớm chúng ta sẽ tiết kiệm được bao nhiêu?']
+  ],
+  'too': [
+    ['How can I eat this soup when it is too salty?', 'Làm sao tôi ăn được món súp này khi nó quá mặn?'],
+    ['How many people are too busy to join us?', 'Có bao nhiêu người quá bận để tham gia cùng chúng ta?']
+  ],
+  'enough': [
+    ['How many of us are old enough to vote?', 'Trong chúng ta có bao nhiêu người đủ tuổi để đi bầu cử?'],
+    ["How can we finish if we don't have enough time?", 'Làm sao chúng ta làm xong được nếu không có đủ thời gian?']
+  ],
+  'ittakes': [
+    ['How long does it take you to get to work?', 'Bạn mất bao lâu để đến chỗ làm?'],
+    ['How long did it take them to build this bridge?', 'Họ đã mất bao lâu để xây cây cầu này?']
+  ],
+  'itsadj': [
+    ['How easy is it to learn this song?', 'Học bài hát này dễ cỡ nào?'],
+    ['How important is it to drink enough water?', 'Uống đủ nước quan trọng tới mức nào?']
+  ],
+  'present-perfect-continuous': [
+    ['How long has it been raining?', 'Trời đã mưa bao lâu rồi?'],
+    ['How long have they been living in Hanoi?', 'Họ đã sống ở Hà Nội bao lâu rồi?']
+  ],
+  'past-perfect': [
+    ['How long had you waited before the doctor came?', 'Bạn đã đợi bao lâu trước khi bác sĩ đến?'],
+    ['How many times had she visited Hue before she moved there?', 'Cô ấy đã đến Huế mấy lần trước khi chuyển tới đó?']
+  ],
+  'future-continuous': [
+    ['How long will you be staying in Da Nang?', 'Bạn sẽ ở Đà Nẵng trong bao lâu?'],
+    ['How many people will be working tomorrow?', 'Ngày mai sẽ có bao nhiêu người làm việc?']
+  ],
+  'stative': [
+    ['How do you feel about this plan?', 'Bạn thấy kế hoạch này thế nào?'],
+    ['How much does she know about the problem?', 'Cô ấy biết bao nhiêu về vấn đề này?']
+  ],
+  'passive': [
+    ['How was this bridge built?', 'Cây cầu này được xây như thế nào?'],
+    ['How many cars are made here every year?', 'Mỗi năm có bao nhiêu chiếc xe được sản xuất ở đây?']
+  ],
+  'cond-2': [
+    ['How would you feel if you lost your phone?', 'Bạn sẽ thấy thế nào nếu mất điện thoại?'],
+    ['How much would you pay if the price were lower?', 'Bạn sẽ trả bao nhiêu nếu giá thấp hơn?']
+  ],
+  'gerund-1': [
+    ['How good are you at cooking?', 'Bạn nấu ăn giỏi tới mức nào?'],
+    ['How do you avoid eating too much sugar?', 'Bạn tránh ăn quá nhiều đường bằng cách nào?']
+  ],
+  'relative-1': [
+    ['How much is the bag that you bought yesterday?', 'Cái túi mà bạn mua hôm qua giá bao nhiêu?'],
+    ['How many students who study here come from Hue?', 'Trong số học sinh học ở đây có bao nhiêu em đến từ Huế?']
+  ],
+  'reported': [
+    ['She asked me how long I had lived in this city.', 'Cô ấy hỏi tôi đã sống ở thành phố này bao lâu.'],
+    ['He asked me how I had got there.', 'Anh ấy hỏi tôi đã đến đó bằng cách nào.', ['He asked me how I had gotten there.']]
+  ],
+  'tag': [
+    ["You know how this machine works, don't you?", 'Bạn biết cái máy này chạy thế nào, phải không?'],
+    ["You remember how much it cost, don't you?", 'Bạn nhớ nó giá bao nhiêu, phải không?']
+  ],
+  'sothat': [
+    ['How many people were so tired that they left early?', 'Có bao nhiêu người mệt đến nỗi phải về sớm?'],
+    ['How did he run so fast that nobody could catch him?', 'Làm sao anh ấy chạy nhanh đến nỗi không ai bắt kịp?']
+  ],
+  'suchthat': [
+    ['How many of them are such kind people that everyone likes them?', 'Trong số họ có bao nhiêu người tốt đến nỗi ai cũng quý?'],
+    ['How was it such a good film that you watched it twice?', 'Sao nó lại là bộ phim hay đến nỗi bạn xem tới hai lần?']
+  ],
+  'makelet': [
+    ['How often does your mother make you clean your room?', 'Mẹ bắt bạn dọn phòng bao lâu một lần?'],
+    ['How did the film make you cry?', 'Bộ phim làm bạn khóc bằng cách nào?']
+  ],
+  'asktell': [
+    ['How many times did he ask you to help him?', 'Anh ấy đã nhờ bạn giúp mấy lần?'],
+    ['How did the doctor tell her to take the medicine?', 'Bác sĩ dặn cô ấy uống thuốc thế nào?']
+  ],
+  'usedto': [
+    ['How often did you use to play football?', 'Trước đây bạn thường chơi bóng đá bao lâu một lần?'],
+    ['How long have you been used to getting up early?', 'Bạn đã quen dậy sớm được bao lâu rồi?']
+  ],
+  'hadbetter': [
+    ['How many tickets had we better book?', 'Chúng ta nên đặt bao nhiêu vé?'],
+    ['How do you think we had better tell him?', 'Bạn nghĩ chúng ta nên nói với anh ấy thế nào?']
+  ],
+  'spend': [
+    ['How much money do you spend on books every month?', 'Mỗi tháng bạn tiêu bao nhiêu tiền cho sách?'],
+    ['How many hours does she spend watching videos?', 'Cô ấy dành bao nhiêu tiếng để xem video?']
+  ],
+  'past-perfect-continuous': [
+    ['How long had she been studying before dinner?', 'Cô ấy đã học bao lâu trước bữa tối?'],
+    ['How long had they been living there before they moved?', 'Họ đã sống ở đó bao lâu trước khi chuyển đi?']
+  ],
+  'future-perfect': [
+    ['How much money will you have saved by the end of the year?', 'Đến cuối năm bạn sẽ tiết kiệm được bao nhiêu tiền?'],
+    ['How many books will he have read by June?', 'Đến tháng Sáu anh ấy sẽ đọc xong bao nhiêu quyển sách?']
+  ],
+  'future-in-past': [
+    ['How were you going to tell her the news?', 'Bạn đã định báo tin cho cô ấy thế nào?'],
+    ['How long were they going to stay in Hanoi?', 'Họ đã định ở Hà Nội bao lâu?']
+  ],
+  'cond-3': [
+    ["How would you have felt if they hadn't invited you?", 'Bạn đã cảm thấy thế nào nếu họ không mời bạn?'],
+    ['How much would we have paid if we had booked later?', 'Chúng ta đã phải trả bao nhiêu nếu đặt muộn hơn?']
+  ],
+  'relative-2': [
+    ['How far is Da Lat, which is famous for flowers, from here?', 'Đà Lạt, nơi nổi tiếng về hoa, cách đây bao xa?'],
+    ['How old is your brother, who lives in Hue?', 'Anh trai bạn, người sống ở Huế, bao nhiêu tuổi?']
+  ],
+  'gerund-2': [
+    ['How did he stop smoking?', 'Anh ấy bỏ thuốc lá bằng cách nào?'],
+    ['How often do you forget to lock the door?', 'Bạn quên khóa cửa bao lâu một lần?']
+  ],
+  'havedone': [
+    ['How often do you have your car serviced?', 'Bạn đem xe đi bảo dưỡng bao lâu một lần?'],
+    ['How much does it cost to have a shirt made?', 'May một cái áo tốn bao nhiêu tiền?']
+  ],
+  'suggest': [
+    ['How do you suggest solving this problem?', 'Bạn đề nghị giải quyết vấn đề này thế nào?'],
+    ['How about taking the train instead?', 'Hay là đi tàu thay vì vậy?']
+  ],
+  'prefer': [
+    ['How do you prefer your coffee, with or without sugar?', 'Bạn thích cà phê thế nào, có đường hay không đường?'],
+    ['How many people prefer tea to coffee?', 'Có bao nhiêu người thích trà hơn cà phê?']
+  ],
+  'itstime': [
+    ["How do you know it's time to leave?", 'Sao bạn biết đã đến lúc phải đi?'],
+    ["How many times do I have to say it's time for bed?", 'Tôi phải nói bao nhiêu lần là đã đến giờ đi ngủ?']
+  ],
+  'although': [
+    ['How did they finish on time although the traffic was bad?', 'Sao họ xong đúng giờ được mặc dù kẹt xe?'],
+    ['How many of them came although it was raining?', 'Có bao nhiêu người đã đến mặc dù trời mưa?']
+  ],
+  'paired': [
+    ['How many of you speak both English and Chinese?', 'Trong các bạn có bao nhiêu người nói được cả tiếng Anh và tiếng Trung?'],
+    ['How can it be not only cheap but also good?', 'Sao nó có thể vừa rẻ vừa tốt được?']
+  ],
+  'prevent': [
+    ['How can we prevent children from playing near the road?', 'Làm sao chúng ta ngăn bọn trẻ chơi gần đường được?'],
+    ['How often does the rain prevent you from going out?', 'Mưa ngăn bạn ra ngoài bao lâu một lần?']
+  ],
+  'future-perfect-continuous': [
+    ['How long will you have been studying English by next year?', 'Đến năm sau bạn sẽ đã học tiếng Anh được bao lâu?'],
+    ['How long will she have been teaching by the end of this year?', 'Đến cuối năm nay cô ấy sẽ đã dạy học được bao lâu?']
+  ],
+  'polite-tenses': [
+    ['I was wondering how I could contact him.', 'Không biết tôi có thể liên hệ với anh ấy bằng cách nào.'],
+    ['Could you tell me how long the journey takes?', 'Bạn cho tôi hỏi chuyến đi mất bao lâu?']
+  ],
+  'inversion-perfect': [
+    ['How long had he been at the office when the fire alarm rang?', 'Anh ấy đã ở văn phòng bao lâu thì chuông báo cháy reo?'],
+    ['How many people had left before the show started?', 'Có bao nhiêu người đã rời đi trước khi buổi diễn bắt đầu?']
+  ],
+  'wish': [
+    ['How do you wish your life were different?', 'Bạn ước cuộc sống của mình khác đi như thế nào?'],
+    ['How often do you wish you had more free time?', 'Bạn ước mình có nhiều thời gian rảnh hơn bao lâu một lần?']
+  ],
+  'inversion': [
+    ['How many times have you ever been abroad?', 'Bạn đã từng ra nước ngoài bao nhiêu lần?'],
+    ['How quickly did you understand the problem?', 'Bạn hiểu ra vấn đề nhanh cỡ nào?']
+  ],
+  'mixedcond': [
+    ['How would your life be different now if you had moved abroad?', 'Nếu bạn ra nước ngoài thì giờ cuộc sống của bạn sẽ khác thế nào?'],
+    ['How much money would you have now if you had saved more?', 'Nếu bạn đã tiết kiệm nhiều hơn thì giờ bạn sẽ có bao nhiêu tiền?']
+  ],
+  'cleft': [
+    ['How was it that you missed the bus?', 'Sao bạn lại lỡ chuyến xe buýt vậy?'],
+    ['How much was it that you paid for this?', 'Bạn đã trả bao nhiêu cho cái này vậy?']
+  ],
+  'themore': [
+    ['How much better do you sleep the more you exercise?', 'Bạn càng tập thể dục nhiều thì ngủ ngon hơn bao nhiêu?'],
+    ['How much faster do you learn the more you practise?', 'Bạn càng luyện tập nhiều thì học nhanh hơn bao nhiêu?', ['How much faster do you learn the more you practice?']]
+  ]
+};
+Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].concat(EX_HOW[k]); });
+
 
 /* ============================================================
    EXERCISES tab — translation drills by CEFR level
@@ -24875,7 +25556,7 @@ Object.keys(EX_MORE).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conc
     const bar = E('span', 'vc-bar'); const fill = E('span'); fill.style.width = (tot ? got / tot * 100 : 0) + '%';
     bar.appendChild(fill); bar.style.flex = '1'; pg.appendChild(bar);
     intro.appendChild(pg);
-    intro.appendChild(E('p', 'tn-tip', '💡 Mỗi bài 12 câu dịch Việt → Anh. Câu nào cũng chỉ dùng đúng cấu trúc của bài đó, nên làm xong là nhớ luôn mẫu câu.'));
+    intro.appendChild(E('p', 'tn-tip', '💡 Mỗi bài 17 câu dịch Việt → Anh: 12 câu kể, 3 câu hỏi Wh- và 2 câu hỏi How-. Câu nào cũng chỉ dùng đúng cấu trúc của bài đó, nên làm xong là nhớ luôn mẫu câu.'));
     root.appendChild(intro);
 
     const grid = E('div', 'gr-grid');
@@ -24942,6 +25623,20 @@ Object.keys(EX_MORE).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conc
       rc.appendChild(E('div', 'ex-sec-name', sec.name));
       if (typeof grFormula === 'function') rc.appendChild(grFormula(sec));
     });
+    [['Wh-', 'Câu hỏi Wh- (what, where, when, why, who, whom, whose, which)', EX_WH_FX[l.id]],
+     ['How-', 'Câu hỏi How- (how, how many, how much, how long, how often, how far, how old…)', EX_HOW_FX[l.id]]
+    ].forEach(([badge, head, fx]) => {
+      if (!fx) return;
+      rc.appendChild(E('div', 'ex-sec-name', head));
+      const wb = E('div', 'tn-formula');
+      fx.split(/\s+·\s+/).filter(Boolean).forEach((part, i) => {
+        const r = E('div', 'tn-frow' + (i ? ' tn-frow-sub' : ''));
+        r.appendChild(E('span', 'tn-sym' + (i ? ' tn-sym-ghost' : ' tn-sym-w'), i ? '·' : badge));
+        r.appendChild(E('span', 'tn-ftxt', part));
+        wb.appendChild(r);
+      });
+      rc.appendChild(wb);
+    });
     if (l.note && typeof l.note === 'string') rc.appendChild(E('p', 'ex-note', '⚠️ ' + l.note));
     else if (l.note) {
       const n = E('div', 'ex-note');
@@ -24986,7 +25681,13 @@ Object.keys(EX_MORE).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conc
       : 'Đọc câu tiếng Việt rồi viết câu tiếng Anh, bấm Kiểm tra. App so với đáp án, không phân biệt chữ hoa, dấu câu hay viết tắt.'));
 
     const wrap = E('div', 'ex-list');
-    l.items.forEach((it, i) => wrap.appendChild(cardVE(l, it, i)));
+    const nHow = (EX_HOW[l.id] || []).length, nWh = (EX_WH[l.id] || []).length;
+    const howFrom = l.items.length - nHow, whFrom = howFrom - nWh;
+    l.items.forEach((it, i) => {
+      if (nWh && i === whFrom) wrap.appendChild(E('div', 'ex-divider', 'Câu hỏi Wh-'));
+      if (nHow && i === howFrom) wrap.appendChild(E('div', 'ex-divider', 'Câu hỏi How-'));
+      wrap.appendChild(cardVE(l, it, i));
+    });
     root.appendChild(wrap);
 
     const foot = E('div', 'tense-card ex-foot');
