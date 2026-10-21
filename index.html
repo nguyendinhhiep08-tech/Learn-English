@@ -1679,6 +1679,7 @@
   .ex-input{ display:block; width:100%; margin-top:10px; padding:10px 12px; border:1px solid var(--paper-line); border-radius:12px;
     background:var(--paper); color:var(--ink); font:400 15px/1.6 var(--font-body); resize:vertical; }
   .ex-input:focus{ outline:2px solid var(--rust); outline-offset:1px; border-color:transparent; }
+  .ex-in[hidden]{ display:none; }
   .ex-acts{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
   .ex-acts > button{ flex:1 1 130px; }
   .ex-show{ margin-top:10px; width:100%; }
@@ -1686,6 +1687,8 @@
   .ex-ans-h{ font:700 12px/1.4 var(--font-mono); letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); }
   .ex-ans-vi{ margin-top:4px; font:500 15.5px/1.65 var(--font-body); color:var(--ink); }
   .ex-ans-en{ margin-top:4px; font:500 15.5px/1.75 var(--font-body); color:var(--ink); }
+  .ex-ans-row{ display:flex; align-items:center; gap:10px; }
+  .ex-ans-row .ex-ans-en{ flex:1; min-width:0; }
   .ex-grade{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .ex-grade > button{ flex:1 1 140px; }
   .ex-flag{ margin-top:8px; font:600 13px/1.5 var(--font-body); color:var(--moss); }
@@ -2190,7 +2193,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v47</span>
+      <span class="hero-badge">EN ⇄ VI · v48</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -24740,21 +24743,21 @@ const EX_WH_FX = {
   'past-continuous': 'Wh- + was + I/he/she/it + V-ing? · Wh- + were + you/we/they + V-ing?',
   'going-to': 'Wh- + am/is/are + chủ ngữ + going to + V?',
   'future-simple': 'Wh- + will + chủ ngữ + V? · Who will + V? (hỏi về chủ ngữ)',
-  'present-perfect': 'Wh- + have + I/you/we/they + V3? · Wh- + has + he/she/it + V3? · How long / How many times + have/has + chủ ngữ + V3?',
-  'present-perfect-continuous': 'How long + have/has + chủ ngữ + been + V-ing? · Wh- + have/has + chủ ngữ + been + V-ing?',
+  'present-perfect': "Wh- + have + I/you/we/they + V3? · Wh- + has + he/she/it + V3? · Who + has + V3? (khi hỏi về chủ ngữ)",
+  'present-perfect-continuous': "Wh- + have + I/you/we/they + been + V-ing? · Wh- + has + he/she/it + been + V-ing? · Why / What + have/has + chủ ngữ + been + V-ing?",
   'past-perfect': 'Wh- + had + chủ ngữ + V3 (+ before / when + quá khứ đơn)?',
   'future-continuous': 'Wh- + will + chủ ngữ + be + V-ing?',
   'stative': 'Wh- + do/does + chủ ngữ + think / know / want / like …? · Không dùng V-ing: không nói “What are you knowing?”',
-  'past-perfect-continuous': 'How long + had + chủ ngữ + been + V-ing? · Wh- + had + chủ ngữ + been + V-ing?',
+  'past-perfect-continuous': "Wh- + had + chủ ngữ + been + V-ing + when / before …? · Why + had + chủ ngữ + been + V-ing?",
   'future-perfect': 'Wh- + will + chủ ngữ + have + V3 + by + mốc thời gian?',
   'future-in-past': 'Wh- + was/were + chủ ngữ + going to + V? · Wh- + would + chủ ngữ + V?',
-  'future-perfect-continuous': 'How long + will + chủ ngữ + have been + V-ing + by + mốc thời gian?',
+  'future-perfect-continuous': "Wh- + will + chủ ngữ + have been + V-ing + by + mốc thời gian? (ít gặp — câu hỏi quen thuộc của thì này là How long, xem khối How- bên dưới)",
   'polite-tenses': 'I was wondering + Wh- + chủ ngữ + V (trật tự câu kể, không đảo) · Could you tell me + Wh- + chủ ngữ + V?',
   'inversion-perfect': 'Câu hỏi không đảo ngữ Hardly/No sooner; hỏi bằng trật tự thường: Wh- + had + chủ ngữ + V3 + when …?',
-  'thereis': 'How many + danh từ số nhiều + are there …? · How much + danh từ không đếm được + is there …? · What is there + …?',
+  'thereis': "What + is there + (to V) …? · Who + is there + in + nơi chốn? · Where + is there + a + danh từ + near here?",
   'demonstratives': 'What + is this / that? · What + are these / those? · Whose + danh từ + is this / that?',
   'articles': 'Wh- + is + the + danh từ (đã xác định)? · Why + do/does + chủ ngữ + want + a / an + danh từ?',
-  'nouns': 'How many + danh từ đếm được số nhiều …? · How much + danh từ không đếm được …?',
+  'nouns': "What + do/does + chủ ngữ + need / buy? (some / any + danh từ) · Which + danh từ + do/does + chủ ngữ + want? · Hỏi số lượng thì dùng How many / How much — xem khối How- bên dưới",
   'pronouns': 'Who + V …? (hỏi chủ ngữ) · Who(m) + do/does/did + chủ ngữ + V? (hỏi tân ngữ) · Whose + danh từ + …?',
   'prepositions': 'Where …? (nơi chốn) · When / What time …? (thời gian) · Who … with? · What … for? (giới từ đứng cuối câu)',
   'modal-can': 'Wh- + can / could + chủ ngữ + V (nguyên thể)?',
@@ -24763,7 +24766,7 @@ const EX_WH_FX = {
   'cond-1': 'Wh- + will + chủ ngữ + V + if + chủ ngữ + V (hiện tại đơn)? · What will happen if …?',
   'too': 'Why + am/is/are + chủ ngữ + too + adj + to V? · Who / What + is + too + adj + to V?',
   'enough': 'Why + isn’t / aren’t + chủ ngữ + adj + enough + to V? · Who + is + adj + enough + to V?',
-  'ittakes': 'How long + does / did + it take + (ai đó) + to V? · Why + does it take + so long + to V?',
+  'ittakes': "Why + does / did + it take + so long + to V? · What + takes + (ai đó) + nhiều thời gian nhất? · Hỏi thời lượng thì dùng How long — xem khối How- bên dưới",
   'itsadj': 'Why + is it + adj + to V? · What + is + adj + to V?',
   'passive': 'Wh- + am/is/are + chủ ngữ + V3? · When / Where + was/were + chủ ngữ + V3? · Who + was + … + V3 + by? (by đứng cuối)',
   'cond-2': 'Wh- + would + chủ ngữ + V + if + chủ ngữ + V2 / were …?',
@@ -24777,11 +24780,11 @@ const EX_WH_FX = {
   'asktell': 'Wh- + did + chủ ngữ + ask / tell / advise + ai đó + to V? · Who + told + ai đó + to V?',
   'usedto': 'Wh- + did + chủ ngữ + use to + V? (bỏ -d của used) · Why + am/is/are + chủ ngữ + not used to + V-ing?',
   'hadbetter': 'Wh- + had + chủ ngữ + better + V? · Hoặc hỏi lời khuyên bằng: What should + chủ ngữ + V?',
-  'spend': 'How much time / How much money + do/does + chủ ngữ + spend + V-ing? · Why + do/does + chủ ngữ + spend + … + V-ing?',
+  'spend': "Why + do/does + chủ ngữ + spend / waste + thời gian + V-ing? · What + do/does + chủ ngữ + spend + tiền + on? · Who + spends + nhiều thời gian nhất + V-ing?",
   'cond-3': 'Wh- + would + chủ ngữ + have + V3 + if + chủ ngữ + had + V3?',
   'relative-2': 'Wh- + … + , who / which + V … ? (mệnh đề phụ nằm giữa hai dấu phẩy, chỉ bổ sung thông tin)',
   'gerund-2': 'Why + did + chủ ngữ + stop + V-ing (bỏ hẳn) / to V (dừng lại để làm)? · What + do/does + chủ ngữ + remember / forget + V-ing hay to V?',
-  'havedone': 'Where / When + do/does/did + chủ ngữ + have + cái gì + V3? · How much + did it cost + to have + cái gì + V3?',
+  'havedone': "Where / When + do/does/did + chủ ngữ + have + cái gì + V3? · What + did + chủ ngữ + have + V3? · Who + does + chủ ngữ + get + to V + cho mình?",
   'suggest': 'Wh- + do/does + chủ ngữ + suggest + V-ing? · Where / What + do you suggest + (that) + chủ ngữ + V?',
   'prefer': 'Which + do/does + chủ ngữ + prefer, A or B? · Wh- + would + chủ ngữ + rather + V?',
   'itstime': 'Why / When + is it time + (for ai đó) + to V? · What + do you think + it’s time + to V?',
@@ -24792,7 +24795,7 @@ const EX_WH_FX = {
   'inversion': 'Câu hỏi Wh- vốn đã đảo trợ động từ lên trước chủ ngữ: Wh- + do/did/have/am-is-are + chủ ngữ + V? · Câu trả lời mới dùng đảo ngữ: Not until … did I …',
   'mixedcond': 'Wh- + would + chủ ngữ + V (bây giờ) + if + chủ ngữ + had + V3 (quá khứ)? · Wh- + would + chủ ngữ + have + V3 + if + chủ ngữ + V2 / were?',
   'cleft': 'What + is it + that + chủ ngữ + V? · Who / Where + was it + that + … ?',
-  'themore': 'What / How much + … + the + so sánh hơn + chủ ngữ + V? · Why + do/does + chủ ngữ + V + the + so sánh hơn + chủ ngữ + V?'
+  'themore': "What + V + the + so sánh hơn + chủ ngữ + V? (What gets easier the more you practise?) · Why + do/does + chủ ngữ + V + the + so sánh hơn + chủ ngữ + V?"
 };
 
 /* ---------- 3 câu hỏi Wh- cho mỗi bài ---------- */
@@ -25722,26 +25725,44 @@ Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conca
     const tokens = it[0].split(/\s+/).filter(Boolean);
     let picked = [];
 
+    let resetInput = () => {};
+    const inputWrap = E('div', 'ex-in');
+
+    // a correct answer is saved and the sentence stays on screen
+    const solved = label => {
+      exDone.add(k); save(); footSync();
+      card.classList.add('ok'); card.classList.remove('bad');
+      res.hidden = false; res.innerHTML = '';
+      res.appendChild(E('div', 'ex-ok', label));
+      res.appendChild(E('div', 'ex-ans-h', 'Đáp án đã thuộc'));
+      const d = E('div', 'ex-ans-row');
+      d.appendChild(E('div', 'ex-ans-en', it[0])); d.appendChild(exPlay(it[0]));
+      res.appendChild(d);
+      if (it[2] && it[2].length) res.appendChild(E('div', 'ex-alt', 'Cách khác cũng đúng: ' + it[2].join(' · ')));
+      inputWrap.hidden = true;
+      const again = E('button', 'btn-ghost ex-ov', '↻ Viết lại câu này');
+      again.addEventListener('click', () => { resetInput(); inputWrap.hidden = false; res.hidden = true; res.innerHTML = ''; });
+      res.appendChild(again);
+    };
+
     const finish = (ok, typed) => {
       res.hidden = false; res.innerHTML = '';
       if (ok) {
-        exDone.add(k); save(); card.classList.add('ok'); card.classList.remove('bad'); footSync();
-        const r = E('div', 'ex-ok', '✓ Chính xác!');
-        r.appendChild(exPlay(it[0]));
-        res.appendChild(r);
+        solved('✓ Chính xác!');
       } else {
         card.classList.remove('ok'); card.classList.add('bad');
         res.appendChild(E('div', 'ex-wrong', '✗ Chưa đúng. So lại với đáp án:'));
+        const row = E('div', 'ex-ans-row');
         const d = E('div', 'ex-ans-en');
         exDiff(it[0], typed).forEach(([w, same]) => {
           d.appendChild(E('span', same ? 'ex-w' : 'ex-w ex-w-miss', w));
           d.appendChild(document.createTextNode(' '));
         });
-        d.appendChild(exPlay(it[0]));
-        res.appendChild(d);
+        row.appendChild(d); row.appendChild(exPlay(it[0]));
+        res.appendChild(row);
         if (it[2] && it[2].length) res.appendChild(E('div', 'ex-alt', 'Cách khác cũng đúng: ' + it[2].join(' · ')));
         const ov = E('button', 'btn-ghost ex-ov', 'Mình viết cũng đúng → tính là đúng');
-        ov.addEventListener('click', () => { exDone.add(k); save(); card.classList.add('ok'); card.classList.remove('bad'); footSync(); res.innerHTML = ''; const r = E('div', 'ex-ok', '✓ Đã tính là đúng'); r.appendChild(exPlay(it[0])); res.appendChild(r); });
+        ov.addEventListener('click', () => solved('✓ Đã tính là đúng'));
         res.appendChild(ov);
       }
     };
@@ -25766,8 +25787,9 @@ Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conca
         });
       };
       render();
+      resetInput = () => { picked = []; render(); };
       bank.appendChild(line); bank.appendChild(chips);
-      card.appendChild(bank);
+      inputWrap.appendChild(bank);
       const acts = E('div', 'ex-acts');
       const ck = E('button', 'btn-primary', 'Kiểm tra');
       ck.addEventListener('click', () => {
@@ -25775,13 +25797,14 @@ Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conca
         finish(exOk(picked.map(p => p.w).join(' '), it), picked.map(p => p.w).join(' '));
       });
       const cl = E('button', 'btn-ghost', 'Xóa');
-      cl.addEventListener('click', () => { picked = []; render(); res.hidden = true; card.classList.remove('ok', 'bad'); });
+      cl.addEventListener('click', () => { picked = []; render(); res.hidden = true; card.classList.remove('bad'); });
       acts.appendChild(ck); acts.appendChild(cl);
-      card.appendChild(acts);
+      inputWrap.appendChild(acts);
     } else {
       const inp = E('textarea', 'ex-input');
       inp.rows = 2; inp.placeholder = 'Viết câu tiếng Anh…'; inp.setAttribute('aria-label', 'Câu tiếng Anh của bạn');
-      card.appendChild(inp);
+      resetInput = () => { inp.value = ''; };
+      inputWrap.appendChild(inp);
       const acts = E('div', 'ex-acts');
       const ck = E('button', 'btn-primary', 'Kiểm tra');
       const run = () => { if (inp.value.trim()) finish(exOk(inp.value, it), inp.value); };
@@ -25790,15 +25813,17 @@ Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conca
       const sk = E('button', 'btn-ghost', 'Xem đáp án');
       sk.addEventListener('click', () => {
         res.hidden = false; res.innerHTML = '';
-        const d = E('div', 'ex-ans-en', it[0]); d.appendChild(exPlay(it[0]));
         res.appendChild(E('div', 'ex-ans-h', 'Đáp án'));
+        const d = E('div', 'ex-ans-row');
+        d.appendChild(E('div', 'ex-ans-en', it[0])); d.appendChild(exPlay(it[0]));
         res.appendChild(d);
       });
       acts.appendChild(ck); acts.appendChild(sk);
-      card.appendChild(acts);
+      inputWrap.appendChild(acts);
     }
-    if (done) { res.hidden = false; const r = E('div', 'ex-ok', '✓ Đã làm đúng'); r.appendChild(exPlay(it[0])); res.appendChild(r); }
+    card.appendChild(inputWrap);
     card.appendChild(res);
+    if (done) solved('✓ Đã làm đúng');
     return card;
   }
 
