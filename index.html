@@ -985,7 +985,6 @@
   /* per-tab accent */
   #page-check{ --rust:var(--c-check); --rust-light:var(--c-check-l); }
   #page-pron{ --rust:var(--c-pron); --rust-light:var(--c-pron-l); }
-  #page-tenses{ --rust:var(--c-tenses); --rust-light:var(--c-tenses-l); }
   #page-grammar{ --rust:var(--c-grammar); --rust-light:var(--c-grammar-l); }
   #page-irregular{ --rust:var(--c-irregular); --rust-light:var(--c-irregular-l); }
   #page-exercise{ --rust:var(--c-exercise); --rust-light:var(--c-exercise-l); }
@@ -1100,7 +1099,6 @@
   nav.tabbar button.active{ background:var(--c-check-l); color:var(--c-check); }
   nav.tabbar button[data-page="page-check"].active{ background:var(--c-check-l); color:var(--c-check); }
   nav.tabbar button[data-page="page-pron"].active{ background:var(--c-pron-l); color:var(--c-pron); }
-  nav.tabbar button[data-page="page-tenses"].active{ background:var(--c-tenses-l); color:var(--c-tenses); }
   nav.tabbar button[data-page="page-grammar"].active{ background:var(--c-grammar-l); color:var(--c-grammar); }
   nav.tabbar button[data-page="page-irregular"].active{ background:var(--c-irregular-l); color:var(--c-irregular); }
   nav.tabbar button[data-page="page-exercise"].active{ background:var(--c-exercise-l); color:var(--c-exercise); }
@@ -2186,6 +2184,7 @@
   .gr-done{ display:block; width:100%; margin-top:14px; padding:12px; font-size:14px; }
   .tn-sym-w{ width:auto; min-width:22px; padding:0 6px; border-radius:11px; font-size:11.5px; }
   .tn-sym-ghost{ background:transparent; color:var(--rust); opacity:.5; font-size:16px; }
+  .gr-practice{ display:block; width:100%; margin-top:14px; }
   .tn-frow-sub{ margin-top:-2px; }
   .tn-flabel{ display:inline-block; margin-right:6px; padding:0 7px; border-radius:6px; background:var(--card); color:var(--rust); font:700 11.5px/1.7 var(--font-body); }
   #grammar-root .tn-formula{ margin-top:10px; margin-bottom:8px; }
@@ -2208,7 +2207,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v50</span>
+      <span class="hero-badge">EN ⇄ VI · v54</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -2386,11 +2385,6 @@
     <div id="sh-root"></div>
   </section>
 
-  <section class="page" id="page-tenses">
-    <div class="section-title">Các thì theo trình độ</div>
-    <div class="section-sub">Chọn đúng trình độ của bạn (A1 → C1) và tập trung học các thì ở cấp đó. Nắm chắc rồi hãy chuyển lên cấp tiếp theo.</div>
-    <div id="tenses-list"></div>
-  </section>
 
   <!-- PAGE: GRAMMAR -->
   <section class="page" id="page-grammar">
@@ -2411,7 +2405,7 @@
   <!-- PAGE: EXERCISES -->
   <section class="page" id="page-exercise">
     <div class="section-title">Bài tập dịch</div>
-    <div class="section-sub">Dịch Việt → Anh theo trình độ A1 → C1 · Mỗi bài 17 câu kèm công thức câu hỏi Wh- và How-, chỉ dùng đúng cấu trúc đã học ở tab Các thì và Ngữ pháp</div>
+    <div class="section-sub">Dịch Việt → Anh theo trình độ A1 → C1 · Mỗi bài 17 câu kèm công thức câu hỏi Wh- và How-, chỉ dùng đúng cấu trúc đã học ở tab Ngữ pháp</div>
     <div id="ex-root"></div>
   </section>
 
@@ -2606,10 +2600,6 @@
   <button data-page="page-shadow">
     <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h1.5M7 8v8M11 4.5v15M15 8.5v7M19 10.5v3"/><path d="M21.5 12h.01" /></svg></span>
     Shadowing
-  </button>
-  <button data-page="page-tenses">
-    <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-    Các thì
   </button>
   <button data-page="page-grammar">
     <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 8h6M9 11.5h4"/></svg></span>
@@ -3351,6 +3341,2380 @@ const GRAMMAR_TOPICS = [
    "Có thể đổi chỗ hai mệnh đề. Khi mệnh đề If đứng đầu thì đặt dấu phẩy sau nó."
   ],
   "group": "basics"
+ },
+ {
+  "id": "possessive-s",
+  "title": "Sở hữu cách 's / s'",
+  "en": "Possessive 's and s'",
+  "intro": "Thêm 's vào sau người (hoặc con vật) để nói cái gì là của ai: Lan's bike = xe của Lan.",
+  "sections": [
+   {
+    "name": "Cách viết",
+    "formula": "Danh từ số ít + 's · Danh từ số nhiều tận cùng -s + ' · Danh từ số nhiều bất quy tắc + 's",
+    "usage": "Dấu nháy đứng trước s khi danh từ số ít, và đứng sau s khi danh từ số nhiều đã có sẵn -s.",
+    "table": {
+     "head": [
+      "Trường hợp",
+      "Cách viết",
+      "Ví dụ"
+     ],
+     "rows": [
+      [
+       "Người, con vật số ít",
+       "+ 's",
+       "Lan's bike · my brother's room"
+      ],
+      [
+       "Tên tận cùng bằng s",
+       "+ 's (hoặc chỉ ')",
+       "James's car · James' car"
+      ],
+      [
+       "Số nhiều đã có -s",
+       "chỉ thêm '",
+       "my parents' house · the boys' room"
+      ],
+      [
+       "Số nhiều bất quy tắc",
+       "+ 's",
+       "the children's toys · women's clothes"
+      ],
+      [
+       "Hai người cùng sở hữu",
+       "'s ở người cuối",
+       "Lan and Nam's house"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "This is my sister's phone.",
+      "vi": "Đây là điện thoại của chị tôi."
+     },
+     {
+      "en": "The teachers' room is upstairs.",
+      "vi": "Phòng giáo viên ở trên lầu."
+     }
+    ]
+   },
+   {
+    "name": "Đồ vật thì dùng of",
+    "formula": "the + danh từ + of + the + danh từ",
+    "usage": "Với đồ vật, thường dùng of thay cho 's.",
+    "examples": [
+     {
+      "en": "The door of the car is broken.",
+      "vi": "Cửa xe bị hỏng."
+     },
+     {
+      "en": "What is the name of this street?",
+      "vi": "Con đường này tên gì?"
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "'s còn là viết tắt của is: \"Lan's a doctor\" = Lan is a doctor, khác \"Lan's book\" (sách của Lan).",
+   "its (của nó) không có dấu nháy; it's luôn là it is.",
+   "Hỏi của ai bằng whose: \"Whose bag is this?\""
+  ]
+ },
+ {
+  "id": "frequency",
+  "title": "Trạng từ chỉ tần suất",
+  "en": "Adverbs and phrases of frequency",
+  "intro": "Những từ cho biết việc gì xảy ra thường xuyên đến mức nào, và vị trí của chúng trong câu.",
+  "sections": [
+   {
+    "name": "Thang tần suất",
+    "table": {
+     "head": [
+      "Trạng từ",
+      "Nghĩa",
+      "Mức độ"
+     ],
+     "rows": [
+      [
+       "always",
+       "luôn luôn",
+       "100%"
+      ],
+      [
+       "usually",
+       "thường",
+       "khoảng 90%"
+      ],
+      [
+       "often",
+       "hay, thường xuyên",
+       "khoảng 70%"
+      ],
+      [
+       "sometimes",
+       "thỉnh thoảng",
+       "khoảng 50%"
+      ],
+      [
+       "rarely / seldom",
+       "hiếm khi",
+       "khoảng 10%"
+      ],
+      [
+       "never",
+       "không bao giờ",
+       "0%"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I always have breakfast at home.",
+      "vi": "Tôi luôn ăn sáng ở nhà."
+     },
+     {
+      "en": "She rarely goes out on weekdays.",
+      "vi": "Cô ấy hiếm khi ra ngoài vào ngày thường."
+     }
+    ]
+   },
+   {
+    "name": "Đặt ở đâu trong câu",
+    "formula": "Chủ ngữ + trạng từ + động từ thường · Chủ ngữ + am/is/are + trạng từ · Chủ ngữ + trợ động từ + trạng từ + động từ chính",
+    "usage": "Đứng trước động từ thường, nhưng đứng sau động từ to be và sau trợ động từ.",
+    "examples": [
+     {
+      "en": "He never drinks coffee at night.",
+      "vi": "Anh ấy không bao giờ uống cà phê buổi tối."
+     },
+     {
+      "en": "They are usually late.",
+      "vi": "Họ thường đến trễ."
+     },
+     {
+      "en": "I have never been to Japan.",
+      "vi": "Tôi chưa bao giờ đến Nhật."
+     }
+    ]
+   },
+   {
+    "name": "Cụm chỉ tần suất",
+    "usage": "Cụm dài thường đứng đầu hoặc cuối câu, không đứng giữa như trạng từ.",
+    "table": {
+     "head": [
+      "Cụm từ",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "every day / every Monday",
+       "mỗi ngày / mỗi thứ Hai"
+      ],
+      [
+       "once a week",
+       "một lần một tuần"
+      ],
+      [
+       "twice a month",
+       "hai lần một tháng"
+      ],
+      [
+       "three times a year",
+       "ba lần một năm"
+      ],
+      [
+       "most days",
+       "hầu như ngày nào cũng"
+      ],
+      [
+       "from time to time",
+       "thỉnh thoảng"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I go to the gym twice a week.",
+      "vi": "Tôi đến phòng gym hai lần một tuần."
+     },
+     {
+      "en": "Every Sunday we visit my grandparents.",
+      "vi": "Chủ nhật nào chúng tôi cũng về thăm ông bà."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "never đã mang nghĩa phủ định, không dùng kèm not: \"I never don't go\" ✗.",
+   "Hỏi tần suất bằng How often…?: \"How often do you exercise?\"",
+   "sometimes có thể đứng đầu câu: \"Sometimes I walk to work.\""
+  ]
+ },
+ {
+  "id": "like-ing",
+  "title": "like, love, hate + V-ing",
+  "en": "like, hate, love + -ing",
+  "intro": "Nói về sở thích: sau các động từ chỉ cảm xúc này, động từ theo sau thêm -ing.",
+  "sections": [
+   {
+    "name": "Công thức",
+    "formula": "Chủ ngữ + love / like / enjoy / don't mind / don't like / hate + V-ing",
+    "usage": "Dùng để nói thích hay không thích làm việc gì.",
+    "table": {
+     "head": [
+      "Động từ",
+      "Mức độ"
+     ],
+     "rows": [
+      [
+       "love + V-ing",
+       "rất thích"
+      ],
+      [
+       "like / enjoy + V-ing",
+       "thích"
+      ],
+      [
+       "don't mind + V-ing",
+       "không ngại, cũng được"
+      ],
+      [
+       "don't like + V-ing",
+       "không thích"
+      ],
+      [
+       "hate / can't stand + V-ing",
+       "ghét, không chịu nổi"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I love listening to music.",
+      "vi": "Tôi rất thích nghe nhạc."
+     },
+     {
+      "en": "She hates getting up early.",
+      "vi": "Cô ấy ghét phải dậy sớm."
+     },
+     {
+      "en": "I don't mind waiting a few minutes.",
+      "vi": "Tôi không ngại đợi vài phút."
+     }
+    ]
+   },
+   {
+    "name": "Phủ định và câu hỏi",
+    "formula": "I/You/We/They + don't like + V-ing · He/She/It + doesn't like + V-ing · Do/Does + chủ ngữ + like + V-ing?",
+    "examples": [
+     {
+      "en": "Do you like cooking?",
+      "vi": "Bạn có thích nấu ăn không?"
+     },
+     {
+      "en": "He doesn't like working at night.",
+      "vi": "Anh ấy không thích làm việc ban đêm."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "like + to V cũng đúng và nghĩa gần giống: \"I like to read before bed.\"",
+   "would like + to V nghĩa là muốn, khác hẳn like + V-ing: \"I'd like to go\" = tôi muốn đi.",
+   "Sau giới từ luôn dùng V-ing: \"I'm good at swimming.\""
+  ]
+ },
+ {
+  "id": "havegot",
+  "title": "have got",
+  "en": "have got",
+  "intro": "Cách nói “có” rất thông dụng trong tiếng Anh-Anh, nghĩa giống have.",
+  "sections": [
+   {
+    "name": "Công thức",
+    "formula": "I/You/We/They + have got + … · He/She/It + has got + …",
+    "usage": "Nói về sở hữu, quan hệ gia đình, ngoại hình, bệnh tật.",
+    "table": {
+     "head": [
+      "Dạng",
+      "Cách viết",
+      "Viết tắt"
+     ],
+     "rows": [
+      [
+       "Khẳng định",
+       "I have got a car",
+       "I've got a car"
+      ],
+      [
+       "Khẳng định (he/she/it)",
+       "She has got a car",
+       "She's got a car"
+      ],
+      [
+       "Phủ định",
+       "I have not got a car",
+       "I haven't got a car"
+      ],
+      [
+       "Phủ định (he/she/it)",
+       "He has not got a car",
+       "He hasn't got a car"
+      ],
+      [
+       "Câu hỏi",
+       "Have you got a car?",
+       "Yes, I have. / No, I haven't."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I've got two brothers.",
+      "vi": "Tôi có hai anh em trai."
+     },
+     {
+      "en": "She hasn't got a bike.",
+      "vi": "Cô ấy không có xe đạp."
+     },
+     {
+      "en": "Have you got any questions?",
+      "vi": "Bạn có câu hỏi nào không?"
+     }
+    ]
+   },
+   {
+    "name": "have got hay have?",
+    "usage": "Hai cách nói cùng nghĩa. have got hay dùng khi nói chuyện ở Anh; have dùng được ở mọi nơi và trang trọng hơn.",
+    "table": {
+     "head": [
+      "have got (Anh, nói)",
+      "have (chung, trang trọng hơn)"
+     ],
+     "rows": [
+      [
+       "I've got a headache.",
+       "I have a headache."
+      ],
+      [
+       "Have you got the time?",
+       "Do you have the time?"
+      ],
+      [
+       "She hasn't got a car.",
+       "She doesn't have a car."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Do you have a pen? Have you got a pen?",
+      "vi": "Bạn có bút không? (hai cách nói)"
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Ở quá khứ chỉ dùng had, không nói \"had got\": \"I had a car then.\"",
+   "Câu hỏi với have got không dùng do: \"Do you have got…?\" ✗ → \"Have you got…?\" ✓",
+   "have got chỉ nói về sở hữu, không dùng cho hành động: ăn sáng là have breakfast, không phải have got breakfast."
+  ]
+ },
+ {
+  "id": "howmuch-howadj",
+  "title": "how much, how many, how + tính từ",
+  "en": "how much, how many; how + adjective",
+  "intro": "Cách hỏi số lượng, giá tiền và mức độ bằng how.",
+  "sections": [
+   {
+    "name": "Hỏi số lượng",
+    "formula": "How many + danh từ số nhiều + do/does/are …? · How much + danh từ không đếm được + do/does/is …?",
+    "usage": "How many đi với danh từ đếm được; How much đi với danh từ không đếm được.",
+    "examples": [
+     {
+      "en": "How many brothers do you have?",
+      "vi": "Bạn có mấy anh em trai?"
+     },
+     {
+      "en": "How much water do you drink every day?",
+      "vi": "Mỗi ngày bạn uống bao nhiêu nước?"
+     }
+    ]
+   },
+   {
+    "name": "Hỏi giá tiền",
+    "formula": "How much + is / are + …?",
+    "examples": [
+     {
+      "en": "How much is this shirt?",
+      "vi": "Cái áo này bao nhiêu tiền?"
+     },
+     {
+      "en": "How much are these shoes?",
+      "vi": "Đôi giày này bao nhiêu tiền?"
+     }
+    ]
+   },
+   {
+    "name": "How + tính từ",
+    "formula": "How + tính từ + am/is/are + chủ ngữ?",
+    "table": {
+     "head": [
+      "Câu hỏi",
+      "Hỏi về",
+      "Ví dụ trả lời"
+     ],
+     "rows": [
+      [
+       "How old …?",
+       "tuổi",
+       "I'm twenty-five."
+      ],
+      [
+       "How tall …?",
+       "chiều cao",
+       "She's 1.6 metres tall."
+      ],
+      [
+       "How far …?",
+       "khoảng cách",
+       "About two kilometres."
+      ],
+      [
+       "How long …?",
+       "thời gian, độ dài",
+       "About an hour."
+      ],
+      [
+       "How often …?",
+       "tần suất",
+       "Twice a week."
+      ],
+      [
+       "How heavy / big …?",
+       "cân nặng, kích cỡ",
+       "Around five kilos."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "How far is the station from here?",
+      "vi": "Nhà ga cách đây bao xa?"
+     },
+     {
+      "en": "How old is your daughter?",
+      "vi": "Con gái bạn bao nhiêu tuổi?"
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Tiền, nước, thời gian, gạo… là danh từ không đếm được → dùng how much.",
+   "Hỏi tuổi dùng How old are you?, không nói \"How many years…?\"",
+   "How long có hai nghĩa: thời gian (How long does it take?) và độ dài (How long is the bridge?)."
+  ]
+ },
+ {
+  "id": "imperative",
+  "title": "Câu mệnh lệnh và lời khuyên",
+  "en": "Imperatives; should, shouldn't",
+  "intro": "Bảo ai đó làm gì, rủ cùng làm, hoặc khuyên nên làm gì.",
+  "sections": [
+   {
+    "name": "Câu mệnh lệnh",
+    "formula": "Động từ nguyên thể + … · Don't + động từ nguyên thể + … · Let's + động từ nguyên thể + …",
+    "usage": "Câu mệnh lệnh không có chủ ngữ. Dùng để ra lệnh, hướng dẫn, dặn dò hoặc rủ cùng làm.",
+    "table": {
+     "head": [
+      "Dạng",
+      "Ví dụ",
+      "Dùng khi"
+     ],
+     "rows": [
+      [
+       "Khẳng định",
+       "Open the window.",
+       "bảo ai đó làm"
+      ],
+      [
+       "Phủ định",
+       "Don't touch that.",
+       "bảo đừng làm"
+      ],
+      [
+       "Thêm please",
+       "Please sit down.",
+       "lịch sự hơn"
+      ],
+      [
+       "Let's + V",
+       "Let's go home.",
+       "rủ cùng làm"
+      ],
+      [
+       "Let's not + V",
+       "Let's not wait here.",
+       "rủ đừng làm"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Turn left at the traffic lights.",
+      "vi": "Rẽ trái ở đèn giao thông."
+     },
+     {
+      "en": "Don't forget your keys.",
+      "vi": "Đừng quên chìa khóa của bạn."
+     }
+    ]
+   },
+   {
+    "name": "Lời khuyên với should",
+    "formula": "Chủ ngữ + should + V · Chủ ngữ + shouldn't + V · Should + chủ ngữ + V?",
+    "usage": "should nhẹ nhàng hơn câu mệnh lệnh, dùng để khuyên.",
+    "examples": [
+     {
+      "en": "You should drink more water.",
+      "vi": "Bạn nên uống nhiều nước hơn."
+     },
+     {
+      "en": "You shouldn't eat so late.",
+      "vi": "Bạn không nên ăn khuya như vậy."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Câu mệnh lệnh nghe khá mạnh; thêm please hoặc dùng Could you… cho lịch sự.",
+   "Let's = Let us, luôn đi với động từ nguyên thể.",
+   "Sau should không thêm to: \"You should to go\" ✗ → \"You should go\" ✓"
+  ]
+ },
+ {
+  "id": "wh-questions",
+  "title": "Câu hỏi Wh-",
+  "en": "Wh- questions",
+  "intro": "Cách đặt câu hỏi lấy thông tin: what, where, when, why, who, whose, which, how.",
+  "sections": [
+   {
+    "name": "Trật tự câu hỏi",
+    "formula": "Từ hỏi + do/does/did + chủ ngữ + V? · Từ hỏi + am/is/are/was/were + chủ ngữ? · Từ hỏi + will/can/should + chủ ngữ + V?",
+    "usage": "Trợ động từ luôn đứng trước chủ ngữ; động từ chính giữ nguyên thể.",
+    "table": {
+     "head": [
+      "Từ hỏi",
+      "Hỏi về",
+      "Ví dụ"
+     ],
+     "rows": [
+      [
+       "what",
+       "cái gì",
+       "What do you want?"
+      ],
+      [
+       "where",
+       "ở đâu",
+       "Where does she live?"
+      ],
+      [
+       "when / what time",
+       "khi nào, mấy giờ",
+       "When did you arrive?"
+      ],
+      [
+       "why",
+       "tại sao",
+       "Why are you late?"
+      ],
+      [
+       "who",
+       "ai",
+       "Who is that man?"
+      ],
+      [
+       "whose",
+       "của ai",
+       "Whose bag is this?"
+      ],
+      [
+       "which",
+       "cái nào",
+       "Which colour do you like?"
+      ],
+      [
+       "how",
+       "thế nào",
+       "How do you go to work?"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Where do your parents live?",
+      "vi": "Ba mẹ bạn sống ở đâu?"
+     },
+     {
+      "en": "Why did you change your job?",
+      "vi": "Sao bạn đổi việc?"
+     }
+    ]
+   },
+   {
+    "name": "Khi từ hỏi làm chủ ngữ",
+    "formula": "Who / What + động từ (chia như câu kể)?",
+    "usage": "Nếu hỏi về chính chủ ngữ thì không dùng do/does/did.",
+    "examples": [
+     {
+      "en": "Who called you this morning?",
+      "vi": "Sáng nay ai gọi cho bạn?"
+     },
+     {
+      "en": "What happened yesterday?",
+      "vi": "Hôm qua đã xảy ra chuyện gì?"
+     }
+    ]
+   },
+   {
+    "name": "Giới từ đứng cuối câu",
+    "formula": "Từ hỏi + trợ động từ + chủ ngữ + động từ + giới từ?",
+    "examples": [
+     {
+      "en": "Who do you live with?",
+      "vi": "Bạn sống với ai?"
+     },
+     {
+      "en": "What are you looking for?",
+      "vi": "Bạn đang tìm cái gì?"
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Không chia động từ hai lần: \"Where does she lives?\" ✗ → \"Where does she live?\" ✓",
+   "How + tính từ để hỏi mức độ: how old, how far, how long.",
+   "Câu hỏi có hoặc không (Do you…?) thì không có từ hỏi đứng đầu."
+  ]
+ },
+ {
+  "id": "adj-modifier",
+  "title": "Tính từ và từ tăng giảm mức độ",
+  "en": "Adjectives and modifiers",
+  "intro": "Dùng very, really, quite, a bit… để tăng hoặc giảm mức độ của tính từ.",
+  "sections": [
+   {
+    "name": "Thang mức độ",
+    "formula": "a bit / quite / very / really / extremely + tính từ",
+    "table": {
+     "head": [
+      "Từ bổ nghĩa",
+      "Nghĩa",
+      "Ví dụ"
+     ],
+     "rows": [
+      [
+       "a bit / a little",
+       "hơi",
+       "a bit tired"
+      ],
+      [
+       "quite",
+       "khá",
+       "quite expensive"
+      ],
+      [
+       "very",
+       "rất",
+       "very good"
+      ],
+      [
+       "really",
+       "thật sự rất",
+       "really delicious"
+      ],
+      [
+       "extremely",
+       "cực kỳ",
+       "extremely hot"
+      ],
+      [
+       "too",
+       "quá (mang ý tiêu cực)",
+       "too small"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "The film was really good.",
+      "vi": "Bộ phim thật sự rất hay."
+     },
+     {
+      "en": "I'm a bit tired today.",
+      "vi": "Hôm nay tôi hơi mệt."
+     }
+    ]
+   },
+   {
+    "name": "Vị trí của tính từ",
+    "formula": "Tính từ + danh từ · Chủ ngữ + am/is/are + tính từ",
+    "usage": "Tính từ đứng trước danh từ hoặc sau động từ to be. Tính từ không có dạng số nhiều.",
+    "examples": [
+     {
+      "en": "It's a very nice day.",
+      "vi": "Hôm nay là một ngày rất đẹp."
+     },
+     {
+      "en": "These shoes are quite cheap.",
+      "vi": "Đôi giày này khá rẻ."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "too khác very: too = quá mức, thường có ý xấu. \"It's too hot\" (nóng quá chịu không nổi).",
+   "a bit thường đi với tính từ tiêu cực: a bit tired, a bit difficult.",
+   "Không thêm -s cho tính từ: \"two bigs houses\" ✗ → \"two big houses\" ✓"
+  ]
+ },
+ {
+  "id": "prep-movement",
+  "title": "Giới từ chỉ chuyển động",
+  "en": "Prepositions and adverbs of movement",
+  "intro": "Những từ chỉ hướng đi: vào, ra, băng qua, dọc theo, vòng quanh…",
+  "sections": [
+   {
+    "name": "Bảng giới từ chuyển động",
+    "table": {
+     "head": [
+      "Giới từ",
+      "Nghĩa",
+      "Ví dụ"
+     ],
+     "rows": [
+      [
+       "into / out of",
+       "vào trong / ra khỏi",
+       "She walked into the room."
+      ],
+      [
+       "along",
+       "dọc theo",
+       "Go along this street."
+      ],
+      [
+       "across",
+       "băng qua (bề mặt)",
+       "Walk across the bridge."
+      ],
+      [
+       "through",
+       "xuyên qua (bên trong)",
+       "We drove through the tunnel."
+      ],
+      [
+       "past",
+       "đi ngang qua",
+       "Go past the bank."
+      ],
+      [
+       "up / down",
+       "lên / xuống",
+       "Go up the stairs."
+      ],
+      [
+       "over",
+       "qua phía trên",
+       "The plane flew over the city."
+      ],
+      [
+       "round / around",
+       "vòng quanh",
+       "Walk around the lake."
+      ],
+      [
+       "towards",
+       "về phía",
+       "He ran towards the bus."
+      ],
+      [
+       "off",
+       "rời khỏi, xuống khỏi",
+       "Get off the bus at the market."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Go along this road and turn left.",
+      "vi": "Đi dọc con đường này rồi rẽ trái."
+     },
+     {
+      "en": "We walked through the park to the station.",
+      "vi": "Chúng tôi đi xuyên qua công viên đến nhà ga."
+     }
+    ]
+   },
+   {
+    "name": "Vị trí hay chuyển động?",
+    "usage": "in, on chỉ vị trí đứng yên; into, onto chỉ sự di chuyển tới đó.",
+    "table": {
+     "head": [
+      "Vị trí",
+      "Chuyển động"
+     ],
+     "rows": [
+      [
+       "She is in the room.",
+       "She goes into the room."
+      ],
+      [
+       "The book is on the table.",
+       "He puts the book onto the table."
+      ],
+      [
+       "I am at the bus stop.",
+       "I walk to the bus stop."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Get on the bus here and get off at the market.",
+      "vi": "Lên xe buýt ở đây và xuống ở chợ."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Lên/xuống xe buýt, tàu, máy bay: get on / get off. Lên/xuống xe hơi, taxi: get in / get out of.",
+   "across đi trên bề mặt, through đi xuyên bên trong: across the street, through the forest.",
+   "to chỉ điểm đến: go to school. Không nói \"go to home\" mà là \"go home\"."
+  ]
+ },
+ {
+  "id": "simple-vs-continuous",
+  "title": "Hiện tại đơn và hiện tại tiếp diễn",
+  "en": "Present simple and present continuous",
+  "intro": "Hai thì này dễ lẫn: một thì nói về thói quen, một thì nói về việc đang xảy ra.",
+  "sections": [
+   {
+    "name": "So sánh hai thì",
+    "table": {
+     "head": [
+      "Hiện tại đơn",
+      "Hiện tại tiếp diễn"
+     ],
+     "rows": [
+      [
+       "Thói quen, việc lặp lại",
+       "Việc đang xảy ra lúc nói"
+      ],
+      [
+       "Sự thật lâu dài",
+       "Tình trạng tạm thời"
+      ],
+      [
+       "always, usually, every day, on Mondays",
+       "now, at the moment, today, this week"
+      ],
+      [
+       "I work in a bank.",
+       "I'm working at home this week."
+      ],
+      [
+       "She plays tennis on Sundays.",
+       "She is playing tennis right now."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I usually take the bus, but today I'm driving.",
+      "vi": "Tôi thường đi xe buýt, nhưng hôm nay tôi lái xe."
+     },
+     {
+      "en": "He works in Hanoi, but he's staying in Hue this month.",
+      "vi": "Anh ấy làm việc ở Hà Nội, nhưng tháng này đang ở Huế."
+     }
+    ]
+   },
+   {
+    "name": "Động từ không dùng tiếp diễn",
+    "usage": "Động từ chỉ trạng thái (know, like, want, need, believe, understand, have nghĩa sở hữu) chỉ dùng thì đơn.",
+    "examples": [
+     {
+      "en": "I know the answer.",
+      "vi": "Tôi biết câu trả lời."
+     },
+     {
+      "en": "She wants a cup of tea.",
+      "vi": "Cô ấy muốn một tách trà."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Thấy now, at the moment, today, this week → thường là tiếp diễn.",
+   "Thấy always, usually, every… → thường là hiện tại đơn.",
+   "\"I am knowing\" ✗ → \"I know\" ✓"
+  ]
+ },
+ {
+  "id": "verb-to-v",
+  "title": "Động từ + to V",
+  "en": "Verbs + to infinitive",
+  "intro": "Nhóm động từ mà sau nó phải dùng to + động từ nguyên thể.",
+  "sections": [
+   {
+    "name": "Công thức",
+    "formula": "Chủ ngữ + want / need / decide / hope / try / learn / forget / promise / plan + to + V",
+    "table": {
+     "head": [
+      "Động từ",
+      "Nghĩa",
+      "Ví dụ"
+     ],
+     "rows": [
+      [
+       "want to",
+       "muốn",
+       "I want to go home."
+      ],
+      [
+       "need to",
+       "cần",
+       "You need to rest."
+      ],
+      [
+       "decide to",
+       "quyết định",
+       "We decided to stay."
+      ],
+      [
+       "hope to",
+       "hy vọng",
+       "I hope to see you soon."
+      ],
+      [
+       "try to",
+       "cố gắng",
+       "She tried to call me."
+      ],
+      [
+       "learn to",
+       "học cách",
+       "He learned to drive."
+      ],
+      [
+       "forget to",
+       "quên",
+       "Don't forget to lock the door."
+      ],
+      [
+       "promise to",
+       "hứa",
+       "They promised to help."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I want to learn English well.",
+      "vi": "Tôi muốn học giỏi tiếng Anh."
+     },
+     {
+      "en": "We decided to take a taxi.",
+      "vi": "Chúng tôi quyết định đi taxi."
+     }
+    ]
+   },
+   {
+    "name": "would like to V",
+    "formula": "Chủ ngữ + would like + to + V",
+    "usage": "Cách nói “muốn” lịch sự, hay dùng khi đề nghị hoặc gọi món.",
+    "examples": [
+     {
+      "en": "I'd like to book a table for two.",
+      "vi": "Tôi muốn đặt bàn cho hai người."
+     },
+     {
+      "en": "Would you like to come with us?",
+      "vi": "Bạn có muốn đi cùng chúng tôi không?"
+     }
+    ]
+   },
+   {
+    "name": "want / ask ai đó làm gì",
+    "formula": "Chủ ngữ + want / ask / tell + ai đó + to + V",
+    "examples": [
+     {
+      "en": "My boss wants me to finish it today.",
+      "vi": "Sếp muốn tôi làm xong việc đó hôm nay."
+     },
+     {
+      "en": "She asked me to wait outside.",
+      "vi": "Cô ấy nhờ tôi đợi bên ngoài."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Sau các động từ này không dùng V-ing: \"I want going\" ✗ → \"I want to go\" ✓",
+   "Nhưng sau enjoy, like, avoid, finish thì dùng V-ing.",
+   "would like + to V (muốn) khác like + V-ing (thích làm thường xuyên)."
+  ]
+ },
+ {
+  "id": "adverb-manner",
+  "title": "Trạng từ chỉ cách thức",
+  "en": "Adverbs of manner",
+  "intro": "Trạng từ cho biết hành động diễn ra thế nào: nhanh, chậm, cẩn thận, tốt…",
+  "sections": [
+   {
+    "name": "Cách tạo trạng từ",
+    "formula": "Tính từ + -ly → trạng từ",
+    "table": {
+     "head": [
+      "Quy tắc",
+      "Tính từ → Trạng từ"
+     ],
+     "rows": [
+      [
+       "Thông thường: + ly",
+       "slow → slowly · quiet → quietly"
+      ],
+      [
+       "Tận cùng -y: đổi thành -ily",
+       "easy → easily · happy → happily"
+      ],
+      [
+       "Tận cùng -le: đổi thành -ly",
+       "simple → simply · terrible → terribly"
+      ],
+      [
+       "Giữ nguyên",
+       "fast → fast · hard → hard · late → late"
+      ],
+      [
+       "Bất quy tắc",
+       "good → well"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "She speaks English very well.",
+      "vi": "Cô ấy nói tiếng Anh rất giỏi."
+     },
+     {
+      "en": "Please drive slowly.",
+      "vi": "Làm ơn lái xe chậm thôi."
+     }
+    ]
+   },
+   {
+    "name": "Đặt ở đâu trong câu",
+    "formula": "Chủ ngữ + động từ + trạng từ · Chủ ngữ + động từ + tân ngữ + trạng từ",
+    "usage": "Trạng từ chỉ cách thức đứng sau động từ, hoặc sau tân ngữ; không chen giữa động từ và tân ngữ.",
+    "examples": [
+     {
+      "en": "He opened the door quietly.",
+      "vi": "Anh ấy mở cửa nhẹ nhàng."
+     },
+     {
+      "en": "They waited patiently for an hour.",
+      "vi": "Họ kiên nhẫn đợi suốt một tiếng."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "good là tính từ, well là trạng từ: \"She is a good singer\" nhưng \"She sings well\".",
+   "Không nói \"He opened quietly the door\": trạng từ đứng sau tân ngữ.",
+   "hardly không phải trạng từ của hard: hard = chăm chỉ, hardly = hầu như không."
+  ]
+ },
+ {
+  "id": "howto-suggest",
+  "title": "Nói sao để… rủ rê, đề nghị",
+  "en": "How to … make suggestions",
+  "intro": "Những mẫu câu rủ người khác cùng làm gì đó, và cách đồng ý hoặc từ chối.",
+  "sections": [
+   {
+    "name": "Mẫu câu rủ rê",
+    "formula": "Let's + V · Shall we + V? · Why don't we + V? · How about + V-ing? · What about + V-ing?",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa",
+      "Sau nó dùng gì"
+     ],
+     "rows": [
+      [
+       "Let's go out tonight.",
+       "Tối nay mình đi chơi đi.",
+       "động từ nguyên thể"
+      ],
+      [
+       "Shall we take a taxi?",
+       "Mình đi taxi nhé?",
+       "động từ nguyên thể"
+      ],
+      [
+       "Why don't we eat here?",
+       "Sao mình không ăn ở đây nhỉ?",
+       "động từ nguyên thể"
+      ],
+      [
+       "How about going to the beach?",
+       "Hay là đi biển?",
+       "V-ing"
+      ],
+      [
+       "What about next Saturday?",
+       "Thứ Bảy tới thì sao?",
+       "danh từ hoặc V-ing"
+      ],
+      [
+       "Maybe we could ask Nam.",
+       "Hay là mình hỏi Nam.",
+       "động từ nguyên thể"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Let's meet at seven in front of the cinema.",
+      "vi": "Bảy giờ mình gặp nhau trước rạp phim nhé."
+     },
+     {
+      "en": "How about having lunch together tomorrow?",
+      "vi": "Hay là mai mình ăn trưa cùng nhau?"
+     }
+    ]
+   },
+   {
+    "name": "Đồng ý hoặc từ chối",
+    "table": {
+     "head": [
+      "Đồng ý",
+      "Từ chối nhẹ nhàng"
+     ],
+     "rows": [
+      [
+       "Good idea!",
+       "Sorry, I can't."
+      ],
+      [
+       "Sounds great.",
+       "I'd love to, but I'm busy."
+      ],
+      [
+       "Yes, let's.",
+       "Maybe another time."
+      ],
+      [
+       "That works for me.",
+       "I'm afraid I'm not free then."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Shall we go for a coffee? — Good idea!",
+      "vi": "Mình đi cà phê nhé? — Ý hay đó!"
+     },
+     {
+      "en": "Why don't we go on Sunday? — I'd love to, but I'm busy.",
+      "vi": "Sao mình không đi chủ nhật nhỉ? — Tôi rất muốn, nhưng tôi bận."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Let's + động từ nguyên thể, nhưng How about / What about + V-ing.",
+   "Shall we…? nghe lịch sự và hơi trang trọng hơn Let's.",
+   "Từ chối nên thêm lý do ngắn, người Anh ít khi nói No thẳng."
+  ]
+ },
+ {
+  "id": "howto-restaurant",
+  "title": "Nói sao để… gọi món ở nhà hàng",
+  "en": "How to … order a meal in a restaurant",
+  "intro": "Từ lúc vào cửa, gọi món, cho đến lúc tính tiền.",
+  "sections": [
+   {
+    "name": "Khi vào và gọi món",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "A table for two, please.",
+       "Cho bàn hai người."
+      ],
+      [
+       "Do you have a table by the window?",
+       "Có bàn cạnh cửa sổ không ạ?"
+      ],
+      [
+       "Could I see the menu, please?",
+       "Cho tôi xem thực đơn được không?"
+      ],
+      [
+       "I'd like the chicken, please.",
+       "Cho tôi món gà."
+      ],
+      [
+       "I'll have the same.",
+       "Tôi gọi giống vậy."
+      ],
+      [
+       "What do you recommend?",
+       "Bạn gợi ý món nào?"
+      ],
+      [
+       "Is this dish spicy?",
+       "Món này có cay không?"
+      ],
+      [
+       "Just water for me, thanks.",
+       "Tôi chỉ uống nước lọc thôi."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Good evening. A table for three, please.",
+      "vi": "Chào buổi tối. Cho chúng tôi bàn ba người."
+     },
+     {
+      "en": "I'd like the beef noodle soup, please.",
+      "vi": "Cho tôi một tô phở bò."
+     }
+    ]
+   },
+   {
+    "name": "Nhân viên hay hỏi gì",
+    "table": {
+     "head": [
+      "Nhân viên nói",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Are you ready to order?",
+       "Anh/chị gọi món chưa ạ?"
+      ],
+      [
+       "Anything to drink?",
+       "Uống gì không ạ?"
+      ],
+      [
+       "How would you like your steak?",
+       "Bò anh/chị muốn chín mức nào?"
+      ],
+      [
+       "Would you like a starter?",
+       "Anh/chị dùng món khai vị chứ?"
+      ],
+      [
+       "Enjoy your meal.",
+       "Chúc ngon miệng."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Are you ready to order? — Yes, I'd like the fish.",
+      "vi": "Anh gọi món chưa ạ? — Rồi, cho tôi món cá."
+     }
+    ]
+   },
+   {
+    "name": "Khi tính tiền",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Can I have the bill, please?",
+       "Cho tôi tính tiền."
+      ],
+      [
+       "Is service included?",
+       "Đã tính phí phục vụ chưa?"
+      ],
+      [
+       "Can I pay by card?",
+       "Tôi trả thẻ được không?"
+      ],
+      [
+       "Keep the change.",
+       "Khỏi thối lại."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Excuse me, could we have the bill?",
+      "vi": "Xin lỗi, cho chúng tôi tính tiền nhé."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "I'd like = I would like, lịch sự hơn hẳn I want.",
+   "Thêm please vào cuối câu là đủ lịch sự trong hầu hết tình huống.",
+   "Ở Anh gọi hóa đơn là the bill, ở Mỹ là the check."
+  ]
+ },
+ {
+  "id": "howto-invite",
+  "title": "Nói sao để… mời và ngỏ ý giúp",
+  "en": "How to … make invitations and offers",
+  "intro": "Mời ai đó đi đâu, mời dùng gì, và ngỏ ý giúp một tay.",
+  "sections": [
+   {
+    "name": "Lời mời",
+    "formula": "Would you like to + V? · Do you want to + V? · Are you free + thời gian?",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa",
+      "Mức lịch sự"
+     ],
+     "rows": [
+      [
+       "Would you like to join us?",
+       "Bạn tham gia cùng nhé?",
+       "lịch sự"
+      ],
+      [
+       "Do you want to come with me?",
+       "Bạn muốn đi cùng không?",
+       "thân mật"
+      ],
+      [
+       "Are you free on Saturday?",
+       "Thứ Bảy bạn rảnh không?",
+       "thân mật"
+      ],
+      [
+       "We're having dinner. Care to join?",
+       "Bọn mình đang ăn tối, vào ăn cùng nhé?",
+       "thân mật"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Would you like to have dinner with us tonight?",
+      "vi": "Tối nay bạn dùng bữa tối với chúng tôi nhé?"
+     }
+    ]
+   },
+   {
+    "name": "Ngỏ ý giúp hoặc mời dùng gì",
+    "formula": "Would you like + danh từ? · Shall I + V? · Can I help you with + danh từ?",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Would you like some tea?",
+       "Bạn uống chút trà nhé?"
+      ],
+      [
+       "Shall I carry that for you?",
+       "Để tôi xách giúp nhé?"
+      ],
+      [
+       "Can I help you with your bags?",
+       "Tôi xách giúp túi nhé?"
+      ],
+      [
+       "I'll give you a hand.",
+       "Để tôi giúp một tay."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Shall I open the window?",
+      "vi": "Để tôi mở cửa sổ nhé?"
+     }
+    ]
+   },
+   {
+    "name": "Nhận lời hoặc từ chối",
+    "table": {
+     "head": [
+      "Nhận lời",
+      "Từ chối"
+     ],
+     "rows": [
+      [
+       "Yes, please.",
+       "No, thanks."
+      ],
+      [
+       "That would be lovely.",
+       "I'd love to, but I can't."
+      ],
+      [
+       "Thank you, that's very kind.",
+       "Thanks, but I'm fine."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Would you like some coffee? — Yes, please.",
+      "vi": "Bạn uống cà phê nhé? — Vâng, cho tôi xin."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Would you like + danh từ (mời dùng gì) và Would you like to + V (mời làm gì).",
+   "Shall I…? là cách ngỏ ý giúp rất tự nhiên của người Anh.",
+   "Trả lời \"Yes, please\" chứ không phải \"Yes, I want\"."
+  ]
+ },
+ {
+  "id": "howto-shop",
+  "title": "Nói sao để… nhờ giúp khi mua sắm",
+  "en": "How to … get help in shops",
+  "intro": "Hỏi tìm hàng, thử đồ, hỏi giá và đổi trả.",
+  "sections": [
+   {
+    "name": "Hỏi và tìm hàng",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Excuse me, where can I find the milk?",
+       "Xin lỗi, sữa để ở đâu ạ?"
+      ],
+      [
+       "Do you have this in size M?",
+       "Cái này có size M không ạ?"
+      ],
+      [
+       "Have you got a bigger one?",
+       "Có cái lớn hơn không ạ?"
+      ],
+      [
+       "Is this on sale?",
+       "Món này đang giảm giá à?"
+      ],
+      [
+       "I'm just looking, thanks.",
+       "Tôi chỉ xem thôi, cảm ơn."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Excuse me, where can I find the bread?",
+      "vi": "Xin lỗi, bánh mì ở chỗ nào ạ?"
+     }
+    ]
+   },
+   {
+    "name": "Thử đồ và hỏi giá",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Can I try it on?",
+       "Tôi mặc thử được không?"
+      ],
+      [
+       "Where is the fitting room?",
+       "Phòng thử đồ ở đâu?"
+      ],
+      [
+       "How much is this?",
+       "Cái này bao nhiêu tiền?"
+      ],
+      [
+       "It's a bit too tight.",
+       "Hơi chật một chút."
+      ],
+      [
+       "I'll take it.",
+       "Tôi lấy cái này."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Can I try these shoes on?",
+      "vi": "Tôi thử đôi giày này được không?"
+     },
+     {
+      "en": "How much are these trousers?",
+      "vi": "Cái quần này bao nhiêu tiền?"
+     }
+    ]
+   },
+   {
+    "name": "Trả tiền và đổi trả",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Do you take cards?",
+       "Ở đây nhận thẻ không ạ?"
+      ],
+      [
+       "Can I have a receipt, please?",
+       "Cho tôi xin hóa đơn."
+      ],
+      [
+       "I'd like to return this.",
+       "Tôi muốn trả lại món này."
+      ],
+      [
+       "Can I exchange it for a different size?",
+       "Tôi đổi size khác được không?"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Do you take cards? — Yes, of course.",
+      "vi": "Ở đây nhận thẻ không ạ? — Có chứ ạ."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Mở đầu bằng Excuse me khi muốn hỏi nhân viên.",
+   "\"I'm just looking\" là câu lịch sự khi chưa muốn mua.",
+   "Hỏi giá số nhiều dùng are: \"How much are these?\""
+  ]
+ },
+ {
+  "id": "howto-apologise",
+  "title": "Nói sao để… xin lỗi và nêu lý do",
+  "en": "How to … apologise and make excuses",
+  "intro": "Xin lỗi đúng mức, đưa lý do, và cách đáp lại khi người khác xin lỗi mình.",
+  "sections": [
+   {
+    "name": "Câu xin lỗi",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Mức độ"
+     ],
+     "rows": [
+      [
+       "Sorry!",
+       "nhẹ, hằng ngày"
+      ],
+      [
+       "Sorry I'm late.",
+       "xin lỗi vì đến trễ"
+      ],
+      [
+       "I'm really sorry about that.",
+       "nghiêm túc hơn"
+      ],
+      [
+       "I do apologise.",
+       "trang trọng"
+      ],
+      [
+       "It's my fault.",
+       "nhận lỗi"
+      ],
+      [
+       "It won't happen again.",
+       "hứa không tái diễn"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I'm really sorry about the mistake.",
+      "vi": "Tôi thật sự xin lỗi vì sai sót đó."
+     }
+    ]
+   },
+   {
+    "name": "Nêu lý do",
+    "formula": "Sorry, … because … · I'm afraid I can't … because …",
+    "table": {
+     "head": [
+      "Lý do hay dùng",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "I missed the bus.",
+       "Tôi lỡ chuyến xe buýt."
+      ],
+      [
+       "I was stuck in traffic.",
+       "Tôi bị kẹt xe."
+      ],
+      [
+       "Something came up.",
+       "Có việc đột xuất."
+      ],
+      [
+       "I wasn't feeling well.",
+       "Tôi thấy không khỏe."
+      ],
+      [
+       "I completely forgot.",
+       "Tôi quên mất."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Sorry I'm late. I was stuck in traffic.",
+      "vi": "Xin lỗi tôi đến trễ. Tôi bị kẹt xe."
+     },
+     {
+      "en": "I'm afraid I can't come because I have to work.",
+      "vi": "Tôi e là tôi không đến được vì phải làm việc."
+     }
+    ]
+   },
+   {
+    "name": "Đáp lại lời xin lỗi",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "That's OK.",
+       "Không sao."
+      ],
+      [
+       "Don't worry about it.",
+       "Đừng bận tâm."
+      ],
+      [
+       "Never mind.",
+       "Thôi không sao."
+      ],
+      [
+       "These things happen.",
+       "Chuyện đó vẫn xảy ra mà."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Sorry about yesterday. — Don't worry about it.",
+      "vi": "Xin lỗi về chuyện hôm qua. — Đừng bận tâm."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Excuse me dùng khi muốn gây chú ý hoặc đi ngang qua; Sorry dùng khi đã làm sai.",
+   "Sau sorry for / sorry about thì dùng danh từ hoặc V-ing: \"Sorry for being late.\"",
+   "Người Anh thường xin lỗi kèm lý do ngắn, không giải thích dài dòng."
+  ]
+ },
+ {
+  "id": "howto-directions",
+  "title": "Nói sao để… hỏi và chỉ đường",
+  "en": "How to … give directions",
+  "intro": "Hỏi đường, nghe hiểu lời chỉ đường và tự chỉ đường cho người khác.",
+  "sections": [
+   {
+    "name": "Hỏi đường",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Excuse me, how do I get to the station?",
+       "Xin lỗi, đi đến nhà ga thế nào ạ?"
+      ],
+      [
+       "Is there a bank near here?",
+       "Gần đây có ngân hàng không ạ?"
+      ],
+      [
+       "Where is the nearest bus stop?",
+       "Trạm xe buýt gần nhất ở đâu ạ?"
+      ],
+      [
+       "Is it far from here?",
+       "Có xa đây không ạ?"
+      ],
+      [
+       "Can you show me on the map?",
+       "Chỉ giúp tôi trên bản đồ được không?"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Excuse me, how do I get to the market?",
+      "vi": "Xin lỗi, đi ra chợ thế nào ạ?"
+     }
+    ]
+   },
+   {
+    "name": "Chỉ đường",
+    "formula": "Go straight on · Turn left / right · Take the first / second turning on the …",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Go straight on for about 200 metres.",
+       "Đi thẳng khoảng 200 mét."
+      ],
+      [
+       "Turn left at the traffic lights.",
+       "Rẽ trái ở đèn giao thông."
+      ],
+      [
+       "Take the second turning on the right.",
+       "Rẽ ở ngã rẽ thứ hai bên phải."
+      ],
+      [
+       "Go past the bank.",
+       "Đi ngang qua ngân hàng."
+      ],
+      [
+       "Cross the road at the crossing.",
+       "Băng qua đường ở vạch kẻ."
+      ],
+      [
+       "It's on your left.",
+       "Nó nằm bên tay trái bạn."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Go straight on and turn right at the corner.",
+      "vi": "Đi thẳng rồi rẽ phải ở góc đường."
+     }
+    ]
+   },
+   {
+    "name": "Nói vị trí và khoảng cách",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "It's next to the pharmacy.",
+       "Nó nằm cạnh nhà thuốc."
+      ],
+      [
+       "It's opposite the school.",
+       "Nó đối diện trường học."
+      ],
+      [
+       "It's between the bank and the café.",
+       "Nó nằm giữa ngân hàng và quán cà phê."
+      ],
+      [
+       "It's about five minutes' walk.",
+       "Đi bộ khoảng năm phút."
+      ],
+      [
+       "It's just around the corner.",
+       "Ngay góc đường thôi."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "The post office is opposite the market.",
+      "vi": "Bưu điện đối diện chợ."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Nghe không kịp thì nói: \"Sorry, could you say that again more slowly?\"",
+   "Người Anh nói turning hoặc street, người Mỹ hay nói block: \"Go two blocks.\"",
+   "Không chắc thì trả lời thật: \"Sorry, I'm not from here.\""
+  ]
+ },
+ {
+  "id": "howto-phone",
+  "title": "Nói sao để… gọi điện hỏi thông tin",
+  "en": "How to … phone for information",
+  "intro": "Mở đầu cuộc gọi, hỏi thông tin, nhờ nhắc lại và kết thúc lịch sự.",
+  "sections": [
+   {
+    "name": "Mở đầu cuộc gọi",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Hello, I'm calling about the English course.",
+       "Chào anh/chị, tôi gọi để hỏi về khóa tiếng Anh."
+      ],
+      [
+       "Could I speak to Mr Nam, please?",
+       "Cho tôi gặp anh Nam được không ạ?"
+      ],
+      [
+       "Is that the Grand Hotel?",
+       "Đây có phải khách sạn Grand không ạ?"
+      ],
+      [
+       "This is Lan speaking.",
+       "Tôi là Lan."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Hello, I'm calling about the room you advertised.",
+      "vi": "Chào anh/chị, tôi gọi hỏi về phòng anh/chị đăng cho thuê."
+     }
+    ]
+   },
+   {
+    "name": "Hỏi thông tin",
+    "formula": "Could you tell me + từ hỏi + chủ ngữ + động từ? (trật tự câu kể)",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "What time do you open?",
+       "Mấy giờ bên mình mở cửa ạ?"
+      ],
+      [
+       "Could you tell me how much it costs?",
+       "Cho tôi hỏi giá bao nhiêu ạ?"
+      ],
+      [
+       "Do I need to book in advance?",
+       "Tôi có cần đặt trước không ạ?"
+      ],
+      [
+       "Is there one on Sunday?",
+       "Chủ nhật có không ạ?"
+      ],
+      [
+       "How long does the course last?",
+       "Khóa học kéo dài bao lâu ạ?"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Could you tell me what time the last bus leaves?",
+      "vi": "Cho tôi hỏi chuyến xe cuối chạy lúc mấy giờ?"
+     }
+    ]
+   },
+   {
+    "name": "Khi nghe không rõ và lúc kết thúc",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Sorry, could you repeat that?",
+       "Xin lỗi, nhắc lại giúp tôi được không?"
+      ],
+      [
+       "Could you speak more slowly, please?",
+       "Anh/chị nói chậm hơn được không ạ?"
+      ],
+      [
+       "Could you spell that, please?",
+       "Đánh vần giúp tôi được không ạ?"
+      ],
+      [
+       "Hold on a moment, please.",
+       "Vui lòng giữ máy một lát."
+      ],
+      [
+       "Thanks for your help. Goodbye.",
+       "Cảm ơn anh/chị đã giúp. Tạm biệt."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Sorry, could you repeat that more slowly?",
+      "vi": "Xin lỗi, anh/chị nhắc lại chậm hơn được không?"
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Sau Could you tell me… thì dùng trật tự câu kể: \"…how much it costs\", không phải \"how much does it cost\".",
+   "Người Anh hay nói This is … speaking thay vì I am …",
+   "Nhắc lại số và tên bằng cách đánh vần cho chắc."
+  ]
+ },
+ {
+  "id": "howto-hotel",
+  "title": "Nói sao để… nhờ và hỏi ở khách sạn",
+  "en": "How to … make requests and offers in a hotel",
+  "intro": "Nhận phòng, nhờ giúp, báo hỏng hóc và trả phòng.",
+  "sections": [
+   {
+    "name": "Nhận phòng",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "I have a reservation under the name Lan.",
+       "Tôi có đặt phòng tên Lan."
+      ],
+      [
+       "I'd like to check in, please.",
+       "Tôi muốn nhận phòng."
+      ],
+      [
+       "Do you have any rooms available?",
+       "Bên mình còn phòng trống không ạ?"
+      ],
+      [
+       "Is breakfast included?",
+       "Có bao gồm bữa sáng không ạ?"
+      ],
+      [
+       "What time is check-out?",
+       "Mấy giờ phải trả phòng ạ?"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I have a reservation for two nights.",
+      "vi": "Tôi có đặt phòng hai đêm."
+     }
+    ]
+   },
+   {
+    "name": "Nhờ giúp",
+    "formula": "Could you + V …, please? · Could I have + danh từ …?",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "Could you call a taxi for me?",
+       "Gọi giúp tôi một chiếc taxi được không?"
+      ],
+      [
+       "Could I have an extra towel?",
+       "Cho tôi xin thêm một cái khăn."
+      ],
+      [
+       "Could I have a wake-up call at seven?",
+       "Gọi tôi dậy lúc bảy giờ nhé?"
+      ],
+      [
+       "Can I leave my luggage here?",
+       "Tôi gửi hành lý ở đây được không?"
+      ],
+      [
+       "Is there Wi-Fi in the room?",
+       "Trong phòng có Wi-Fi không ạ?"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Could you call a taxi for me, please?",
+      "vi": "Anh/chị gọi giúp tôi một chiếc taxi nhé?"
+     }
+    ]
+   },
+   {
+    "name": "Báo hỏng hóc và trả phòng",
+    "table": {
+     "head": [
+      "Mẫu câu",
+      "Nghĩa"
+     ],
+     "rows": [
+      [
+       "The air conditioning isn't working.",
+       "Máy lạnh không chạy."
+      ],
+      [
+       "There's no hot water.",
+       "Không có nước nóng."
+      ],
+      [
+       "The room is a bit noisy.",
+       "Phòng hơi ồn."
+      ],
+      [
+       "Could I change rooms?",
+       "Tôi đổi phòng được không?"
+      ],
+      [
+       "I'd like to check out, please.",
+       "Tôi muốn trả phòng."
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "Excuse me, the air conditioning isn't working.",
+      "vi": "Xin lỗi, máy lạnh trong phòng không chạy."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Could you…? lịch sự hơn Can you…?, rất hợp khi nhờ nhân viên.",
+   "Nhờ việc gì thêm please vào cuối là đủ lịch sự.",
+   "Nhân viên hay hỏi: \"How many nights?\", \"Could I see your passport?\""
+  ]
+ },
+ {
+  "id": "regular-ed",
+  "title": "Động từ có quy tắc: thêm -ed",
+  "en": "Regular verbs: -ed endings",
+  "intro": "Động từ có quy tắc chỉ cần thêm -ed là ra dạng quá khứ (V2) và quá khứ phân từ (V3). Bài này gồm quy tắc viết -ed và ba cách đọc đuôi -ed.",
+  "sections": [
+   {
+    "name": "Quy tắc thêm -ed",
+    "formula": "Động từ nguyên thể + -ed → V2 (quá khứ) và V3 (quá khứ phân từ), hai dạng giống nhau",
+    "usage": "Động từ có quy tắc dùng chung một dạng cho V2 và V3: work → worked → worked.",
+    "table": {
+     "head": [
+      "Trường hợp",
+      "Cách thêm",
+      "Ví dụ"
+     ],
+     "rows": [
+      [
+       "Thông thường",
+       "+ ed",
+       "work → worked · play → played"
+      ],
+      [
+       "Tận cùng là -e",
+       "+ d",
+       "live → lived · like → liked"
+      ],
+      [
+       "Phụ âm + y",
+       "đổi y thành i, + ed",
+       "study → studied · carry → carried"
+      ],
+      [
+       "Nguyên âm + y",
+       "giữ nguyên y, + ed",
+       "play → played · enjoy → enjoyed"
+      ],
+      [
+       "1 nguyên âm + 1 phụ âm cuối (trọng âm ở cuối)",
+       "gấp đôi phụ âm, + ed",
+       "stop → stopped · plan → planned"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "I worked at home yesterday.",
+      "vi": "Hôm qua tôi làm việc ở nhà."
+     },
+     {
+      "en": "She studied English for two years.",
+      "vi": "Cô ấy đã học tiếng Anh hai năm."
+     }
+    ]
+   },
+   {
+    "name": "Khi nào gấp đôi phụ âm cuối",
+    "usage": "Chỉ gấp đôi khi động từ kết thúc bằng 1 nguyên âm + 1 phụ âm VÀ trọng âm rơi vào âm tiết cuối. Không gấp đôi với w, x, y.",
+    "table": {
+     "head": [
+      "Gấp đôi",
+      "Không gấp đôi"
+     ],
+     "rows": [
+      [
+       "stop → stopped",
+       "visit → visited (trọng âm đầu)"
+      ],
+      [
+       "plan → planned",
+       "open → opened (trọng âm đầu)"
+      ],
+      [
+       "prefer → preferred",
+       "listen → listened (trọng âm đầu)"
+      ],
+      [
+       "admit → admitted",
+       "play → played (kết thúc bằng y)"
+      ],
+      [
+       "travel → travelled (Anh)",
+       "travel → traveled (Mỹ)"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "The bus stopped in front of my house.",
+      "vi": "Xe buýt dừng trước nhà tôi."
+     },
+     {
+      "en": "We visited my grandparents last Sunday.",
+      "vi": "Chủ nhật trước chúng tôi về thăm ông bà."
+     }
+    ]
+   },
+   {
+    "name": "Ba cách đọc đuôi -ed",
+    "formula": "/ɪd/ sau t, d · /t/ sau âm vô thanh · /d/ sau âm hữu thanh và nguyên âm",
+    "usage": "Đuôi -ed viết giống nhau nhưng đọc ba kiểu. Chỉ thêm một âm tiết khi động từ kết thúc bằng t hoặc d.",
+    "table": {
+     "head": [
+      "Đọc là",
+      "Khi động từ kết thúc bằng",
+      "Ví dụ"
+     ],
+     "rows": [
+      [
+       "/ɪd/ (thêm 1 âm tiết)",
+       "t, d",
+       "wanted · needed · visited · decided"
+      ],
+      [
+       "/t/",
+       "âm vô thanh: p, k, f, s, ʃ, tʃ",
+       "stopped · worked · laughed · washed · watched"
+      ],
+      [
+       "/d/",
+       "âm hữu thanh và nguyên âm: b, g, v, z, m, n, l, r…",
+       "played · called · lived · cleaned · opened"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "He wanted to help, so he called me.",
+      "vi": "Anh ấy muốn giúp nên đã gọi cho tôi."
+     },
+     {
+      "en": "She washed the car and cleaned the house.",
+      "vi": "Cô ấy rửa xe và dọn nhà."
+     }
+    ]
+   },
+   {
+    "name": "Động từ có quy tắc hay dùng",
+    "usage": "Học thuộc nhóm này là kể được phần lớn chuyện đã qua. Động từ không theo quy tắc nằm ở tab Bất quy tắc.",
+    "table": {
+     "head": [
+      "Nguyên thể",
+      "Quá khứ (-ed)",
+      "Đọc đuôi"
+     ],
+     "rows": [
+      [
+       "work",
+       "worked",
+       "/t/"
+      ],
+      [
+       "stop",
+       "stopped",
+       "/t/"
+      ],
+      [
+       "wash",
+       "washed",
+       "/t/"
+      ],
+      [
+       "watch",
+       "watched",
+       "/t/"
+      ],
+      [
+       "cook",
+       "cooked",
+       "/t/"
+      ],
+      [
+       "ask",
+       "asked",
+       "/t/"
+      ],
+      [
+       "help",
+       "helped",
+       "/t/"
+      ],
+      [
+       "laugh",
+       "laughed",
+       "/t/"
+      ],
+      [
+       "play",
+       "played",
+       "/d/"
+      ],
+      [
+       "call",
+       "called",
+       "/d/"
+      ],
+      [
+       "live",
+       "lived",
+       "/d/"
+      ],
+      [
+       "clean",
+       "cleaned",
+       "/d/"
+      ],
+      [
+       "open",
+       "opened",
+       "/d/"
+      ],
+      [
+       "listen",
+       "listened",
+       "/d/"
+      ],
+      [
+       "study",
+       "studied",
+       "/d/"
+      ],
+      [
+       "try",
+       "tried",
+       "/d/"
+      ],
+      [
+       "carry",
+       "carried",
+       "/d/"
+      ],
+      [
+       "answer",
+       "answered",
+       "/d/"
+      ],
+      [
+       "travel",
+       "travelled",
+       "/d/"
+      ],
+      [
+       "arrive",
+       "arrived",
+       "/d/"
+      ],
+      [
+       "want",
+       "wanted",
+       "/ɪd/"
+      ],
+      [
+       "need",
+       "needed",
+       "/ɪd/"
+      ],
+      [
+       "visit",
+       "visited",
+       "/ɪd/"
+      ],
+      [
+       "decide",
+       "decided",
+       "/ɪd/"
+      ],
+      [
+       "start",
+       "started",
+       "/ɪd/"
+      ],
+      [
+       "wait",
+       "waited",
+       "/ɪd/"
+      ]
+     ]
+    },
+    "examples": [
+     {
+      "en": "They waited for the train and started talking.",
+      "vi": "Họ đợi tàu rồi bắt đầu trò chuyện."
+     },
+     {
+      "en": "I tried the food and liked it.",
+      "vi": "Tôi thử món ăn và thấy thích."
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Sau didn't thì động từ về nguyên thể, không thêm -ed: \"I didn't watched\" → \"I didn't watch\".",
+   "Phụ âm + y mới đổi thành i: study → studied, nhưng play → played (nguyên âm + y).",
+   "Chỉ \"wanted, needed, visited…\" mới đọc thêm một âm tiết /ɪd/; \"worked, played\" vẫn một âm tiết.",
+   "Đừng gấp đôi phụ âm khi trọng âm ở đầu: \"visitted\" ✗ → \"visited\" ✓.",
+   "Động từ bất quy tắc không thêm -ed: go → went, buy → bought. Xem tab Bất quy tắc."
+  ]
  },
  {
   "id": "compare",
@@ -8355,7 +10719,7 @@ tabButtons.forEach(btn => {
    UI WIRING - Tenses page
 ============================================================ */
 /* ---------- Tenses by CEFR level (A1 → C1) ---------- */
-const tensesList = document.getElementById('tenses-list');
+const tensesList = document.getElementById('grammar-root');   // the Tenses lessons live in the Grammar tab
 const TN_LEVELS = [
   { n: 1, code: 'A1', vi: 'Mới bắt đầu', goal: 'Nói về bản thân, thói quen hằng ngày và việc đang làm. Kể đơn giản hôm qua ở đâu, thế nào.' },
   { n: 2, code: 'A2', vi: 'Sơ cấp', goal: 'Kể lại chuyện đã xảy ra, nói về kế hoạch, dự định và kinh nghiệm của bản thân.' },
@@ -8378,133 +10742,140 @@ function tnPlay(text, aria) {
   return b;
 }
 
-function tnCard(t) {
-  const card = tnEl('div', 'tense-card tn-card' + (tnDone.has(t.id) ? ' done' : ''));
-  const top = tnEl('div', 'tn-top');
-  const ttl = tnEl('div', 'tn-title');
-  ttl.appendChild(tnEl('h3', null, t.name));
-  ttl.appendChild(tnEl('div', 'tn-en', t.en));
-  top.appendChild(ttl);
-  const ck = tnEl('button', 'tn-done' + (tnDone.has(t.id) ? ' on' : ''), tnDone.has(t.id) ? '✓ Đã nắm' : 'Đánh dấu đã nắm');
-  ck.addEventListener('click', () => {
-    if (tnDone.has(t.id)) tnDone.delete(t.id); else tnDone.add(t.id);
-    try { localStorage.setItem(TN_DONE_KEY, JSON.stringify([...tnDone])); } catch (e) {}
-    renderTenses(true);
-  });
-  top.appendChild(ck);
-  card.appendChild(top);
+function tnTop() {
+  const m = document.querySelector('main');
+  window.scrollTo(0, m ? Math.max(0, m.offsetTop - 8) : 0);
+}
 
-  const f = tnEl('div', 'tn-formula');
-  [['+', 'Khẳng định', t.formula.pos], ['−', 'Phủ định', t.formula.neg], ['?', 'Câu hỏi', t.formula.q]].forEach(([sym, lbl, txt]) => {
+/* formula box: every variant on its own line, only the first keeps the badge */
+function tnFxBox(rows) {
+  const box = tnEl('div', 'tn-formula');
+  rows.forEach(([sym, lbl, txt]) => {
     if (!txt) return;
-    // each variant gets its own line; only the first one carries the +/−/? badge
     String(txt).split(/\s+·\s+/).filter(Boolean).forEach((part, i) => {
       const r = tnEl('div', 'tn-frow' + (i ? ' tn-frow-sub' : ''));
-      const s = tnEl('span', 'tn-sym' + (i ? ' tn-sym-ghost' : ''), i ? '·' : sym);
-      if (!i) s.title = lbl;
+      const s = tnEl('span', 'tn-sym' + (i ? ' tn-sym-ghost' : (sym.length > 1 ? ' tn-sym-w' : '')), i ? '·' : sym);
+      if (!i && lbl) s.title = lbl;
       r.appendChild(s); r.appendChild(tnEl('span', 'tn-ftxt', part));
-      f.appendChild(r);
+      box.appendChild(r);
     });
   });
-  card.appendChild(f);
+  return box;
+}
 
-  card.appendChild(tnEl('div', 'tn-sub', 'Dùng khi'));
-  const ul = tnEl('ul', 'tn-usage');
-  t.usage.forEach(u => ul.appendChild(tnEl('li', null, u)));
-  card.appendChild(ul);
-
-  if (t.signals && t.signals.length) {
-    card.appendChild(tnEl('div', 'tn-sub', 'Dấu hiệu nhận biết'));
-    const sg = tnEl('div', 'tn-signals');
-    t.signals.forEach(x => sg.appendChild(tnEl('span', 'tn-sig', x)));
-    card.appendChild(sg);
+/* Wh- / How- question patterns, shared by the Tenses and Grammar tabs */
+function tnQuestionCard(id) {
+  const wh = typeof EX_WH_FX !== 'undefined' ? EX_WH_FX[id] : null;
+  const how = typeof EX_HOW_FX !== 'undefined' ? EX_HOW_FX[id] : null;
+  if (!wh && !how) return null;
+  const card = tnEl('div', 'tense-card');
+  card.appendChild(tnEl('h3', null, 'Câu hỏi Wh- và How-'));
+  if (wh) {
+    card.appendChild(tnEl('div', 'tn-sub', 'Wh- · what, where, when, why, who, whom, whose, which'));
+    card.appendChild(tnFxBox([['Wh-', 'Câu hỏi Wh-', wh]]));
   }
-
-  card.appendChild(tnEl('div', 'tn-sub', 'Ví dụ'));
-  t.examples.forEach(ex => {
-    const row = tnEl('div', 'tn-ex');
-    const txt = tnEl('div', 'tn-ex-txt');
-    txt.appendChild(tnEl('div', 'tn-ex-en', ex.en));
-    txt.appendChild(tnEl('div', 'tn-ex-vi', ex.vi));
-    row.appendChild(txt);
-    row.appendChild(tnPlay(ex.en, 'Nghe câu ví dụ'));
-    card.appendChild(row);
-  });
-
-  if (t.mistake) {
-    const m = tnEl('div', 'tn-mistake');
-    m.appendChild(tnEl('div', 'tn-mis-t', '⚠️ Lỗi hay gặp'));
-    const w = tnEl('div', 'tn-mis-row'); w.appendChild(tnEl('span', 'tn-x', '✗')); w.appendChild(tnEl('s', null, t.mistake.wrong)); m.appendChild(w);
-    const r = tnEl('div', 'tn-mis-row'); r.appendChild(tnEl('span', 'tn-v', '✓')); r.appendChild(tnEl('b', null, t.mistake.right)); r.appendChild(tnPlay(t.mistake.right, 'Nghe câu đúng')); m.appendChild(r);
-    m.appendChild(tnEl('div', 'tn-mis-note', t.mistake.note));
-    card.appendChild(m);
+  if (how) {
+    card.appendChild(tnEl('div', 'tn-sub', 'How- · how, how many, how much, how long, how often, how far'));
+    card.appendChild(tnFxBox([['How-', 'Câu hỏi How-', how]]));
   }
   return card;
 }
 
-function renderTenses(keepScroll) {
-  const y = window.scrollY;
-  tensesList.innerHTML = '';
-  // level chips, same look as the Vocabulary tab
-  const chips = tnEl('div', 'vc-levels tn-levels');
-  TN_LEVELS.forEach(L => {
-    const n = tnOf(L.n).length, got = tnGot(L.n);
-    const b = tnEl('button', 'vc-level vc-lvl' + L.n + (L.n === tnLevel ? ' active' : '') + (got === n ? ' done' : ''));
-    b.appendChild(tnEl('span', 'vc-level-code', L.code));
-    b.appendChild(tnEl('span', 'vc-level-vi', L.vi));
-    b.appendChild(tnEl('span', 'vc-level-n', got === n ? `✓ ${n} bài` : got ? `${got}/${n}` : `${n} bài`));
-    b.setAttribute('aria-pressed', L.n === tnLevel ? 'true' : 'false');
-    b.addEventListener('click', () => {
-      tnLevel = L.n;
-      try { localStorage.setItem(TN_LV_KEY, String(L.n)); } catch (e) {}
-      renderTenses();
-      try { tensesList.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (e) {}
-    });
-    chips.appendChild(b);
+/* jump to the matching lesson in the Exercises tab */
+function tnPracticeBtn(id, label) {
+  if (typeof EX_DATA === 'undefined' || !EX_DATA[id]) return null;
+  const b = tnEl('button', 'btn-ghost gr-practice', label || 'Làm bài tập dịch của bài này →');
+  b.addEventListener('click', () => {
+    const tab = document.querySelector('nav.tabbar button[data-page="page-exercise"]');
+    if (tab) tab.click();
+    try { if (typeof exOpenLesson === 'function') exOpenLesson(id); } catch (e) {}
+    tnTop();
   });
-  tensesList.appendChild(chips);
-
-  const L = TN_LEVELS[tnLevel - 1], list = tnOf(tnLevel), got = tnGot(tnLevel);
-  const intro = tnEl('div', 'tense-card tn-intro');
-  const ih = tnEl('div', 'tn-intro-h');
-  ih.appendChild(tnEl('span', 'tn-badge', L.code));
-  ih.appendChild(tnEl('b', null, `${L.vi} · ${list.length} bài`));
-  intro.appendChild(ih);
-  intro.appendChild(tnEl('p', 'tn-goal', 'Mục tiêu: ' + L.goal));
-  const pg = tnEl('div', 'vc-head-prog');
-  pg.appendChild(tnEl('span', null, `Đã nắm ${got}/${list.length}`));
-  const bar = tnEl('span', 'vc-bar'); const fill = tnEl('span'); fill.style.width = (got / list.length * 100) + '%'; bar.appendChild(fill); bar.style.flex = '1';
-  pg.appendChild(bar);
-  intro.appendChild(pg);
-  if (tnLevel > 1) {
-    const prev = tnOf(tnLevel - 1), pgot = tnGot(tnLevel - 1);
-    if (pgot < prev.length) intro.appendChild(tnEl('p', 'tn-tip', `💡 Bạn còn ${prev.length - pgot} bài ở ${TN_LEVELS[tnLevel - 2].code} chưa đánh dấu. Nên chắc phần nền trước khi học cấp này.`));
-  }
-  const which = tnEl('details', 'tn-which');
-  which.appendChild(tnEl('summary', null, 'Mình nên học ở trình độ nào?'));
-  [['A1', 'Mới học, chỉ biết vài từ và câu chào hỏi.'], ['A2', 'Giới thiệu được bản thân, hỏi đáp đơn giản về cuộc sống hằng ngày.'],
-   ['B1', 'Kể được chuyện đã qua, xem video có phụ đề, viết được đoạn văn ngắn.'], ['B2', 'Giao tiếp khá tự nhiên, đọc báo và xem phim hiểu ý chính.'],
-   ['C1', 'Dùng tiếng Anh trôi chảy trong công việc và học thuật, muốn diễn đạt tinh tế hơn.']].forEach(([c, d]) => {
-    const r = tnEl('div', 'tn-which-row'); r.appendChild(tnEl('span', 'tn-badge', c)); r.appendChild(tnEl('span', null, d)); which.appendChild(r);
-  });
-  intro.appendChild(which);
-  tensesList.appendChild(intro);
-
-  list.forEach(t => tensesList.appendChild(tnCard(t)));
-
-  if (tnLevel < 5) {
-    const nx = TN_LEVELS[tnLevel];
-    const nb = tnEl('button', 'btn-primary vc-next-unit', `Học tiếp cấp ${nx.code} · ${nx.vi} →`);
-    nb.addEventListener('click', () => {
-      tnLevel = nx.n; try { localStorage.setItem(TN_LV_KEY, String(nx.n)); } catch (e) {}
-      renderTenses();
-      try { tensesList.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (e) {}
-    });
-    tensesList.appendChild(nb);
-  }
-  if (keepScroll) window.scrollTo(0, y);
+  return b;
 }
-renderTenses();
+
+/* the lesson list lives in renderGrammarHome(), which shows tenses and grammar together */
+function renderTenses(keepScroll) { renderGrammarHome(keepScroll); }
+
+/* ---------- Tenses: one lesson, same layout as the Grammar tab ---------- */
+function renderTenseTopic(id) {
+  const t = TENSES.find(x => x.id === id);
+  if (!t) return renderTenses();
+  tnLevel = t.lv;
+  try { localStorage.setItem(TN_LV_KEY, String(t.lv)); } catch (e) {}
+  const L = TN_LEVELS[t.lv - 1], list = mxOf(t.lv), pos = list.findIndex(x => x.k === 'tn' && x.id === t.id);
+  tensesList.innerHTML = '';
+
+  if (typeof grSetLevel === 'function') grSetLevel(t.lv);
+  const back = tnEl('button', 'gr-back', `← Ngữ pháp ${L.code}`);
+  back.addEventListener('click', () => { renderGrammarHome(); tnTop(); });
+  tensesList.appendChild(back);
+
+  const head = tnEl('div', 'gr-head');
+  head.appendChild(tnEl('div', 'gr-en', `${L.code} · Bài ${pos + 1}/${list.length} · ${t.en}`));
+  head.appendChild(tnEl('h2', 'gr-title', t.name));
+  tensesList.appendChild(head);
+
+  const fx = tnEl('div', 'tense-card');
+  fx.appendChild(tnEl('h3', null, 'Công thức'));
+  fx.appendChild(tnFxBox([['+', 'Khẳng định', t.formula.pos], ['−', 'Phủ định', t.formula.neg], ['?', 'Câu hỏi', t.formula.q]]));
+  tensesList.appendChild(fx);
+
+  const q = tnQuestionCard(t.id);
+  if (q) tensesList.appendChild(q);
+
+  const use = tnEl('div', 'tense-card');
+  use.appendChild(tnEl('h3', null, 'Dùng khi nào'));
+  const ul = tnEl('ul', 'tn-usage');
+  t.usage.forEach(u => ul.appendChild(tnEl('li', null, u)));
+  use.appendChild(ul);
+  if (t.signals && t.signals.length) {
+    use.appendChild(tnEl('div', 'tn-sub', 'Dấu hiệu nhận biết'));
+    const sg = tnEl('div', 'tn-signals');
+    t.signals.forEach(x => sg.appendChild(tnEl('span', 'tn-sig', x)));
+    use.appendChild(sg);
+  }
+  tensesList.appendChild(use);
+
+  const ex = tnEl('div', 'tense-card');
+  ex.appendChild(tnEl('h3', null, 'Ví dụ'));
+  t.examples.forEach(e => {
+    const row = tnEl('div', 'tn-ex');
+    const txt = tnEl('div', 'tn-ex-txt');
+    txt.appendChild(tnEl('div', 'tn-ex-en', e.en));
+    txt.appendChild(tnEl('div', 'tn-ex-vi', e.vi));
+    row.appendChild(txt);
+    row.appendChild(tnPlay(e.en, 'Nghe câu ví dụ'));
+    ex.appendChild(row);
+  });
+  tensesList.appendChild(ex);
+
+  if (t.mistake) {
+    const mc = tnEl('div', 'tense-card gr-tips');
+    mc.appendChild(tnEl('h3', null, 'Lỗi hay gặp'));
+    const m = tnEl('div', 'tn-mistake');
+    const w = tnEl('div', 'tn-mis-row'); w.appendChild(tnEl('span', 'tn-x', '✗')); w.appendChild(tnEl('s', null, t.mistake.wrong)); m.appendChild(w);
+    const r = tnEl('div', 'tn-mis-row'); r.appendChild(tnEl('span', 'tn-v', '✓')); r.appendChild(tnEl('b', null, t.mistake.right)); r.appendChild(tnPlay(t.mistake.right, 'Nghe câu đúng')); m.appendChild(r);
+    m.appendChild(tnEl('div', 'tn-mis-note', t.mistake.note));
+    mc.appendChild(m);
+    tensesList.appendChild(mc);
+  }
+
+  const pr = tnPracticeBtn(t.id);
+  if (pr) tensesList.appendChild(pr);
+
+  const done = tnEl('button', 'tn-done gr-done' + (tnDone.has(t.id) ? ' on' : ''), tnDone.has(t.id) ? '✓ Đã nắm bài này' : 'Đánh dấu đã nắm bài này');
+  done.addEventListener('click', () => {
+    if (tnDone.has(t.id)) tnDone.delete(t.id); else tnDone.add(t.id);
+    try { localStorage.setItem(TN_DONE_KEY, JSON.stringify([...tnDone])); } catch (e) {}
+    done.classList.toggle('on', tnDone.has(t.id));
+    done.textContent = tnDone.has(t.id) ? '✓ Đã nắm bài này' : 'Đánh dấu đã nắm bài này';
+  });
+  tensesList.appendChild(done);
+
+  tensesList.appendChild(mxNavEl('tn', t.id, t.lv));
+  tnTop();
+}
 
 /* ============================================================
    UI WIRING - Irregular Verbs page
@@ -8708,7 +11079,15 @@ const GR_LEVELS = [
 const GR_PLAN = [
   ['thereis', 1, 'thereis'], ['demonstratives', 1, 'demonstratives'], ['articles', 1, 'articles'], ['nouns', 1, 'nouns'],
   ['pronouns', 1, 'pronouns'], ['prepositions', 1, 'prepositions'], ['modal-can', 1, 'modal', [0], 'Can / Could', 'Modal verbs: can, could'],
-  ['compare', 2, 'compare'], ['modal-more', 2, 'modal', [1, 2, 3, 4], 'Động từ khuyết thiếu: may, must, should…', 'Modal verbs'],
+  ['howto-suggest', 2, 'howto-suggest'], ['possessive-s', 2, 'possessive-s'], ['frequency', 2, 'frequency'],
+  ['howto-restaurant', 2, 'howto-restaurant'], ['like-ing', 2, 'like-ing'], ['havegot', 2, 'havegot'],
+  ['howto-invite', 2, 'howto-invite'], ['howmuch-howadj', 2, 'howmuch-howadj'], ['howto-shop', 2, 'howto-shop'],
+  ['imperative', 2, 'imperative'], ['regular-ed', 2, 'regular-ed'], ['wh-questions', 2, 'wh-questions'],
+  ['howto-apologise', 2, 'howto-apologise'], ['adj-modifier', 2, 'adj-modifier'], ['compare', 2, 'compare'],
+  ['howto-directions', 2, 'howto-directions'], ['prep-movement', 2, 'prep-movement'],
+  ['simple-vs-continuous', 2, 'simple-vs-continuous'], ['howto-phone', 2, 'howto-phone'],
+  ['verb-to-v', 2, 'verb-to-v'], ['howto-hotel', 2, 'howto-hotel'], ['adverb-manner', 2, 'adverb-manner'],
+  ['modal-more', 2, 'modal', [1, 2, 3, 4], 'Động từ khuyết thiếu: may, must, should…', 'Modal verbs'],
   ['cond-1', 2, 'conditional', [0, 1, 4], 'Câu điều kiện loại 0 & 1', 'Zero & first conditional'],
   ['too', 2, 'too'], ['enough', 2, 'enough'], ['ittakes', 2, 'ittakes'], ['itsadj', 2, 'itsadj'],
   ['passive', 3, 'passive'], ['cond-2', 3, 'conditional', [2], 'Câu điều kiện loại 2', 'Second conditional'],
@@ -8787,67 +11166,118 @@ function grToggleDone(id) {
   try { localStorage.setItem(GR_DONE_KEY, JSON.stringify([...grDone])); } catch (e) {}
 }
 
-function renderGrammarHome() {
+/* ---------- Tenses + grammar structures, one list per level ---------- */
+const MX_GOAL = [
+  'Nắm các mẫu câu nền tảng: hiện tại đơn, việc đang làm, was/were, there is/are, mạo từ, đại từ, giới từ và can/could.',
+  'Kể chuyện quá khứ, nói kế hoạch tương lai, hiện tại hoàn thành, so sánh, câu điều kiện loại 1 và các mẫu too/enough.',
+  'Diễn đạt nhiều mốc thời gian, câu bị động, câu tường thuật, mệnh đề quan hệ, điều kiện loại 2 và các cấu trúc so… that.',
+  'Thì hoàn thành phức tạp, câu điều kiện loại 3, nhờ người khác làm, câu nhượng bộ và các cặp liên từ.',
+  'Diễn đạt tinh tế và trang trọng: thì hoàn thành tiếp diễn, câu ước, đảo ngữ, điều kiện hỗn hợp, câu chẻ.'
+];
+const mxOf = n => [
+  ...tnOf(n).map(t => ({ k: 'tn', id: t.id, title: t.name, en: t.en, lv: n })),
+  ...grOf(n).map(t => ({ k: 'gr', id: t.id, title: t.title, en: t.en, lv: n }))
+];
+const mxIsDone = it => it.k === 'tn' ? tnDone.has(it.id) : grDone.has(it.id);
+const mxGot = n => mxOf(n).filter(mxIsDone).length;
+const mxOpen = it => { if (it.k === 'tn') renderTenseTopic(it.id); else renderGrammarTopic(it.id); };
+
+/* previous / next across the whole level, tenses first then structures */
+function mxNavEl(kind, id, lv) {
+  const list = mxOf(lv), pos = list.findIndex(x => x.k === kind && x.id === id);
+  const nav = grEl('div', 'gr-nav');
+  const prev = list[pos - 1];
+  const next = list[pos + 1] || (lv < 5 ? mxOf(lv + 1)[0] : null);
+  [[prev, '← Trước'], [next, next && next.lv !== lv ? `Sang cấp ${GR_LEVELS[next.lv - 1].code} →` : 'Tiếp →']].forEach(([other, label], k) => {
+    if (!other) { nav.appendChild(grEl('span', 'gr-nav-gap')); return; }
+    const b = grEl('button', 'gr-nav-btn' + (k ? ' next' : ''));
+    b.appendChild(grEl('span', 'gr-nav-label', label));
+    b.appendChild(grEl('span', 'gr-nav-title', other.title));
+    b.addEventListener('click', () => { mxOpen(other); grScrollTop(); });
+    nav.appendChild(b);
+  });
+  return nav;
+}
+
+function renderGrammarHome(keepScroll) {
+  const y = window.scrollY;
   grRoot.innerHTML = '';
   grRoot.appendChild(grEl('div', 'section-title', 'Ngữ pháp theo trình độ'));
-  grRoot.appendChild(grEl('div', 'section-sub', 'Chọn đúng trình độ của bạn (A1 → C1) và tập trung vào các cấu trúc ở cấp đó. Chạm vào một bài để xem công thức, ví dụ có nút nghe và lỗi hay gặp.'));
+  grRoot.appendChild(grEl('div', 'section-sub', 'Các thì và cấu trúc câu gom chung một chỗ, chia theo trình độ A1 → C1. Chạm vào một bài để xem công thức, câu hỏi Wh- và How-, ví dụ có nút nghe và lỗi hay gặp.'));
   const chips = grEl('div', 'vc-levels tn-levels');
   GR_LEVELS.forEach(L => {
-    const n = grOf(L.n).length, got = grGot(L.n);
+    const n = mxOf(L.n).length, got = mxGot(L.n);
     const b = grEl('button', 'vc-level vc-lvl' + L.n + (L.n === grLevel ? ' active' : '') + (got === n ? ' done' : ''));
     b.appendChild(grEl('span', 'vc-level-code', L.code));
     b.appendChild(grEl('span', 'vc-level-vi', L.vi));
     b.appendChild(grEl('span', 'vc-level-n', got === n ? `✓ ${n} bài` : got ? `${got}/${n}` : `${n} bài`));
     b.setAttribute('aria-pressed', L.n === grLevel ? 'true' : 'false');
-    b.addEventListener('click', () => { grSetLevel(L.n); renderGrammarHome(); });
+    b.addEventListener('click', () => { grSetLevel(L.n); tnLevel = L.n; renderGrammarHome(); });
     chips.appendChild(b);
   });
   grRoot.appendChild(chips);
 
-  const L = GR_LEVELS[grLevel - 1], list = grOf(grLevel), got = grGot(grLevel);
+  const L = GR_LEVELS[grLevel - 1], list = mxOf(grLevel), got = mxGot(grLevel);
+  const nTense = tnOf(grLevel).length;
   const intro = grEl('div', 'tense-card tn-intro');
   const ih = grEl('div', 'tn-intro-h');
   ih.appendChild(grEl('span', 'tn-badge', L.code));
-  ih.appendChild(grEl('b', null, `${L.vi} · ${list.length} bài`));
+  ih.appendChild(grEl('b', null, `${L.vi} · ${list.length} bài (${nTense} thì + ${list.length - nTense} cấu trúc)`));
   intro.appendChild(ih);
-  intro.appendChild(grEl('p', 'tn-goal', 'Mục tiêu: ' + L.goal));
+  intro.appendChild(grEl('p', 'tn-goal', 'Mục tiêu: ' + (MX_GOAL[grLevel - 1] || L.goal)));
   const pg = grEl('div', 'vc-head-prog');
   pg.appendChild(grEl('span', null, `Đã nắm ${got}/${list.length}`));
   const bar = grEl('span', 'vc-bar'); const fill = grEl('span'); fill.style.width = (got / list.length * 100) + '%'; bar.appendChild(fill); bar.style.flex = '1';
   pg.appendChild(bar); intro.appendChild(pg);
   if (grLevel > 1) {
-    const prev = grOf(grLevel - 1), pgot = grGot(grLevel - 1);
+    const prev = mxOf(grLevel - 1), pgot = mxGot(grLevel - 1);
     if (pgot < prev.length) intro.appendChild(grEl('p', 'tn-tip', `💡 Bạn còn ${prev.length - pgot} bài ở ${GR_LEVELS[grLevel - 2].code} chưa đánh dấu. Nên chắc phần nền trước khi học cấp này.`));
   }
+  const which = grEl('details', 'tn-which');
+  which.appendChild(grEl('summary', null, 'Mình nên học ở trình độ nào?'));
+  [['A1', 'Mới học, chỉ biết vài từ và câu chào hỏi.'], ['A2', 'Giới thiệu được bản thân, hỏi đáp đơn giản về cuộc sống hằng ngày.'],
+   ['B1', 'Kể được chuyện đã qua, xem video có phụ đề, viết được đoạn văn ngắn.'], ['B2', 'Giao tiếp khá tự nhiên, đọc báo và xem phim hiểu ý chính.'],
+   ['C1', 'Dùng tiếng Anh trôi chảy trong công việc và học thuật, muốn diễn đạt tinh tế hơn.']].forEach(([c, d]) => {
+    const r = grEl('div', 'tn-which-row'); r.appendChild(grEl('span', 'tn-badge', c)); r.appendChild(grEl('span', null, d)); which.appendChild(r);
+  });
+  intro.appendChild(which);
   grRoot.appendChild(intro);
 
-  const grid = grEl('div', 'gr-grid');
-  list.forEach((t, i) => {
-    const done = grDone.has(t.id);
-    const b = grEl('button', 'gr-topic' + (done ? ' done' : ''));
-    b.appendChild(grEl('span', 'gr-num', done ? '✓' : String(i + 1)));
-    b.appendChild(grEl('span', 'gr-t-title', t.title));
-    b.appendChild(grEl('span', 'gr-t-en', t.en));
-    b.addEventListener('click', () => renderGrammarTopic(t.id));
-    grid.appendChild(b);
+  [['⏱️ Các thì', 'tn'], ['🔧 Cấu trúc câu', 'gr']].forEach(([label, kind]) => {
+    const part = list.filter(x => x.k === kind);
+    if (!part.length) return;
+    const head = grEl('div', 'tense-group-title', `${label} · ${part.filter(mxIsDone).length}/${part.length}`);
+    grRoot.appendChild(head);
+    const grid = grEl('div', 'gr-grid');
+    part.forEach(it => {
+      const done = mxIsDone(it);
+      const b = grEl('button', 'gr-topic' + (done ? ' done' : ''));
+      b.appendChild(grEl('span', 'gr-num', done ? '✓' : String(list.indexOf(it) + 1)));
+      b.appendChild(grEl('span', 'gr-t-title', it.title));
+      b.appendChild(grEl('span', 'gr-t-en', it.en));
+      b.addEventListener('click', () => mxOpen(it));
+      grid.appendChild(b);
+    });
+    grRoot.appendChild(grid);
   });
-  grRoot.appendChild(grid);
 
   if (grLevel < 5) {
     const nx = GR_LEVELS[grLevel];
     const nb = grEl('button', 'btn-primary vc-next-unit', `Học tiếp cấp ${nx.code} · ${nx.vi} →`);
-    nb.addEventListener('click', () => { grSetLevel(nx.n); renderGrammarHome(); grScrollTop(); });
+    nb.addEventListener('click', () => { grSetLevel(nx.n); tnLevel = nx.n; renderGrammarHome(); grScrollTop(); });
     grRoot.appendChild(nb);
   }
+  if (keepScroll) window.scrollTo(0, y);
 }
 
 function renderGrammarTopic(id) {
   const t = GR_LESSONS.find(x => x.id === id);
   if (!t) return renderGrammarHome();
   grSetLevel(t.lv);
-  const L = GR_LEVELS[t.lv - 1], list = grOf(t.lv), pos = list.indexOf(t);
+  const L = GR_LEVELS[t.lv - 1], list = mxOf(t.lv), pos = list.findIndex(x => x.k === 'gr' && x.id === t.id);
   grRoot.innerHTML = '';
 
+  tnLevel = t.lv;
   const back = grEl('button', 'gr-back', `← Ngữ pháp ${L.code}`);
   back.addEventListener('click', () => { renderGrammarHome(); grScrollTop(); });
   grRoot.appendChild(back);
@@ -8887,6 +11317,9 @@ function renderGrammarTopic(id) {
     grRoot.appendChild(card);
   });
 
+  const gq = tnQuestionCard(t.id);
+  if (gq) grRoot.appendChild(gq);
+
   if (t.tips && t.tips.length) {
     const tips = grEl('div', 'tense-card gr-tips');
     tips.appendChild(grEl('h3', null, 'Lưu ý & lỗi hay gặp'));
@@ -8896,6 +11329,9 @@ function renderGrammarTopic(id) {
     grRoot.appendChild(tips);
   }
 
+  const gpr = tnPracticeBtn(t.id);
+  if (gpr) grRoot.appendChild(gpr);
+
   const done = grEl('button', 'tn-done gr-done' + (grDone.has(t.id) ? ' on' : ''), grDone.has(t.id) ? '✓ Đã nắm bài này' : 'Đánh dấu đã nắm bài này');
   done.addEventListener('click', () => {
     grToggleDone(t.id);
@@ -8904,19 +11340,7 @@ function renderGrammarTopic(id) {
   });
   grRoot.appendChild(done);
 
-  // previous / next inside the level; the last lesson leads to the next level
-  const nav = grEl('div', 'gr-nav');
-  const prev = list[pos - 1];
-  const next = list[pos + 1] || (t.lv < 5 ? grOf(t.lv + 1)[0] : null);
-  [[prev, '← Trước'], [next, next && next.lv !== t.lv ? `Sang cấp ${GR_LEVELS[next.lv - 1].code} →` : 'Tiếp →']].forEach(([other, label], k) => {
-    if (!other) { nav.appendChild(grEl('span', 'gr-nav-gap')); return; }
-    const b = grEl('button', 'gr-nav-btn' + (k ? ' next' : ''));
-    b.appendChild(grEl('span', 'gr-nav-label', label));
-    b.appendChild(grEl('span', 'gr-nav-title', other.title));
-    b.addEventListener('click', () => { renderGrammarTopic(other.id); grScrollTop(); });
-    nav.appendChild(b);
-  });
-  grRoot.appendChild(nav);
+  grRoot.appendChild(mxNavEl('gr', t.id, t.lv));
   grScrollTop();
 }
 
@@ -24058,6 +26482,21 @@ const SH_PASSAGES = [
    Item: [English, Vietnamese, (optional) other accepted English answers]
 ============================================================ */
 const EX_DATA = {
+  /* ---------- A2 · động từ có quy tắc ---------- */
+  'regular-ed': [
+    ['I worked at home yesterday.', 'Hôm qua tôi đã làm việc ở nhà.'],
+    ['She lived in Hue for five years.', 'Cô ấy đã sống ở Huế năm năm.'],
+    ['We studied English together last night.', 'Tối qua chúng tôi đã học tiếng Anh cùng nhau.'],
+    ['The bus stopped in front of my house.', 'Xe buýt đã dừng trước nhà tôi.'],
+    ['He planned the trip last month.', 'Tháng trước anh ấy đã lên kế hoạch cho chuyến đi.'],
+    ['They played football in the rain.', 'Họ đã chơi bóng đá dưới mưa.'],
+    ['My mother cooked a big dinner.', 'Mẹ tôi đã nấu một bữa tối thật thịnh soạn.'],
+    ['I visited my old school last week.', 'Tuần trước tôi đã về thăm trường cũ.'],
+    ["We didn't watch the match.", 'Chúng tôi đã không xem trận đấu.'],
+    ['She tried to call me three times.', 'Cô ấy đã thử gọi cho tôi ba lần.'],
+    ['The children carried their bags to the car.', 'Bọn trẻ đã mang cặp ra xe.'],
+    ["He didn't answer my message.", 'Anh ấy đã không trả lời tin nhắn của tôi.']
+  ],
   /* ---------- A1 · tenses ---------- */
   'present-simple': [
     ['I live in Ho Chi Minh City.', 'Tôi sống ở Thành phố Hồ Chí Minh.'],
@@ -25037,6 +27476,7 @@ Object.keys(EX_MORE).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conc
 
 /* ---------- Câu hỏi Wh-: công thức riêng cho từng bài ---------- */
 const EX_WH_FX = {
+  'regular-ed': 'Wh- + did + chủ ngữ + V (nguyên thể, không thêm -ed)? · Who / What làm chủ ngữ thì giữ V-ed và bỏ did: Who called you?',
   'present-simple': 'Wh- + do + I/you/we/they + V? · Wh- + does + he/she/it + V? · Wh- + am/is/are + chủ ngữ …? · Who/What làm chủ ngữ thì không cần do/does: Who lives here?',
   'present-continuous': 'Wh- + am/is/are + chủ ngữ + V-ing? · Who/What + is + V-ing? (khi hỏi về chủ ngữ)',
   'past-be': 'Wh- + was + I/he/she/it …? · Wh- + were + you/we/they …?',
@@ -25101,6 +27541,11 @@ const EX_WH_FX = {
 
 /* ---------- 3 câu hỏi Wh- cho mỗi bài ---------- */
 const EX_WH = {
+  'regular-ed': [
+    ['Where did you work last year?', 'Năm ngoái bạn đã làm việc ở đâu?'],
+    ['What did she study at university?', 'Cô ấy đã học ngành gì ở đại học?'],
+    ['Why did they stop the car?', 'Sao họ lại dừng xe lại?']
+  ],
   'present-simple': [
     ['Where do you live?', 'Bạn sống ở đâu?'],
     ['What does your sister do every morning?', 'Chị của bạn làm gì mỗi sáng?'],
@@ -25287,7 +27732,7 @@ const EX_WH = {
     ["Why aren't you used to this weather yet?", 'Sao bạn vẫn chưa quen với thời tiết này?']
   ],
   'hadbetter': [
-    ['What had I better do now?', 'Giờ tôi nên làm gì?'],
+    ['What had I better do now?', 'Giờ tốt nhất là tôi nên làm gì?'],
     ['Where had we better park the car?', 'Chúng ta nên đậu xe ở đâu?'],
     ['When had they better book the tickets?', 'Họ nên đặt vé khi nào?']
   ],
@@ -25406,6 +27851,7 @@ Object.keys(EX_WH).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].concat
 
 /* ---------- Câu hỏi How-: công thức riêng cho từng bài ---------- */
 const EX_HOW_FX = {
+  'regular-ed': 'How + did + chủ ngữ + V (nguyên thể)? · How long / How many times + did + chủ ngữ + V?',
   'present-simple': 'How + do + I/you/we/they + V? · How + does + he/she/it + V? · How + am/is/are + chủ ngữ + tính từ? · How often / How far / How old …?',
   'present-continuous': 'How + am/is/are + chủ ngữ + V-ing? · How many + danh từ số nhiều + are + V-ing?',
   'past-be': 'How + was + I/he/she/it …? · How + were + you/we/they …? · How old / How long + was/were …?',
@@ -25470,6 +27916,10 @@ const EX_HOW_FX = {
 
 /* ---------- 2 câu hỏi How- cho mỗi bài ---------- */
 const EX_HOW = {
+  'regular-ed': [
+    ['How long did you wait for the bus?', 'Bạn đã đợi xe buýt bao lâu?'],
+    ['How many times did he call you?', 'Anh ấy đã gọi cho bạn mấy lần?']
+  ],
   'present-simple': [
     ['How do you go to work every day?', 'Mỗi ngày bạn đi làm bằng cách nào?'],
     ['How often does she visit her parents?', 'Cô ấy về thăm ba mẹ bao lâu một lần?']
@@ -25712,6 +28162,555 @@ const EX_HOW = {
   ]
 };
 Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].concat(EX_HOW[k]); });
+/* ---------- Bài tập dịch cho các bài A2 mới ---------- */
+const EX_A2 = {
+ 'possessive-s': {
+  whfx: 'Whose + danh từ + am/is/are + …? · Wh- + am/is/are + tên + ’s + danh từ? (What is Lan’s number?)',
+  howfx: 'How old / How far / How big + is + tên + ’s + danh từ? (How old is Nam’s car?)',
+  s: [
+   ['This is my sister’s bike.', 'Đây là xe đạp của chị tôi.'],
+   ['My brother’s room is very tidy.', 'Phòng của anh tôi rất gọn gàng.'],
+   ['The children’s toys are on the floor.', 'Đồ chơi của bọn trẻ ở trên sàn.'],
+   ['My parents’ house is near the market.', 'Nhà của ba mẹ tôi ở gần chợ.'],
+   ['That is Nam’s new phone.', 'Kia là điện thoại mới của Nam.'],
+   ['The teachers’ room is upstairs.', 'Phòng giáo viên ở trên lầu.'],
+   ['I borrowed my friend’s car.', 'Tôi đã mượn xe của bạn tôi.'],
+   ['The dog’s name is Milu.', 'Con chó tên là Milu.'],
+   ['Lan and Nam’s house is very big.', 'Nhà của Lan và Nam rất lớn.'],
+   ['The door of the car is broken.', 'Cửa xe bị hỏng.'],
+   ['My wife’s family lives in Hue.', 'Gia đình vợ tôi sống ở Huế.'],
+   ['I don’t know my neighbour’s name.', 'Tôi không biết tên người hàng xóm.']
+  ],
+  wh: [
+   ['Whose bag is this?', 'Cái túi này của ai?'],
+   ['What is your friend’s name?', 'Bạn của bạn tên gì?'],
+   ['Where is your parents’ house?', 'Nhà ba mẹ bạn ở đâu?']
+  ],
+  how: [
+   ['How old is your sister’s son?', 'Con trai chị bạn mấy tuổi?'],
+   ['How far is your brother’s house from here?', 'Nhà anh bạn cách đây bao xa?']
+  ]
+ },
+ 'frequency': {
+  whfx: 'Wh- + do/does + chủ ngữ + trạng từ + V? · What + do/does + chủ ngữ + usually / often + V?',
+  howfx: 'How often + do/does + chủ ngữ + V? · Trả lời: once a week, twice a month, every day…',
+  s: [
+   ['I always get up at six.', 'Tôi luôn dậy lúc sáu giờ.'],
+   ['She usually walks to work.', 'Cô ấy thường đi bộ đi làm.'],
+   ['We often eat out on Friday.', 'Chúng tôi hay ăn ngoài vào thứ Sáu.'],
+   ['He never drinks coffee at night.', 'Anh ấy không bao giờ uống cà phê buổi tối.'],
+   ['They are usually late.', 'Họ thường đến trễ.'],
+   ['I sometimes watch films in English.', 'Thỉnh thoảng tôi xem phim tiếng Anh.'],
+   ['My father rarely goes to the cinema.', 'Ba tôi hiếm khi đi xem phim.'],
+   ['I go to the gym twice a week.', 'Tôi đến phòng gym hai lần một tuần.'],
+   ['She visits her parents every Sunday.', 'Chủ nhật nào cô ấy cũng về thăm ba mẹ.'],
+   ['We have a meeting once a month.', 'Chúng tôi họp một lần mỗi tháng.'],
+   ['I have never tried durian.', 'Tôi chưa bao giờ thử sầu riêng.'],
+   ['He is always friendly to customers.', 'Anh ấy luôn thân thiện với khách hàng.']
+  ],
+  wh: [
+   ['What do you usually do at the weekend?', 'Cuối tuần bạn thường làm gì?'],
+   ['Where do you often have lunch?', 'Bạn hay ăn trưa ở đâu?'],
+   ['Why are you always late?', 'Sao bạn lúc nào cũng trễ vậy?']
+  ],
+  how: [
+   ['How often do you exercise?', 'Bạn tập thể dục bao lâu một lần?'],
+   ['How often does she call her family?', 'Cô ấy gọi về cho gia đình bao lâu một lần?']
+  ]
+ },
+ 'like-ing': {
+  whfx: 'What + do/does + chủ ngữ + like / love / hate + V-ing? · Who + likes + V-ing?',
+  howfx: 'How much + do/does + chủ ngữ + like + V-ing? · How many người + like + V-ing?',
+  s: [
+   ['I love listening to music.', 'Tôi rất thích nghe nhạc.'],
+   ['She hates getting up early.', 'Cô ấy ghét phải dậy sớm.'],
+   ['We enjoy cooking together.', 'Chúng tôi thích nấu ăn cùng nhau.'],
+   ['He doesn’t like working at night.', 'Anh ấy không thích làm việc ban đêm.'],
+   ['I don’t mind waiting a few minutes.', 'Tôi không ngại đợi vài phút.'],
+   ['My son loves playing football.', 'Con trai tôi rất thích chơi bóng đá.'],
+   ['They like travelling by train.', 'Họ thích đi du lịch bằng tàu.'],
+   ['I can’t stand sitting in traffic.', 'Tôi không chịu nổi cảnh ngồi kẹt xe.'],
+   ['She likes reading before bed.', 'Cô ấy thích đọc sách trước khi ngủ.'],
+   ['We don’t like eating out every day.', 'Chúng tôi không thích ăn ngoài mỗi ngày.'],
+   ['My wife enjoys growing vegetables.', 'Vợ tôi thích trồng rau.'],
+   ['I hate washing the dishes.', 'Tôi ghét rửa chén.']
+  ],
+  wh: [
+   ['What do you like doing in your free time?', 'Bạn thích làm gì khi rảnh?'],
+   ['Why does he hate flying?', 'Sao anh ấy ghét đi máy bay?'],
+   ['Who likes swimming in your family?', 'Trong nhà bạn ai thích bơi?']
+  ],
+  how: [
+   ['How much do you like learning English?', 'Bạn thích học tiếng Anh đến mức nào?'],
+   ['How many people like working from home?', 'Có bao nhiêu người thích làm việc ở nhà?']
+  ]
+ },
+ 'havegot': {
+  whfx: 'What / Which + have/has + chủ ngữ + got? · Who + has got + …?',
+  howfx: 'How many / How much + have/has + chủ ngữ + got?',
+  s: [
+   ['I’ve got two brothers.', 'Tôi có hai anh em trai.'],
+   ['She’s got a new job.', 'Cô ấy có công việc mới.'],
+   ['We haven’t got any milk.', 'Chúng tôi không còn sữa nào.'],
+   ['He hasn’t got a car.', 'Anh ấy không có xe hơi.'],
+   ['They’ve got a big house in Da Lat.', 'Họ có một ngôi nhà lớn ở Đà Lạt.'],
+   ['I’ve got a headache today.', 'Hôm nay tôi bị đau đầu.'],
+   ['Have you got a pen?', 'Bạn có bút không?'],
+   ['Has she got any children?', 'Cô ấy có con chưa?'],
+   ['My phone has got a good camera.', 'Điện thoại của tôi có máy ảnh tốt.'],
+   ['We’ve got enough time.', 'Chúng ta có đủ thời gian.'],
+   ['I haven’t got your number.', 'Tôi không có số của bạn.'],
+   ['They’ve got three cats and a dog.', 'Họ có ba con mèo và một con chó.']
+  ],
+  wh: [
+   ['What have you got in your bag?', 'Trong túi bạn có gì?'],
+   ['Who has got the keys?', 'Ai đang giữ chìa khóa?'],
+   ['Which room has got a balcony?', 'Phòng nào có ban công?']
+  ],
+  how: [
+   ['How many brothers have you got?', 'Bạn có mấy anh em trai?'],
+   ['How much money have we got?', 'Chúng ta còn bao nhiêu tiền?']
+  ]
+ },
+ 'howmuch-howadj': {
+  whfx: 'What / Which / Where + do/does + chủ ngữ + V? (hỏi thông tin không phải số lượng)',
+  howfx: 'How many + danh từ số nhiều …? · How much + danh từ không đếm được …? · How much + is/are …? (giá) · How old / tall / far / long …?',
+  s: [
+   ['There are twenty students in my class.', 'Lớp tôi có hai mươi học sinh.'],
+   ['I drink two litres of water a day.', 'Tôi uống hai lít nước một ngày.'],
+   ['This shirt costs three hundred thousand dong.', 'Cái áo này giá ba trăm nghìn đồng.'],
+   ['My daughter is seven years old.', 'Con gái tôi bảy tuổi.'],
+   ['The station is about two kilometres from here.', 'Nhà ga cách đây khoảng hai cây số.'],
+   ['I need a little sugar for the cake.', 'Tôi cần một chút đường cho cái bánh.'],
+   ['We don’t have many eggs left.', 'Chúng tôi không còn nhiều trứng.'],
+   ['She has a lot of work today.', 'Hôm nay cô ấy có nhiều việc.'],
+   ['The film lasts two hours.', 'Bộ phim dài hai tiếng.'],
+   ['My brother is one metre seventy tall.', 'Anh tôi cao một mét bảy.'],
+   ['There isn’t much time before the train leaves.', 'Không còn nhiều thời gian trước khi tàu chạy.'],
+   ['We need five chairs for the party.', 'Chúng tôi cần năm cái ghế cho buổi tiệc.']
+  ],
+  wh: [
+   ['What time does the shop close?', 'Cửa hàng đóng cửa lúc mấy giờ?'],
+   ['Where can I buy a cheap phone?', 'Tôi mua điện thoại rẻ ở đâu được?'],
+   ['Why is this one more expensive?', 'Sao cái này lại đắt hơn?']
+  ],
+  how: [
+   ['How much is this phone?', 'Cái điện thoại này bao nhiêu tiền?'],
+   ['How many people are coming tonight?', 'Tối nay có bao nhiêu người đến?']
+  ]
+ },
+ 'imperative': {
+  whfx: 'What / Where / Why + should + chủ ngữ + V? (hỏi lời khuyên)',
+  howfx: 'How + should + chủ ngữ + V? · How many / How much + should + chủ ngữ + V?',
+  s: [
+   ['Open the window, please.', 'Làm ơn mở cửa sổ.'],
+   ['Don’t touch that, it’s hot.', 'Đừng chạm vào đó, nóng lắm.'],
+   ['Turn left at the traffic lights.', 'Rẽ trái ở đèn giao thông.'],
+   ['Let’s go home now.', 'Giờ mình về nhà thôi.'],
+   ['Please sit down.', 'Mời ngồi.'],
+   ['Don’t forget your keys.', 'Đừng quên chìa khóa của bạn.'],
+   ['Call me when you arrive.', 'Đến nơi thì gọi tôi nhé.'],
+   ['Let’s not wait here.', 'Mình đừng đợi ở đây nữa.'],
+   ['You should take a short break.', 'Bạn nên nghỉ một chút.'],
+   ['You shouldn’t eat so late.', 'Bạn không nên ăn khuya như vậy.'],
+   ['Be careful on the stairs.', 'Cẩn thận cầu thang nhé.'],
+   ['Don’t worry, everything is fine.', 'Đừng lo, mọi chuyện ổn cả.']
+  ],
+  wh: [
+   ['What should I say to her?', 'Tôi nên nói gì với cô ấy?'],
+   ['Where should we meet?', 'Chúng ta nên gặp nhau ở đâu?'],
+   ['Why shouldn’t I tell her?', 'Sao tôi không nên nói với cô ấy?']
+  ],
+  how: [
+   ['How should I cook this fish?', 'Tôi nên nấu con cá này thế nào?'],
+   ['How many tickets should we buy?', 'Chúng ta nên mua bao nhiêu vé?']
+  ]
+ },
+ 'wh-questions': {
+  whfx: 'Wh- + do/does/did + chủ ngữ + V? · Wh- + am/is/are + chủ ngữ? · Who / What + V? (khi từ hỏi làm chủ ngữ)',
+  howfx: 'How + do/does/did + chủ ngữ + V? · How + am/is/are + chủ ngữ? · How + tính từ + …?',
+  s: [
+   ['What does your father do?', 'Ba bạn làm nghề gì?'],
+   ['Where did you buy that jacket?', 'Bạn mua cái áo khoác đó ở đâu?'],
+   ['When does the next train leave?', 'Chuyến tàu tới khởi hành khi nào?'],
+   ['Why is the shop closed today?', 'Sao hôm nay cửa hàng đóng cửa?'],
+   ['Who is that woman in the photo?', 'Người phụ nữ trong ảnh là ai?'],
+   ['Whose car is parked outside?', 'Xe của ai đậu ở ngoài vậy?'],
+   ['Which bus goes to the airport?', 'Xe buýt nào đi sân bay?'],
+   ['What are you doing this evening?', 'Tối nay bạn làm gì?'],
+   ['Who wants another coffee?', 'Ai muốn thêm một ly cà phê nữa?'],
+   ['What happened to your phone?', 'Điện thoại của bạn bị sao vậy?'],
+   ['Who did you go there with?', 'Bạn đã đi tới đó với ai?'],
+   ['What are you looking for?', 'Bạn đang tìm cái gì?']
+  ],
+  wh: [
+   ['When will you come back?', 'Khi nào bạn quay lại?'],
+   ['Why did she leave early?', 'Sao cô ấy về sớm?'],
+   ['Which film do you want to see?', 'Bạn muốn xem bộ phim nào?']
+  ],
+  how: [
+   ['How do you spell your name?', 'Tên bạn đánh vần thế nào?'],
+   ['How did you find this place?', 'Bạn tìm ra chỗ này bằng cách nào?']
+  ]
+ },
+ 'adj-modifier': {
+  whfx: 'What + am/is/are + chủ ngữ + like? (hỏi cảm nhận) · Why + am/is/are + chủ ngữ + so + tính từ?',
+  howfx: 'How + tính từ + am/is/are + chủ ngữ? (How expensive is it?)',
+  s: [
+   ['The film was really good.', 'Bộ phim thật sự rất hay.'],
+   ['I’m a bit tired today.', 'Hôm nay tôi hơi mệt.'],
+   ['This restaurant is quite expensive.', 'Nhà hàng này khá đắt.'],
+   ['The weather is extremely hot in May.', 'Thời tiết tháng Năm cực kỳ nóng.'],
+   ['These shoes are too small for me.', 'Đôi giày này quá nhỏ với tôi.'],
+   ['It’s a very nice day.', 'Hôm nay là một ngày rất đẹp.'],
+   ['My new job is quite interesting.', 'Công việc mới của tôi khá thú vị.'],
+   ['The coffee here is really strong.', 'Cà phê ở đây thật sự rất đậm.'],
+   ['That question was a bit difficult.', 'Câu hỏi đó hơi khó.'],
+   ['Their house is very clean and tidy.', 'Nhà họ rất sạch sẽ và gọn gàng.'],
+   ['The bus was extremely crowded this morning.', 'Sáng nay xe buýt cực kỳ đông.'],
+   ['This soup is a little salty.', 'Món súp này hơi mặn.']
+  ],
+  wh: [
+   ['What was the film like?', 'Bộ phim thế nào?'],
+   ['Why is this one so expensive?', 'Sao cái này đắt vậy?'],
+   ['What makes you really happy?', 'Điều gì làm bạn thật sự vui?']
+  ],
+  how: [
+   ['How expensive is this hotel?', 'Khách sạn này đắt cỡ nào?'],
+   ['How tired are you after work?', 'Sau giờ làm bạn mệt cỡ nào?']
+  ]
+ },
+ 'prep-movement': {
+  whfx: 'Where + do/does/did + chủ ngữ + go / walk / drive …? · Which + đường / cầu + …?',
+  howfx: 'How + do/does/did + chủ ngữ + get + into / out of / across …? · How far + …?',
+  s: [
+   ['She walked into the room.', 'Cô ấy bước vào phòng.'],
+   ['Go along this street and turn left.', 'Đi dọc con đường này rồi rẽ trái.'],
+   ['We walked across the bridge.', 'Chúng tôi đi bộ qua cầu.'],
+   ['The train goes through a long tunnel.', 'Tàu chạy xuyên qua một đường hầm dài.'],
+   ['Go past the bank and you will see it.', 'Đi ngang qua ngân hàng là bạn sẽ thấy.'],
+   ['He ran up the stairs.', 'Anh ấy chạy lên cầu thang.'],
+   ['The cat jumped off the table.', 'Con mèo nhảy xuống khỏi bàn.'],
+   ['We walked around the lake.', 'Chúng tôi đi bộ vòng quanh hồ.'],
+   ['A plane flew over our house.', 'Một chiếc máy bay bay qua trên nhà chúng tôi.'],
+   ['She came out of the shop with two bags.', 'Cô ấy bước ra khỏi cửa hàng với hai cái túi.'],
+   ['Get off the bus at the market.', 'Xuống xe buýt ở chợ nhé.'],
+   ['He walked towards the station.', 'Anh ấy đi về phía nhà ga.']
+  ],
+  wh: [
+   ['Where did they go after the film?', 'Sau khi xem phim họ đi đâu?'],
+   ['Which street should I go along?', 'Tôi nên đi dọc con đường nào?'],
+   ['Who walked into the room first?', 'Ai bước vào phòng đầu tiên?']
+  ],
+  how: [
+   ['How do I get into the building?', 'Tôi vào tòa nhà bằng cách nào?'],
+   ['How far did you walk along the beach?', 'Bạn đã đi bộ dọc bãi biển bao xa?']
+  ]
+ },
+ 'simple-vs-continuous': {
+  whfx: 'What + do/does + chủ ngữ + V? (thói quen) · What + am/is/are + chủ ngữ + V-ing? (lúc này)',
+  howfx: 'How often + do/does + chủ ngữ + V? · How many hours + am/is/are + chủ ngữ + V-ing?',
+  s: [
+   ['I work in a bank, but today I am working at home.', 'Tôi làm ở ngân hàng, nhưng hôm nay tôi làm ở nhà.'],
+   ['She usually takes the bus, but she is driving today.', 'Cô ấy thường đi xe buýt, nhưng hôm nay cô ấy lái xe.'],
+   ['We live in Hue, but we are staying in Hanoi this week.', 'Chúng tôi sống ở Huế, nhưng tuần này đang ở Hà Nội.'],
+   ['He plays tennis every Sunday.', 'Chủ nhật nào anh ấy cũng chơi tennis.'],
+   ['Look! The children are playing in the garden.', 'Nhìn kìa! Bọn trẻ đang chơi ngoài vườn.'],
+   ['It rains a lot in September.', 'Tháng Chín trời mưa nhiều.'],
+   ['It is raining now, so take an umbrella.', 'Bây giờ trời đang mưa, nhớ mang dù.'],
+   ['My sister is learning Korean this year.', 'Năm nay chị tôi đang học tiếng Hàn.'],
+   ['I know the answer.', 'Tôi biết câu trả lời.'],
+   ['They don’t eat meat.', 'Họ không ăn thịt.'],
+   ['Why are you wearing a coat? It isn’t cold.', 'Sao bạn mặc áo khoác? Trời có lạnh đâu.'],
+   ['The shop opens at eight every morning.', 'Cửa hàng mở cửa lúc tám giờ mỗi sáng.']
+  ],
+  wh: [
+   ['What do you do?', 'Bạn làm nghề gì?'],
+   ['What are you doing at the moment?', 'Lúc này bạn đang làm gì?'],
+   ['Where does your brother work?', 'Anh bạn làm việc ở đâu?']
+  ],
+  how: [
+   ['How often do you work from home?', 'Bạn làm việc ở nhà bao lâu một lần?'],
+   ['How many hours are you working today?', 'Hôm nay bạn làm mấy tiếng?']
+  ]
+ },
+ 'verb-to-v': {
+  whfx: 'What / Where / Who + do/does + chủ ngữ + want / need / plan + to V?',
+  howfx: 'How + do/does + chủ ngữ + plan / hope + to V? · How long + do/does + chủ ngữ + want + to V?',
+  s: [
+   ['I want to learn English well.', 'Tôi muốn học giỏi tiếng Anh.'],
+   ['We decided to take a taxi.', 'Chúng tôi đã quyết định đi taxi.'],
+   ['She needs to rest after work.', 'Cô ấy cần nghỉ ngơi sau giờ làm.'],
+   ['They hope to open a small shop.', 'Họ hy vọng mở một tiệm nhỏ.'],
+   ['He promised to call me tonight.', 'Anh ấy đã hứa tối nay sẽ gọi cho tôi.'],
+   ['Don’t forget to lock the door.', 'Đừng quên khóa cửa.'],
+   ['I am trying to save money.', 'Tôi đang cố gắng tiết kiệm tiền.'],
+   ['My son is learning to swim.', 'Con trai tôi đang học bơi.'],
+   ['I would like to book a table for two.', 'Tôi muốn đặt bàn cho hai người.'],
+   ['Would you like to come with us?', 'Bạn có muốn đi cùng chúng tôi không?'],
+   ['My boss wants me to finish it today.', 'Sếp muốn tôi làm xong việc đó hôm nay.'],
+   ['They plan to move to Da Nang.', 'Họ dự định chuyển đến Đà Nẵng.']
+  ],
+  wh: [
+   ['What do you want to do tonight?', 'Tối nay bạn muốn làm gì?'],
+   ['Where do they plan to go?', 'Họ dự định đi đâu?'],
+   ['Who do you need to call?', 'Bạn cần gọi cho ai?']
+  ],
+  how: [
+   ['How do you plan to get there?', 'Bạn định đến đó bằng cách nào?'],
+   ['How long do you want to stay?', 'Bạn muốn ở lại bao lâu?']
+  ]
+ },
+ 'adverb-manner': {
+  whfx: 'Who + V + trạng từ? · Why + do/does + chủ ngữ + V + so + trạng từ?',
+  howfx: 'How well / How quickly / How carefully + do/does/can + chủ ngữ + V?',
+  s: [
+   ['Please drive slowly.', 'Làm ơn lái xe chậm thôi.'],
+   ['She speaks English very well.', 'Cô ấy nói tiếng Anh rất giỏi.'],
+   ['He opened the door quietly.', 'Anh ấy mở cửa nhẹ nhàng.'],
+   ['They waited patiently for an hour.', 'Họ kiên nhẫn đợi suốt một tiếng.'],
+   ['My son can read quickly now.', 'Giờ con trai tôi đọc nhanh rồi.'],
+   ['She smiled happily at the camera.', 'Cô ấy cười tươi với máy ảnh.'],
+   ['He works hard every day.', 'Anh ấy làm việc chăm chỉ mỗi ngày.'],
+   ['Please listen carefully.', 'Hãy lắng nghe cẩn thận.'],
+   ['The old man walked slowly to the bus stop.', 'Ông cụ đi chậm rãi ra trạm xe buýt.'],
+   ['I can easily finish this today.', 'Tôi có thể làm xong việc này hôm nay một cách dễ dàng.'],
+   ['She sings beautifully.', 'Cô ấy hát rất hay.'],
+   ['He arrived late again.', 'Anh ấy lại đến trễ.']
+  ],
+  wh: [
+   ['Who speaks English well in your office?', 'Ở công ty bạn ai nói tiếng Anh giỏi?'],
+   ['Why do you work so hard?', 'Sao bạn làm việc chăm chỉ vậy?'],
+   ['Why does he speak so fast?', 'Sao anh ấy nói nhanh vậy?']
+  ],
+  how: [
+   ['How well do you speak English?', 'Bạn nói tiếng Anh giỏi cỡ nào?'],
+   ['How quickly can you finish this?', 'Bạn làm xong cái này nhanh cỡ nào?']
+  ]
+ },
+ 'howto-suggest': {
+  whfx: 'What / Where / When + shall we + V? · What about + V-ing?',
+  howfx: 'How about + V-ing? · How shall we + V?',
+  s: [
+   ['Let’s go out tonight.', 'Tối nay mình đi chơi đi.'],
+   ['Shall we take a taxi?', 'Mình đi taxi nhé?'],
+   ['Why don’t we eat at home?', 'Sao mình không ăn ở nhà nhỉ?'],
+   ['How about going to the beach?', 'Hay là đi biển?'],
+   ['What about next Saturday?', 'Thứ Bảy tới thì sao?'],
+   ['Maybe we could ask Nam.', 'Hay là mình hỏi Nam.'],
+   ['Let’s meet in front of the cinema.', 'Mình gặp nhau trước rạp phim nhé.'],
+   ['Good idea!', 'Ý hay đó!'],
+   ['Sounds great.', 'Nghe hay đấy.'],
+   ['I would love to, but I am busy.', 'Tôi rất muốn, nhưng tôi bận.'],
+   ['Maybe another time.', 'Để dịp khác vậy.'],
+   ['Let’s not take the car today.', 'Hôm nay mình đừng đi xe hơi.']
+  ],
+  wh: [
+   ['What shall we do this weekend?', 'Cuối tuần này mình làm gì đây?'],
+   ['Where shall we meet?', 'Mình gặp nhau ở đâu?'],
+   ['When shall we leave?', 'Mấy giờ mình đi?']
+  ],
+  how: [
+   ['How about meeting at six?', 'Hay là sáu giờ gặp nhau?'],
+   ['How shall we get there?', 'Mình đến đó bằng gì đây?']
+  ]
+ },
+ 'howto-restaurant': {
+  whfx: 'What + do you recommend? · What time + do you close? · Where + am/is/are + …?',
+  howfx: 'How much + is / are + …? · How long + will it take?',
+  s: [
+   ['A table for two, please.', 'Cho tôi bàn hai người.'],
+   ['Could I see the menu, please?', 'Cho tôi xem thực đơn được không?'],
+   ['I would like the chicken, please.', 'Cho tôi món gà.'],
+   ['I will have the same.', 'Tôi gọi giống vậy.'],
+   ['Just water for me, thanks.', 'Tôi chỉ uống nước lọc thôi, cảm ơn.'],
+   ['Is this dish spicy?', 'Món này có cay không?'],
+   ['Could we have some more bread?', 'Cho chúng tôi thêm bánh mì được không?'],
+   ['Can I have the bill, please?', 'Cho tôi tính tiền nhé.'],
+   ['Is service included?', 'Đã tính phí phục vụ chưa?'],
+   ['Can I pay by card?', 'Tôi trả bằng thẻ được không?'],
+   ['The food was delicious.', 'Món ăn rất ngon.'],
+   ['Sorry, I didn’t order this.', 'Xin lỗi, tôi không gọi món này.']
+  ],
+  wh: [
+   ['What do you recommend?', 'Bạn gợi ý món nào?'],
+   ['What time do you close?', 'Mấy giờ nhà hàng đóng cửa?'],
+   ['Where are the toilets, please?', 'Nhà vệ sinh ở đâu ạ?']
+  ],
+  how: [
+   ['How much is the set menu?', 'Phần ăn theo set giá bao nhiêu?'],
+   ['How long will it take?', 'Món sẽ mất bao lâu?']
+  ]
+ },
+ 'howto-invite': {
+  whfx: 'What time / Where + would you like + to V? · Who else + is coming?',
+  howfx: 'How about + V-ing? · How many people + would you like + to invite?',
+  s: [
+   ['Would you like to join us?', 'Bạn tham gia cùng chúng tôi nhé?'],
+   ['Do you want to come with me?', 'Bạn muốn đi cùng tôi không?'],
+   ['Are you free on Saturday?', 'Thứ Bảy bạn rảnh không?'],
+   ['Would you like a cup of coffee?', 'Bạn uống một ly cà phê nhé?'],
+   ['Shall I carry that for you?', 'Để tôi xách giúp bạn nhé?'],
+   ['Can I help you with your bags?', 'Tôi xách giúp túi cho bạn nhé?'],
+   ['I will give you a hand.', 'Để tôi giúp một tay.'],
+   ['Yes, please.', 'Vâng, cho tôi xin.'],
+   ['That would be lovely.', 'Vậy thì tuyệt quá.'],
+   ['No, thanks. I am fine.', 'Không, cảm ơn. Tôi ổn mà.'],
+   ['I would love to, but I can’t tonight.', 'Tôi rất muốn, nhưng tối nay tôi không đi được.'],
+   ['Thank you, that is very kind.', 'Cảm ơn bạn, bạn thật tốt bụng.']
+  ],
+  wh: [
+   ['What time would you like to meet?', 'Bạn muốn gặp lúc mấy giờ?'],
+   ['Who else is coming?', 'Còn ai đến nữa không?'],
+   ['Where would you like to go?', 'Bạn muốn đi đâu?']
+  ],
+  how: [
+   ['How about dinner at my place?', 'Hay là ăn tối ở nhà tôi?'],
+   ['How many people would you like to invite?', 'Bạn muốn mời bao nhiêu người?']
+  ]
+ },
+ 'howto-shop': {
+  whfx: 'Where + can I find + …? · What time + does the shop open? · Which one + …?',
+  howfx: 'How much + is / are + …? · How many + do you have left?',
+  s: [
+   ['Excuse me, where can I find the milk?', 'Xin lỗi, sữa để ở đâu ạ?'],
+   ['Do you have this in size M?', 'Cái này có size M không ạ?'],
+   ['Can I try it on?', 'Tôi mặc thử được không?'],
+   ['Where is the fitting room?', 'Phòng thử đồ ở đâu ạ?'],
+   ['It is a bit too tight.', 'Hơi chật một chút.'],
+   ['Have you got a bigger one?', 'Có cái lớn hơn không ạ?'],
+   ['I am just looking, thanks.', 'Tôi chỉ xem thôi, cảm ơn.'],
+   ['I will take it.', 'Tôi lấy cái này.'],
+   ['Do you take cards?', 'Ở đây nhận thẻ không ạ?'],
+   ['Can I have a receipt, please?', 'Cho tôi xin hóa đơn.'],
+   ['I would like to return this.', 'Tôi muốn trả lại món này.'],
+   ['Is this on sale?', 'Món này đang giảm giá à?']
+  ],
+  wh: [
+   ['Where is the fruit section?', 'Khu trái cây ở đâu ạ?'],
+   ['What time does the shop open?', 'Cửa hàng mở cửa lúc mấy giờ?'],
+   ['Which one is cheaper?', 'Cái nào rẻ hơn?']
+  ],
+  how: [
+   ['How much is this jacket?', 'Cái áo khoác này bao nhiêu tiền?'],
+   ['How many do you have left?', 'Còn lại bao nhiêu cái ạ?']
+  ]
+ },
+ 'howto-apologise': {
+  whfx: 'Why + were you + late? · What + happened? · Who + should I apologise to?',
+  howfx: 'How late + were you? · How + can I make it up to you?',
+  s: [
+   ['Sorry I am late.', 'Xin lỗi tôi đến trễ.'],
+   ['I am really sorry about that.', 'Tôi thật sự xin lỗi về chuyện đó.'],
+   ['It is my fault.', 'Lỗi của tôi.'],
+   ['It won’t happen again.', 'Chuyện này sẽ không lặp lại nữa.'],
+   ['I missed the bus.', 'Tôi lỡ chuyến xe buýt.'],
+   ['I was stuck in traffic.', 'Tôi bị kẹt xe.'],
+   ['Something came up at work.', 'Ở chỗ làm có việc đột xuất.'],
+   ['I am afraid I can’t come tonight.', 'Tôi e là tối nay tôi không đến được.'],
+   ['I completely forgot about the meeting.', 'Tôi quên bẵng mất cuộc họp.'],
+   ['That is OK, don’t worry about it.', 'Không sao đâu, đừng bận tâm.'],
+   ['Never mind, these things happen.', 'Thôi không sao, chuyện đó vẫn xảy ra mà.'],
+   ['Sorry for keeping you waiting.', 'Xin lỗi đã để bạn đợi.']
+  ],
+  wh: [
+   ['Why were you late this morning?', 'Sáng nay sao bạn đến trễ?'],
+   ['What happened to you yesterday?', 'Hôm qua bạn bị gì vậy?'],
+   ['Who should I apologise to?', 'Tôi nên xin lỗi ai?']
+  ],
+  how: [
+   ['How late were you?', 'Bạn trễ bao lâu?'],
+   ['How can I make it up to you?', 'Tôi làm sao để bù lại cho bạn đây?']
+  ]
+ },
+ 'howto-directions': {
+  whfx: 'Where + is + the nearest + …? · Which way + is + …? · What + is the best way + to + …?',
+  howfx: 'How + do I get to + …? · How far + is it + from here? · How long + does it take?',
+  s: [
+   ['Go straight on for about two hundred metres.', 'Đi thẳng khoảng hai trăm mét.'],
+   ['Turn right after the bridge.', 'Qua cầu thì rẽ phải.'],
+   ['Take the second turning on the right.', 'Rẽ ở ngã rẽ thứ hai bên phải.'],
+   ['Walk past the school and keep going.', 'Đi ngang qua trường rồi đi tiếp.'],
+   ['Cross the road at the crossing.', 'Băng qua đường ở vạch kẻ.'],
+   ['It is on your left.', 'Nó nằm bên tay trái bạn.'],
+   ['It is next to the pharmacy.', 'Nó nằm cạnh nhà thuốc.'],
+   ['It is opposite the market.', 'Nó đối diện chợ.'],
+   ['It is between the bank and the café.', 'Nó nằm giữa ngân hàng và quán cà phê.'],
+   ['It is about five minutes’ walk.', 'Đi bộ khoảng năm phút.'],
+   ['Is there a bank near here?', 'Gần đây có ngân hàng không ạ?'],
+   ['Sorry, I am not from here.', 'Xin lỗi, tôi không phải người ở đây.']
+  ],
+  wh: [
+   ['Where is the nearest pharmacy?', 'Nhà thuốc gần nhất ở đâu ạ?'],
+   ['Which way is the city centre?', 'Trung tâm thành phố đi hướng nào ạ?'],
+   ['What is the best way to the airport?', 'Đi sân bay đường nào tiện nhất ạ?']
+  ],
+  how: [
+   ['How do I get to the market?', 'Đi ra chợ thế nào ạ?'],
+   ['How far is it from here?', 'Cách đây bao xa ạ?']
+  ]
+ },
+ 'howto-phone': {
+  whfx: 'What time + do you open? · Who + should I speak to? · Where exactly + are you?',
+  howfx: 'How long + does + … + last? · How much + is + …? · Could you tell me how + …',
+  s: [
+   ['Hello, I am calling about the English course.', 'Chào anh/chị, tôi gọi để hỏi về khóa tiếng Anh.'],
+   ['Could I speak to Mr Nam, please?', 'Cho tôi gặp anh Nam được không ạ?'],
+   ['This is Lan speaking.', 'Tôi là Lan đây.'],
+   ['Is that the Grand Hotel?', 'Đây có phải khách sạn Grand không ạ?'],
+   ['Do I need to book in advance?', 'Tôi có cần đặt trước không ạ?'],
+   ['Sorry, could you repeat that?', 'Xin lỗi, anh/chị nhắc lại được không?'],
+   ['Could you speak a little louder, please?', 'Anh/chị nói to hơn một chút được không ạ?'],
+   ['Could you spell that, please?', 'Anh/chị đánh vần giúp được không ạ?'],
+   ['Hold on a moment, please.', 'Vui lòng giữ máy một lát.'],
+   ['I will call back later.', 'Lát nữa tôi gọi lại.'],
+   ['Thanks for your help.', 'Cảm ơn anh/chị đã giúp.'],
+   ['Could you tell me how much it costs?', 'Cho tôi hỏi giá bao nhiêu ạ?']
+  ],
+  wh: [
+   ['What time do you open?', 'Mấy giờ bên mình mở cửa ạ?'],
+   ['Where exactly are you?', 'Chính xác bên mình ở đâu ạ?'],
+   ['Who should I speak to about this?', 'Việc này tôi nên hỏi ai ạ?']
+  ],
+  how: [
+   ['How long does the course last?', 'Khóa học kéo dài bao lâu ạ?'],
+   ['How much is a ticket for two people?', 'Vé cho hai người bao nhiêu ạ?']
+  ]
+ },
+ 'howto-hotel': {
+  whfx: 'What time + is check-out? · Where + is + …? · Which floor + is + …?',
+  howfx: 'How much + is a room for one night? · How many nights + …?',
+  s: [
+   ['I have a reservation under the name Lan.', 'Tôi có đặt phòng tên Lan.'],
+   ['I would like to check in, please.', 'Tôi muốn nhận phòng.'],
+   ['Do you have any rooms available?', 'Bên mình còn phòng trống không ạ?'],
+   ['Is breakfast included?', 'Có bao gồm bữa sáng không ạ?'],
+   ['Could I have an extra towel?', 'Cho tôi xin thêm một cái khăn.'],
+   ['Could you call a taxi for me?', 'Gọi giúp tôi một chiếc taxi được không ạ?'],
+   ['Can I leave my luggage here?', 'Tôi gửi hành lý ở đây được không ạ?'],
+   ['The air conditioning isn’t working.', 'Máy lạnh không chạy.'],
+   ['There is no hot water in my room.', 'Phòng tôi không có nước nóng.'],
+   ['Could I change rooms?', 'Tôi đổi phòng được không ạ?'],
+   ['I would like to check out, please.', 'Tôi muốn trả phòng.'],
+   ['Is there Wi-Fi in the room?', 'Trong phòng có Wi-Fi không ạ?']
+  ],
+  wh: [
+   ['What time is check-out?', 'Mấy giờ phải trả phòng ạ?'],
+   ['Where is the lift?', 'Thang máy ở đâu ạ?'],
+   ['Which floor is my room on?', 'Phòng tôi ở tầng mấy ạ?']
+  ],
+  how: [
+   ['How much is a room for one night?', 'Phòng một đêm bao nhiêu ạ?'],
+   ['How many nights would you like to stay?', 'Anh/chị muốn ở mấy đêm ạ?']
+  ]
+ }
+};
+Object.keys(EX_A2).forEach(k => {
+  const v = EX_A2[k];
+  EX_DATA[k] = v.s.concat(v.wh, v.how);
+  EX_WH[k] = v.wh; EX_HOW[k] = v.how;
+  EX_WH_FX[k] = v.whfx; EX_HOW_FX[k] = v.howfx;
+});
 
 
 /* ============================================================
@@ -25739,7 +28738,7 @@ Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conca
     (typeof TENSES !== 'undefined' ? TENSES : []).forEach(t => {
       if (t.lv !== L.n || !EX_DATA[t.id]) return;
       EX_LESSONS.push({
-        id: t.id, lv: L.n, title: t.name, en: t.en, tab: 'page-tenses', kindVi: 'Các thì',
+        id: t.id, lv: L.n, title: t.name, en: t.en, tab: 'page-grammar', kindVi: 'Các thì',
         fx: [['+', t.formula.pos], ['−', t.formula.neg], ['?', t.formula.q]].filter(r => r[1]),
         note: t.mistake || '', items: EX_DATA[t.id]
       });
@@ -25860,7 +28859,7 @@ Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conca
     const bar = E('span', 'vc-bar'); const fill = E('span'); fill.style.width = (tot ? got / tot * 100 : 0) + '%';
     bar.appendChild(fill); bar.style.flex = '1'; pg.appendChild(bar);
     intro.appendChild(pg);
-    intro.appendChild(E('p', 'tn-tip', '💡 Mỗi bài 17 câu dịch Việt → Anh: 12 câu kể, 3 câu hỏi Wh- và 2 câu hỏi How-. Câu nào cũng chỉ dùng đúng cấu trúc của bài đó, nên làm xong là nhớ luôn mẫu câu.'));
+    intro.appendChild(E('p', 'tn-tip', '💡 Mỗi bài 17 câu dịch Việt → Anh: 12 câu kể, 3 câu hỏi Wh- và 2 câu hỏi How-. Câu nào cũng chỉ dùng đúng cấu trúc của bài đó bên tab Ngữ pháp.'));
     root.appendChild(intro);
 
     const grid = E('div', 'gr-grid');
@@ -25953,13 +28952,13 @@ Object.keys(EX_HOW).forEach(k => { if (EX_DATA[k]) EX_DATA[k] = EX_DATA[k].conca
       if (l.note.note) n.appendChild(E('div', 'ex-note-t', l.note.note));
       rc.appendChild(n);
     }
-    const go = E('button', 'btn-ghost ex-go', l.tab === 'page-tenses' ? 'Xem lại bài trong tab Các thì →' : 'Xem lại bài trong tab Ngữ pháp →');
+    const go = E('button', 'btn-ghost ex-go', 'Xem lại bài trong tab Ngữ pháp →');
     go.addEventListener('click', () => {
-      const tab = document.querySelector('nav.tabbar button[data-page="' + l.tab + '"]');
+      const tab = document.querySelector('nav.tabbar button[data-page="page-grammar"]');
       if (tab) tab.click();
       try {
-        if (l.tab === 'page-grammar' && typeof renderGrammarTopic === 'function') renderGrammarTopic(l.id);
-        else if (typeof renderTenses === 'function') renderTenses();
+        if (l.kindVi === 'Các thì' && typeof renderTenseTopic === 'function') renderTenseTopic(l.id);
+        else if (typeof renderGrammarTopic === 'function') renderGrammarTopic(l.id);
       } catch (e) {}
       exTop();
     });
