@@ -2251,7 +2251,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v58</span>
+      <span class="hero-badge">EN ⇄ VI · v60</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -14076,9 +14076,7 @@ function prOpenIpa() {
   });
   v.appendChild(chips);
   const acts = prEl('div', 'pr-acts');
-  const all = prEl('button', 'ls-slow', '▶ Nghe lần lượt');
-  acts.appendChild(all);
-  acts.appendChild(prEl('span', 'pr-acts-hint', 'Chạm vào một âm để xem cách phát âm, mẹo và 3 từ ví dụ'));
+  acts.appendChild(prEl('span', 'pr-acts-hint', 'Chạm vào một âm để nghe và xem cách phát âm, mẹo và 3 từ ví dụ'));
   v.appendChild(acts);
 
   const wrap = prEl('div', 'ipa-wrap');
@@ -14109,7 +14107,6 @@ function prOpenIpa() {
     });
   }
   drawGrid();
-  all.addEventListener('click', () => prSeqPlay(tiles, tileTexts, all));
 
   const nx = PRON_SETS[0];
   const nb = prEl('button', 'btn-primary vc-next-unit', `Bài tiếp: ${nx.icon} ${nx.title} →`);
@@ -14271,19 +14268,15 @@ function ipaMouthEl(sym) {
 }
 /* Cách đọc riêng từng âm cho máy đọc: nguyên âm dùng từ ngắn hoặc thán từ,
    phụ âm dùng âm tiết ghép schwa như cách giáo viên đọc mẫu (puh, buh, tuh…) */
+/* Máy đọc không phát được ký hiệu IPA trần. Chỉ những âm dưới đây có một từ/thán từ
+   tiếng Anh mà cả từ chính là âm đó, nên đọc lên nghe đúng; các âm còn lại nghe qua từ ví dụ. */
 const IPA_SAY = {
-  'ɪ': 'ih', 'iː': 'ee', 'ʊ': 'put', 'uː': 'ooh', 'e': 'eh', 'æ': 'at',
-  'ə': 'uh', 'ɜː': 'er', 'ɒ': 'on', 'ɔː': 'aw', 'ʌ': 'up', 'ɑː': 'ah',
-  'eɪ': 'ay', 'aɪ': 'eye', 'ɔɪ': 'oy', 'aʊ': 'ow', 'əʊ': 'oh', 'ɪə': 'ear', 'eə': 'air', 'ʊə': 'tour',
-  'p': 'puh', 'b': 'buh', 't': 'tuh', 'd': 'duh', 'k': 'kuh', 'ɡ': 'guh',
-  'f': 'fuh', 'v': 'vuh', 'θ': 'thuh', 'ð': 'the', 's': 'suh', 'z': 'zuh',
-  'ʃ': 'shuh', 'ʒ': 'zhuh', 'tʃ': 'chuh', 'dʒ': 'juh',
-  'm': 'muh', 'n': 'nuh', 'ŋ': 'ung', 'h': 'huh', 'l': 'luh', 'r': 'ruh', 'w': 'wuh', 'j': 'yuh'
+  'iː': 'ee', 'e': 'eh', 'uː': 'ooh', 'ɜː': 'er', 'ə': 'uh', 'ɔː': 'awe', 'ɑː': 'ah',
+  'eɪ': 'ay', 'aɪ': 'eye', 'ɔɪ': 'oy', 'aʊ': 'ow', 'əʊ': 'oh', 'ɪə': 'ear', 'eə': 'air'
 };
-function ipaSayText(sym) {
-  if (IPA_SAY[sym]) return IPA_SAY[sym];
+function ipaWords(sym) {
   const s = IPA_SOUNDS.find(x => x[0] === sym);
-  return s ? ipaPlain(s[5][0][0]) : sym;
+  return s ? s[5].map(x => ipaPlain(x[0])) : [sym];
 }
 function ipaShow(sym, silent) {
   const sh = document.getElementById('ipasheet');
@@ -14297,8 +14290,12 @@ function ipaShow(sym, silent) {
   const symBtn = prEl('button', 'ipa-d-sym', '/' + s[0] + '/');
   symBtn.setAttribute('aria-label', 'Nghe âm /' + s[0] + '/');
   symBtn.title = 'Nghe âm /' + s[0] + '/';
-  symBtn.appendChild(prEl('span', 'ipa-say', '▶ nghe âm'));
-  symBtn.addEventListener('click', () => { prSeqStop(); prRepeat(ipaSayText(s[0]), 2, symBtn); });
+  const bare = IPA_SAY[s[0]];
+  symBtn.appendChild(prEl('span', 'ipa-say', bare ? '▶ nghe âm' : '▶ nghe từ'));
+  symBtn.addEventListener('click', () => {
+    prSeqStop();
+    prSay(bare || ipaWords(s[0])[0], Math.min(prRate, 0.75));
+  });
   top.appendChild(symBtn);
   const meta = prEl('div', 'ipa-d-meta');
   meta.appendChild(prEl('div', 'ipa-d-name', 'Gần giống: ' + s[2]));
@@ -14390,8 +14387,6 @@ function ipaShow(sym, silent) {
   }
 
   const acts = prEl('div', 'ipa-d-acts');
-  const play3 = prEl('button', 'ls-slow', '▶ Nghe 3 ví dụ');
-  play3.addEventListener('click', () => { prSeqStop(); prSay(s[5].map(x => ipaPlain(x[0])).join(', '), Math.min(prRate, 0.75)); });
   const k = ipaKey(s[0]);
   const ck = prEl('button', 'btn-ghost ipa-d-check' + (prDone.has(k) ? ' on' : ''), prDone.has(k) ? '✓ Đã thuộc' : '✓ Đánh dấu đã thuộc');
   ck.addEventListener('click', () => {
@@ -14400,7 +14395,7 @@ function ipaShow(sym, silent) {
     ck.classList.toggle('on', prDone.has(k)); ck.textContent = prDone.has(k) ? '✓ Đã thuộc' : '✓ Đánh dấu đã thuộc';
     ipaRefreshTile(s[0]);
   });
-  acts.appendChild(play3); acts.appendChild(ck);
+  acts.appendChild(ck);
   body.appendChild(acts);
   // previous / next sound
   const nav = prEl('div', 'ipa-d-nav');
@@ -14414,7 +14409,7 @@ function ipaShow(sym, silent) {
   document.querySelectorAll('.vsheet:not([hidden])').forEach(x => { if (x !== sh) x.hidden = true; });
   sh.hidden = false; document.body.classList.add('vsheet-open');
   const p = sh.querySelector('.vsheet-panel'); if (p) p.scrollTop = 0;
-  if (!silent) prSay(ipaSayText(s[0]));
+  if (!silent) prSay(ipaPlain(s[5][0][0]));
 }
 (() => {
   const sh = document.getElementById('ipasheet');
