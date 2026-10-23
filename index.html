@@ -2251,7 +2251,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v60</span>
+      <span class="hero-badge">EN ⇄ VI · v61</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -14274,10 +14274,202 @@ const IPA_SAY = {
   'iː': 'ee', 'e': 'eh', 'uː': 'ooh', 'ɜː': 'er', 'ə': 'uh', 'ɔː': 'awe', 'ɑː': 'ah',
   'eɪ': 'ay', 'aɪ': 'eye', 'ɔɪ': 'oy', 'aʊ': 'ow', 'əʊ': 'oh', 'ɪə': 'ear', 'eə': 'air'
 };
+function ipaSoundOrSay(sym) {
+  try { if (ipaPlaySound(sym)) return; } catch (e) {}
+  prSay(IPA_SAY[sym] || ipaWords(sym)[0], Math.min(prRate, 0.75));
+}
 function ipaWords(sym) {
   const s = IPA_SOUNDS.find(x => x[0] === sym);
   return s ? s[5].map(x => ipaPlain(x[0])) : [sym];
 }
+/* ---------- Tự tạo âm cho từng ký hiệu IPA bằng Web Audio ----------
+   Giọng máy chỉ đọc được chữ, không đọc được ký hiệu, nên 44 âm dưới đây
+   được dựng trực tiếp từ tần số cộng hưởng (formant) và tiếng xát (nhiễu lọc). */
+const IPA_FMT = {   /* [F1, F2, F3] Hz – giọng nam trung bình, chuẩn Anh-Anh */
+  'iː': [285, 2250, 2890], 'ɪ': [370, 2050, 2650], 'e': [560, 1970, 2550], 'æ': [760, 1740, 2450],
+  'ɜː': [580, 1400, 2440], 'ə': [500, 1500, 2500], 'ʌ': [700, 1240, 2540], 'ɑː': [680, 1080, 2540],
+  'ɒ': [600,  900, 2550], 'ɔː': [450,  740, 2600], 'ʊ': [390,  960, 2400], 'uː': [300,  850, 2250],
+  'a':  [800, 1300, 2550]
+};
+const IPA_VLONG = { 'iː': 1, 'ɜː': 1, 'ɑː': 1, 'ɔː': 1, 'uː': 1 };
+const IPA_CONS_SPEC = {
+  'p':  { t: 'stop',  burst: [900, 1.2],  asp: 0.11, voiced: false },
+  'b':  { t: 'stop',  burst: [900, 1.2],  asp: 0,    voiced: true  },
+  't':  { t: 'stop',  burst: [4200, 1.1], asp: 0.11, voiced: false },
+  'd':  { t: 'stop',  burst: [4200, 1.1], asp: 0,    voiced: true  },
+  'k':  { t: 'stop',  burst: [1900, 1.6], asp: 0.13, voiced: false },
+  'ɡ':  { t: 'stop',  burst: [1900, 1.6], asp: 0,    voiced: true  },
+  'f':  { t: 'fric',  band: [7000, 0.8],  amp: 0.30, voiced: false },
+  'v':  { t: 'fric',  band: [7000, 0.8],  amp: 0.22, voiced: true  },
+  'θ':  { t: 'fric',  band: [7600, 0.7],  amp: 0.24, voiced: false },
+  'ð':  { t: 'fric',  band: [7600, 0.7],  amp: 0.18, voiced: true  },
+  's':  { t: 'fric',  band: [6400, 3.2],  amp: 0.55, voiced: false },
+  'z':  { t: 'fric',  band: [6400, 3.2],  amp: 0.42, voiced: true  },
+  'ʃ':  { t: 'fric',  band: [2900, 2.2],  amp: 0.60, voiced: false },
+  'ʒ':  { t: 'fric',  band: [2900, 2.2],  amp: 0.46, voiced: true  },
+  'h':  { t: 'fric',  band: [1100, 0.6],  amp: 0.30, voiced: false },
+  'tʃ': { t: 'affr',  stop: 't', fric: 'ʃ' },
+  'dʒ': { t: 'affr',  stop: 'd', fric: 'ʒ' },
+  'm':  { t: 'nasal', f: [300, 1100, 2200] },
+  'n':  { t: 'nasal', f: [320, 1600, 2600] },
+  'ŋ':  { t: 'nasal', f: [300, 2100, 2800] },
+  'l':  { t: 'vowel', f: [360, 1300, 2800], dur: 0.34 },
+  'r':  { t: 'vowel', f: [330, 1050, 1620], dur: 0.34 },
+  'w':  { t: 'glide', from: [300, 850, 2250], to: [550, 1450, 2500] },
+  'j':  { t: 'glide', from: [285, 2250, 2890], to: [550, 1450, 2500] }
+};
+
+let ipaCtx = null;
+function ipaAC() {
+  if (!ipaCtx) {
+    const C = window.AudioContext || window.webkitAudioContext;
+    if (!C) return null;
+    try { ipaCtx = new C(); } catch (e) { return null; }
+  }
+  if (ipaCtx.state === 'suspended') { try { ipaCtx.resume(); } catch (e) {} }
+  return ipaCtx;
+}
+function ipaGlottalWave(ctx) {
+  const n = 36, re = new Float32Array(n), im = new Float32Array(n);
+  for (let i = 1; i < n; i++) im[i] = 1 / Math.pow(i, 1.12);
+  return ctx.createPeriodicWave(re, im, { disableNormalization: false });
+}
+function ipaNoiseBuffer(ctx) {
+  const len = Math.floor(ctx.sampleRate * 1.2), buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  let last = 0;
+  for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; last = 0.75 * last + 0.25 * w; d[i] = (w + last) * 0.5; }
+  return buf;
+}
+/* nguồn thanh quản: dao động tuần hoàn + rung nhẹ */
+function ipaVoiceSrc(ctx, t0, t1, f0) {
+  const o = ctx.createOscillator();
+  if (!ctx._ipaWave) ctx._ipaWave = ipaGlottalWave(ctx);
+  o.setPeriodicWave(ctx._ipaWave);
+  const f = f0 || 105;
+  o.frequency.setValueAtTime(f * 1.07, t0);
+  o.frequency.linearRampToValueAtTime(f * 0.93, t1);
+  o.start(t0); o.stop(t1 + 0.02);
+  return o;
+}
+function ipaNoiseSrc(ctx, t0, t1) {
+  if (!ctx._ipaNoise) ctx._ipaNoise = ipaNoiseBuffer(ctx);
+  const s = ctx.createBufferSource();
+  s.buffer = ctx._ipaNoise; s.loop = true;
+  s.start(t0); s.stop(t1 + 0.02);
+  return s;
+}
+function ipaEnv(ctx, t0, t1, peak, atk, rel) {
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(peak, t0 + (atk || 0.025));
+  g.gain.setValueAtTime(peak, Math.max(t0 + (atk || 0.025), t1 - (rel || 0.06)));
+  g.gain.linearRampToValueAtTime(0.0001, t1);
+  return g;
+}
+/* ba bộ cộng hưởng song song tạo nguyên âm */
+function ipaFormants(ctx, dest, f, t0, t1, fTo) {
+  const inp = ctx.createGain(); inp.gain.value = 1;
+  const bw = [115, 105, 135], gn = [1, 0.72, 0.5];
+  for (let i = 0; i < 3; i++) {
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(f[i], t0);
+    if (fTo) bp.frequency.linearRampToValueAtTime(fTo[i], t1 - 0.04);
+    bp.Q.value = f[i] / bw[i];
+    const g = ctx.createGain(); g.gain.value = gn[i];
+    inp.connect(bp); bp.connect(g); g.connect(dest);
+  }
+  return inp;
+}
+/* cân bằng độ lớn giữa các âm (đo bằng máy, không chỉnh tay) */
+const IPA_GAIN = { 'iː': 0.46, 'ɪ': 0.61, 'e': 0.92, 'æ': 1.21, 'ɜː': 0.92, 'ə': 0.84, 'ʌ': 1.08, 'ɑː': 0.95, 'ɒ': 0.85, 'ɔː': 0.59, 'ʊ': 0.61, 'uː': 0.46, 'eɪ': 0.82, 'aɪ': 1.1, 'ɔɪ': 0.64, 'aʊ': 1.09, 'əʊ': 0.74, 'ɪə': 0.61, 'eə': 0.84, 'ʊə': 0.63, 'p': 0.91, 'b': 0.97, 't': 1.22, 'd': 1.27, 'k': 0.94, 'ɡ': 0.96, 'f': 1.49, 'v': 1.47, 'θ': 1.78, 'ð': 1.58, 's': 1.46, 'z': 1.42, 'ʃ': 1.28, 'ʒ': 1.31, 'h': 1.96, 'tʃ': 1.25, 'dʒ': 1.29, 'm': 0.49, 'n': 0.5, 'ŋ': 0.49, 'l': 0.58, 'r': 0.53, 'w': 0.52, 'j': 0.52 };
+function ipaBuild(ctx, sym, t0) {
+  const out = ctx.createGain(); out.gain.value = 0.9 * (IPA_GAIN[sym] || 1); out.connect(ctx.destination);
+  const V = IPA_FMT[sym], D = (typeof MZ_D !== 'undefined') ? MZ_D[sym] : null, C = IPA_CONS_SPEC[sym];
+  const mkVowel = (f, dur, fTo) => {
+    const t1 = t0 + dur;
+    const env = ipaEnv(ctx, t0, t1, 0.9, 0.03, 0.08); env.connect(out);
+    const fm = ipaFormants(ctx, env, f, t0, t1, fTo);
+    ipaVoiceSrc(ctx, t0, t1).connect(fm);
+    return t1;
+  };
+  const mkFric = (spec, t0b, dur) => {
+    const t1 = t0b + dur;
+    const env = ipaEnv(ctx, t0b, t1, spec.amp, 0.03, 0.07); env.connect(out);
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = spec.band[0]; bp.Q.value = spec.band[1];
+    bp.connect(env);
+    ipaNoiseSrc(ctx, t0b, t1).connect(bp);
+    if (spec.voiced) {
+      const venv = ipaEnv(ctx, t0b, t1, 0.07, 0.03, 0.07); venv.connect(out);
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 320; lp.Q.value = 0.7; lp.connect(venv);
+      ipaVoiceSrc(ctx, t0b, t1, 110).connect(lp);
+    }
+    return t1;
+  };
+  const mkStop = (spec, t0b) => {
+    let t = t0b;
+    if (spec.voiced) {                       // tiếng rung nhỏ trong lúc ngậm hơi
+      const t1 = t + 0.09;
+      const env = ipaEnv(ctx, t, t1, 0.1, 0.02, 0.02); env.connect(out);
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 240; lp.Q.value = 0.7; lp.connect(env);
+      ipaVoiceSrc(ctx, t, t1, 100).connect(lp);
+      t = t1;
+    } else t += 0.05;
+    const bt = t + 0.026;                     // tiếng nổ khi mở chỗ cản
+    const benv = ipaEnv(ctx, t, bt, 0.9, 0.003, 0.016); benv.connect(out);
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = spec.burst[0]; bp.Q.value = spec.burst[1];
+    const bp2 = ctx.createBiquadFilter();
+    bp2.type = spec.burst[0] > 3000 ? 'highpass' : 'peaking';
+    bp2.frequency.value = spec.burst[0]; bp2.Q.value = 0.8; bp2.gain.value = 6;
+    bp.connect(bp2); bp2.connect(benv);
+    ipaNoiseSrc(ctx, t, bt).connect(bp);
+    let end = bt;
+    if (spec.asp) {                           // hơi bật ra sau tiếng nổ, màu sắc theo vị trí cản
+      const at = bt + spec.asp;
+      const aenv = ipaEnv(ctx, bt, at, 0.34, 0.008, 0.06); aenv.connect(out);
+      const ap = ctx.createBiquadFilter();
+      ap.type = 'bandpass'; ap.frequency.value = spec.burst[0] * 0.62; ap.Q.value = 0.7; ap.connect(aenv);
+      ipaNoiseSrc(ctx, bt, at).connect(ap);
+      end = at;
+    } else {                                  // âm hữu thanh: ngân rất nhẹ sau khi bật
+      const mt = bt + 0.08;
+      const menv = ipaEnv(ctx, bt, mt, 0.22, 0.01, 0.05); menv.connect(out);
+      const fm = ipaFormants(ctx, menv, [400, 1200, 2400], bt, mt);
+      ipaVoiceSrc(ctx, bt, mt, 108).connect(fm);
+      end = mt;
+    }
+    return end;
+  };
+  if (C && C.t === 'stop') return mkStop(C, t0);
+  if (C && C.t === 'fric') return mkFric(C, t0, 0.34);
+  if (C && C.t === 'affr') {
+    const t1 = mkStop(Object.assign({}, IPA_CONS_SPEC[C.stop], { asp: 0, voiced: IPA_CONS_SPEC[C.stop].voiced }), t0);
+    return mkFric(IPA_CONS_SPEC[C.fric], t1, 0.24);
+  }
+  if (C && C.t === 'nasal') {
+    const t1 = t0 + 0.36;
+    const env = ipaEnv(ctx, t0, t1, 0.85, 0.04, 0.09); env.connect(out);
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900; lp.Q.value = 0.7; lp.connect(env);
+    const fm = ipaFormants(ctx, lp, C.f, t0, t1);
+    ipaVoiceSrc(ctx, t0, t1, 112).connect(fm);
+    return t1;
+  }
+  if (C && C.t === 'glide') return mkVowel(C.from, 0.30, C.to);
+  if (C && C.t === 'vowel') return mkVowel(C.f, C.dur);
+  if (D && IPA_FMT[D[0]] && IPA_FMT[D[1]]) return mkVowel(IPA_FMT[D[0]], 0.46, IPA_FMT[D[1]]);
+  if (V) return mkVowel(V, IPA_VLONG[sym] ? 0.46 : 0.26);
+  return t0;
+}
+/* phát một âm; trả về false nếu máy không hỗ trợ Web Audio */
+function ipaPlaySound(sym) {
+  const ctx = ipaAC();
+  if (!ctx) return false;
+  try { ipaBuild(ctx, sym, ctx.currentTime + 0.03); return true; } catch (e) { return false; }
+}
+
 function ipaShow(sym, silent) {
   const sh = document.getElementById('ipasheet');
   const idx = IPA_SOUNDS.findIndex(s => s[0] === sym);
@@ -14290,12 +14482,8 @@ function ipaShow(sym, silent) {
   const symBtn = prEl('button', 'ipa-d-sym', '/' + s[0] + '/');
   symBtn.setAttribute('aria-label', 'Nghe âm /' + s[0] + '/');
   symBtn.title = 'Nghe âm /' + s[0] + '/';
-  const bare = IPA_SAY[s[0]];
-  symBtn.appendChild(prEl('span', 'ipa-say', bare ? '▶ nghe âm' : '▶ nghe từ'));
-  symBtn.addEventListener('click', () => {
-    prSeqStop();
-    prSay(bare || ipaWords(s[0])[0], Math.min(prRate, 0.75));
-  });
+  symBtn.appendChild(prEl('span', 'ipa-say', '▶ nghe âm'));
+  symBtn.addEventListener('click', () => { prSeqStop(); ipaSoundOrSay(s[0]); });
   top.appendChild(symBtn);
   const meta = prEl('div', 'ipa-d-meta');
   meta.appendChild(prEl('div', 'ipa-d-name', 'Gần giống: ' + s[2]));
@@ -14409,7 +14597,7 @@ function ipaShow(sym, silent) {
   document.querySelectorAll('.vsheet:not([hidden])').forEach(x => { if (x !== sh) x.hidden = true; });
   sh.hidden = false; document.body.classList.add('vsheet-open');
   const p = sh.querySelector('.vsheet-panel'); if (p) p.scrollTop = 0;
-  if (!silent) prSay(ipaPlain(s[5][0][0]));
+  if (!silent) ipaSoundOrSay(s[0]);
 }
 (() => {
   const sh = document.getElementById('ipasheet');
