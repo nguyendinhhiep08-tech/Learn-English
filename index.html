@@ -2252,7 +2252,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <span class="hero-badge">EN ⇄ VI · v67</span>
+      <span class="hero-badge">EN ⇄ VI · v68</span>
       <span class="hero-actions">
         <button class="hero-voice hero-acct" id="acct-btn" aria-label="Tài khoản và đồng bộ" hidden>👤 <span class="hv-label" id="acct-label">Đăng nhập</span></button>
         <button class="hero-voice" id="voice-btn" aria-label="Chọn giọng đọc">🔊 <span class="hv-label">Giọng đọc</span></button>
@@ -14108,6 +14108,7 @@ function prOpenIpa() {
     });
   }
   drawGrid();
+  try { if (!window._ipaPre) { window._ipaPre = 1; ipaPrerender(); } } catch (e) {}
 
   const nx = PRON_SETS[0];
   const nb = prEl('button', 'btn-primary vc-next-unit', `Bài tiếp: ${nx.icon} ${nx.title} →`);
@@ -14276,7 +14277,9 @@ const IPA_SAY = {
   'eɪ': 'ay', 'aɪ': 'eye', 'ɔɪ': 'oy', 'aʊ': 'ow', 'əʊ': 'oh', 'ɪə': 'ear', 'eə': 'air'
 };
 function ipaSoundOrSay(sym) {
-  try { if (ipaPlaySound(sym)) return; } catch (e) {}
+  ipaUnlock();
+  try { if (ipaPlayWav(sym)) return; } catch (e) {}     /* iPhone + mọi máy: phát file WAV tự tạo */
+  try { if (ipaPlaySound(sym)) return; } catch (e) {}   /* dự phòng: Web Audio trực tiếp */
   prSay(IPA_SAY[sym] || ipaWords(sym)[0], Math.min(prRate, 0.75));
 }
 function ipaWords(sym) {
@@ -14469,6 +14472,97 @@ function ipaPlaySound(sym) {
   const ctx = ipaAC();
   if (!ctx) return false;
   try { ipaBuild(ctx, sym, ctx.currentTime + 0.03); return true; } catch (e) { return false; }
+}
+
+/* ---------- Phát qua thẻ <audio> (sửa lỗi im lặng trên iPhone) ----------
+   iPhone tắt tiếng Web Audio khi gạt nút im lặng, và AudioContext hay bị "ngủ".
+   Vì vậy mỗi âm được dựng sẵn bằng OfflineAudioContext (chỉ là tính toán, không cần chạm),
+   đóng gói thành file WAV rồi phát qua một thẻ <audio> đã được mở khoá ở lần chạm đầu. */
+const IPA_SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
+let ipaSnd = null, ipaUnlocked = false;
+const ipaWavCache = {}, ipaWavPending = {};
+function ipaAudioEl() {
+  if (!ipaSnd) {
+    ipaSnd = document.createElement('audio');
+    ipaSnd.preload = 'auto';
+    ipaSnd.setAttribute('playsinline', '');
+    ipaSnd.setAttribute('webkit-playsinline', '');
+  }
+  return ipaSnd;
+}
+function ipaUnlock() {
+  if (ipaUnlocked) return;
+  ipaUnlocked = true;
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+  try {
+    const a = ipaAudioEl();
+    a.src = IPA_SILENT_WAV;
+    const p = a.play(); if (p && p.catch) p.catch(() => {});
+  } catch (e) {}
+  try {
+    const ctx = ipaAC();
+    if (ctx) { const b = ctx.createBuffer(1, 1, ctx.sampleRate), src = ctx.createBufferSource(); src.buffer = b; src.connect(ctx.destination); src.start(0); }
+  } catch (e) {}
+}
+['touchend', 'pointerdown', 'click'].forEach(ev => document.addEventListener(ev, ipaUnlock, { capture: true, passive: true }));
+function ipaWavBlob(buf, end) {
+  const rate = buf.sampleRate, d = buf.getChannelData(0);
+  let n = Math.min(d.length, Math.ceil((end + 0.06) * rate));
+  while (n > 1 && Math.abs(d[n - 1]) < 0.0005) n--;
+  n = Math.min(d.length, n + Math.floor(rate * 0.03));
+  let pk = 0; for (let i = 0; i < n; i++) { const x = Math.abs(d[i]); if (x > pk) pk = x; }
+  const amp = pk > 0 ? Math.min(2.4, 0.92 / pk) : 1;      /* loa điện thoại nhỏ: nâng mức nhưng không vỡ tiếng */
+  const ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+  const w = (o, str) => { for (let i = 0; i < str.length; i++) v.setUint8(o + i, str.charCodeAt(i)); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  w(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) { const x = Math.max(-1, Math.min(1, d[i] * amp)); v.setInt16(44 + i * 2, x < 0 ? x * 0x8000 : x * 0x7fff, true); }
+  return new Blob([ab], { type: 'audio/wav' });
+}
+function ipaRender(sym) {
+  if (ipaWavCache[sym]) return Promise.resolve(ipaWavCache[sym]);
+  if (ipaWavPending[sym]) return ipaWavPending[sym];
+  const OC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!OC || !window.URL || !URL.createObjectURL) return Promise.reject(new Error('no offline'));
+  let oc = null;
+  for (const rate of [44100, 48000]) { try { oc = new OC(1, Math.ceil(rate * 1.3), rate); break; } catch (e) {} }
+  if (!oc) return Promise.reject(new Error('no offline'));
+  let end;
+  try { end = ipaBuild(oc, sym, 0.02); } catch (e) { return Promise.reject(e); }
+  const pr = new Promise((res, rej) => {
+    oc.oncomplete = e => res(e.renderedBuffer);
+    try { const r = oc.startRendering(); if (r && r.then) r.then(res, rej); } catch (e) { rej(e); }
+  }).then(buf => {
+    const url = URL.createObjectURL(ipaWavBlob(buf, end));
+    ipaWavCache[sym] = url; delete ipaWavPending[sym];
+    return url;
+  });
+  ipaWavPending[sym] = pr;
+  pr.catch(() => { delete ipaWavPending[sym]; });
+  return pr;
+}
+function ipaPlayWav(sym) {
+  const OC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!OC || !window.Blob) return false;
+  const a = ipaAudioEl();
+  const go = url => {
+    try { a.pause(); } catch (e) {}
+    a.src = url;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => { try { ipaPlaySound(sym) || prSay(IPA_SAY[sym] || ipaWords(sym)[0], Math.min(prRate, 0.75)); } catch (e) {} });
+  };
+  if (ipaWavCache[sym]) { go(ipaWavCache[sym]); return true; }
+  ipaRender(sym).then(go, () => { try { ipaPlaySound(sym) || prSay(IPA_SAY[sym] || ipaWords(sym)[0], Math.min(prRate, 0.75)); } catch (e) {} });
+  return true;
+}
+/* dựng sẵn cả 44 âm khi máy rảnh để bấm là nghe ngay */
+function ipaPrerender() {
+  const list = IPA_SOUNDS.map(x => x[0]);
+  let i = 0;
+  const step = () => { if (i >= list.length) return; ipaRender(list[i++]).catch(() => {}).then(() => setTimeout(step, 30)); };
+  setTimeout(step, 400);
 }
 
 function ipaShow(sym, silent) {
